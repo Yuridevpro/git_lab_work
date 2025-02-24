@@ -1,0 +1,381 @@
+<!-- frontend/templates/plataforma/dados_paciente.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dados do Paciente</title>
+    <link rel="stylesheet" href="../static/plataforma/css/css.css" />
+    <link
+      rel="stylesheet"
+      href="../static/plataforma/css/plano_alimentar.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+    />
+    <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+    <script>
+      Parse.initialize("6Jdql6CigvVAkZOs5mxUCtzlTtYPe5LadGDdkjc2", "fQgUmN1oUpKO92hmWOh5tAJjcbo6tBcsSAisON68");
+      Parse.serverURL = "https://parseapi.back4app.com/";
+    </script>
+  </head>
+  <body>
+    <nav
+      style="background-color: #27db8f"
+      class="navbar navbar-expand-lg navbar-dark"
+    >
+      <a style="font-weight: bold" class="navbar-brand" href="#">NUTRI LAB</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav" id="menu-autenticacao">
+          <!-- Itens de menu dinâmicos serão carregados aqui -->
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <nav id="sidebar" class="col-md-2">
+          <a href="pacientes.html" class="link-lateral">
+            <div class="card-lateral">
+              <img src="../static/plataforma/img/paciente.png" alt="Pacientes" />
+              <br />
+              <br />
+              <h3>Gerenciar Pacientes</h3>
+            </div>
+          </a>
+
+          <a href="dados_paciente_listar.html" class="link-lateral">
+            <div class="card-lateral">
+              <img
+                src="../static/plataforma/img/dados_paciente.png"
+                alt="Dados do Paciente"
+              />
+              <br />
+              <br />
+              <h3>Dados do Pacientes</h3>
+            </div>
+          </a>
+
+          <a href="plano_alimentar_listar.html" class="link-lateral">
+            <div class="card-lateral">
+              <img
+                src="../static/plataforma/img/plano_alimentar.png"
+                alt="Plano Alimentar"
+              />
+              <br />
+              <br />
+              <h3>Plano alimentar</h3>
+            </div>
+          </a>
+        </nav>
+
+        <main class="col-md-8">
+          <br />
+
+          <div id="dadosPacienteContainer">
+            <!-- Dados do paciente serão carregados aqui -->
+          </div>
+
+          <hr />
+
+          <button
+            type="button"
+            class="btn btn-outline-success"
+            data-toggle="modal"
+            data-target="#modalAdicionarDados"
+          >
+            Adicionar dados do paciente
+          </button>
+
+          <br />
+          <br />
+
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Peso</th>
+                <th scope="col">Altura</th>
+                <th scope="col">% gordura</th>
+                <th scope="col">% músculo</th>
+              </tr>
+            </thead>
+            <tbody id="tabelaDadosPaciente">
+              <!-- Dados do paciente serão carregados aqui -->
+            </tbody>
+          </table>
+
+          <div style="width: 60%">
+            <canvas id="graficoPeso"></canvas>
+          </div>
+
+          <!-- Modal para Adicionar Dados do Paciente -->
+          <div
+            class="modal fade"
+            id="modalAdicionarDados"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="modalAdicionarDadosLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="modalAdicionarDadosLabel">
+                    Adicionar Dados do Paciente
+                  </h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="formAdicionarDados">
+                    <div class="form-row">
+                      <div class="col-md">
+                        <label for="peso">Peso</label>
+                        <div class="input-group">
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="peso"
+                            placeholder="--"
+                            required
+                          />
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">Kg</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md">
+                        <label for="altura">Altura</label>
+                        <div class="input-group">
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="altura"
+                            placeholder="--"
+                            required
+                          />
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">cm</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br />
+                    <div class="form-row">
+                      <div class="col-md">
+                        <label for="gordura">Percentual de gordura</label>
+                        <div class="input-group">
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="gordura"
+                            placeholder="--"
+                            required
+                          />
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">%</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md">
+                        <label for="musculo">Percentual de músculo</label>
+                        <div class="input-group">
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="musculo"
+                            placeholder="--"
+                            required
+                          />
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">%</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br />
+                    <h4 class="titulo">Dados laboratoriais</h4>
+                    <div class="form-row">
+                      <div class="col-md">
+                        <label for="hdl">Colesterol HDL</label>
+                        <div class="input-group">
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="hdl"
+                            placeholder="--"
+                            required
+                          />
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">mg/dL</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md">
+                        <label for="ldl">Colesterol LDL</label>
+                        <div class="input-group">
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="ldl"
+                            placeholder="--"
+                            required
+                          />
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">mg/dL</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <br />
+                    <div class="form-row">
+                      <div class="col-md">
+                        <label for="ctotal">Colesterol total</label>
+                        <div class="input-group">
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="ctotal"
+                            placeholder="--"
+                            required
+                          />
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">mg/dL</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col-md">
+                        <label for="trigliceridios">Triglicerídios</label>
+                        <div class="input-group">
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="trigliceridios"
+                            placeholder="--"
+                            required
+                          />
+                          <div class="input-group-prepend">
+                            <span class="input-group-text">mg/dL</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <br />
+
+                    <button type="submit" class="btn btn-success">
+                      Cadastrar
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      // Função para atualizar o menu de autenticação (login/logout)
+      async function atualizarMenuAutenticacao() {
+        const menu = document.getElementById("menu-autenticacao");
+        menu.innerHTML = ""; // Limpa o menu
+
+        if (localStorage.getItem("sessionToken")) {
+          // Usuário está logado
+          const liSair = document.createElement("li");
+          liSair.className = "nav-item";
+          liSair.innerHTML = `
+            <a class="nav-link" href="#" onclick="deslogarUsuario()">Sair</a>
+          `;
+          menu.appendChild(liSair);
+        } else {
+          // Usuário não está logado
+          const liLogin = document.createElement("li");
+          liLogin.className = "nav-item";
+          liLogin.innerHTML = `
+            <a class="nav-link" href="/auth/logar.html">Logar</a>
+          `;
+          menu.appendChild(liLogin);
+
+          const liCadastro = document.createElement("li");
+          liCadastro.className = "nav-item";
+          liCadastro.innerHTML = `
+            <a class="nav-link" href="/auth/cadastro.html">Cadastre-se</a>
+          `;
+          menu.appendChild(liCadastro);
+        }
+      }
+
+      // Chama a função para atualizar o menu quando a página carrega
+      atualizarMenuAutenticacao();
+    </script>
+    <script>
+      // Função para obter o ID do paciente da URL
+      function obterIdPacienteDaURL() {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get("id");
+      }
+
+      const idPaciente = obterIdPacienteDaURL();
+
+      // Função para buscar dados do paciente
+      async function buscarDadosPaciente(idPaciente) {
+        try {
+          const DadosPaciente = Parse.Object.extend("Pacientes");
+          const query = new Parse.Query(DadosPaciente);
+          const paciente = await query.get(idPaciente);
+
+          document.getElementById("dadosPacienteContainer").innerHTML = `
+            <div class="row">
+              <div class="col-md-3">
+                <img src="../static/plataforma/img/perfil1.png" alt="Perfil" />
+              </div>
+              <div class="col-md-3 dados descricao">
+                <h4>${paciente.get("nome")}</h4>
+                <h6>${paciente.get("idade")}</h6>
+              </div>
+            </div>
+          `;
+        } catch (error) {
+          console.error("Erro ao buscar dados do paciente:", error);
+          alert(
+            "Erro ao buscar dados do paciente. Veja o console para mais detalhes."
+          );
+        }
+      }
+
+      // Chame a função para buscar os dados do paciente quando a página carregar
+      buscarDadosPaciente(idPaciente);
+    }
+    </script>
+        <script src="../script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,181 @@
+<!-- frontend/templates/plataforma/dados_paciente_listar.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista de Pacientes - Dados</title>
+    <link rel="stylesheet" href="../static/plataforma/css/css.css" />
+    <link
+      rel="stylesheet"
+      href="../static/plataforma/css/plano_alimentar.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+    />
+    <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+    <script>
+      Parse.initialize("6Jdql6CigvVAkZOs5mxUCtzlTtYPe5LadGDdkjc2", "fQgUmN1oUpKO92hmWOh5tAJjcbo6tBcsSAisON68");
+      Parse.serverURL = "https://parseapi.back4app.com/";
+    </script>
+  </head>
+  <body>
+    <nav
+      style="background-color: #27db8f"
+      class="navbar navbar-expand-lg navbar-dark"
+    >
+      <a style="font-weight: bold" class="navbar-brand" href="#">NUTRI LAB</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav" id="menu-autenticacao">
+          <!-- Itens de menu dinâmicos serão carregados aqui -->
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <nav id="sidebar" class="col-md-2">
+          <a href="pacientes.html" class="link-lateral">
+            <div class="card-lateral">
+              <img src="../static/plataforma/img/paciente.png" alt="Pacientes" />
+              <br />
+              <br />
+              <h3>Gerenciar Pacientes</h3>
+            </div>
+          </a>
+
+          <a href="dados_paciente_listar.html" class="link-lateral">
+            <div class="card-lateral">
+              <img
+                src="../static/plataforma/img/dados_paciente.png"
+                alt="Dados do Paciente"
+              />
+              <br />
+              <br />
+              <h3>Dados do Pacientes</h3>
+            </div>
+          </a>
+
+          <a href="plano_alimentar_listar.html" class="link-lateral">
+            <div class="card-lateral">
+              <img
+                src="../static/plataforma/img/plano_alimentar.png"
+                alt="Plano Alimentar"
+              />
+              <br />
+              <br />
+              <h3>Plano alimentar</h3>
+            </div>
+          </a>
+        </nav>
+
+        <main class="col-md-8">
+          <br />
+          <h1 class="titulo">Escolha o paciente</h1>
+          <div class="row" id="listaPacientes">
+            <!-- Os pacientes serão carregados aqui pelo JavaScript -->
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      // Função para atualizar o menu de autenticação (login/logout)
+      async function atualizarMenuAutenticacao() {
+        const menu = document.getElementById("menu-autenticacao");
+        menu.innerHTML = ""; // Limpa o menu
+
+        if (localStorage.getItem("sessionToken")) {
+          // Usuário está logado
+          const liSair = document.createElement("li");
+          liSair.className = "nav-item";
+          liSair.innerHTML = `
+            <a class="nav-link" href="#" onclick="deslogarUsuario()">Sair</a>
+          `;
+          menu.appendChild(liSair);
+        } else {
+          // Usuário não está logado
+          const liLogin = document.createElement("li");
+          liLogin.className = "nav-item";
+          liLogin.innerHTML = `
+            <a class="nav-link" href="/auth/logar.html">Logar</a>
+          `;
+          menu.appendChild(liLogin);
+
+          const liCadastro = document.createElement("li");
+          liCadastro.className = "nav-item";
+          liCadastro.innerHTML = `
+            <a class="nav-link" href="/auth/cadastro.html">Cadastre-se</a>
+          `;
+          menu.appendChild(liCadastro);
+        }
+      }
+
+      // Chama a função para atualizar o menu quando a página carrega
+      atualizarMenuAutenticacao();
+    </script>
+    <script>
+      async function buscarPacientes() {
+        try {
+          const query = new Parse.Query("Pacientes");
+          const results = await query.find();
+
+          const listaPacientes = document.getElementById("listaPacientes");
+          listaPacientes.innerHTML = "";
+
+          results.forEach((paciente) => {
+            const nome = paciente.get("nome");
+            const idade = paciente.get("idade");
+            const sexo = paciente.get("sexo");
+            const email = paciente.get("email");
+            const telefone = paciente.get("telefone");
+            const id = paciente.id;
+
+            const card = document.createElement("div");
+            card.className = "col-md-4";
+            card.innerHTML = `
+              <a href="dados_paciente.html?id=${id}" class="link-hover">
+                <div class="card-paciente">
+                  <div class="foto-perfil">
+                    <img src="../static/plataforma/img/perfil${
+                      sexo === "M" ? "2" : "1"
+                    }.png" alt="Perfil do Paciente">
+                  </div>
+                  <br>
+                  <p class="dados">${nome}</p>
+                  <p class="dados">${idade} Anos</p>
+                  <p class="dados">${email}</p>
+                </div>
+              </a>
+            `;
+
+            listaPacientes.appendChild(card);
+          });
+        } catch (error) {
+          console.error("Erro ao buscar pacientes:", error);
+          alert("Erro ao buscar pacientes. Veja o console para mais detalhes.");
+        }
+      }
+
+      buscarPacientes();
+    </script>
+    <script src="../script.js"></script>
+  </body>
+</html>
