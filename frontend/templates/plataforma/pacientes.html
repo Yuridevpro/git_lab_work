@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pacientes</title>
-    <link rel="stylesheet" href="static/plataforma/css/css.css" />
+    <link rel="stylesheet" href="/static/plataforma/css/css.css" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
@@ -40,7 +40,7 @@
         <nav id="sidebar" class="col-md-2">
           <a href="pacientes.html" class="link-lateral">
             <div class="card-lateral">
-              <img src="static/plataforma/img/paciente.png" alt="Pacientes" />
+              <img src="/static/plataforma/img/paciente.png" alt="Pacientes" />
               <br />
               <br />
               <h3>Gerenciar Pacientes</h3>
@@ -50,7 +50,7 @@
           <a href="dados_paciente_listar.html" class="link-lateral">
             <div class="card-lateral">
               <img
-                src="static/plataforma/img/dados_paciente.png"
+                src="/static/plataforma/img/dados_paciente.png"
                 alt="Dados do Paciente"
               />
               <br />
@@ -62,7 +62,7 @@
           <a href="plano_alimentar_listar.html" class="link-lateral">
             <div class="card-lateral">
               <img
-                src="static/plataforma/img/plano_alimentar.png"
+                src="/static/plataforma/img/plano_alimentar.png"
                 alt="Plano Alimentar"
               />
               <br />
@@ -208,7 +208,7 @@
           const liSair = document.createElement("li");
           liSair.className = "nav-item";
           liSair.innerHTML = `
-            <a class="nav-link" href="#" onclick="deslogarUsuario()">Sair</a>
+            <a class="nav-link" href="/autenticacao/cadastro.html" onclick="deslogarUsuario()">Sair</a>
           `;
           menu.appendChild(liSair);
         } else {
@@ -216,14 +216,14 @@
           const liLogin = document.createElement("li");
           liLogin.className = "nav-item";
           liLogin.innerHTML = `
-            <a class="nav-link" href="auth/logar.html">Logar</a>
+            <a class="nav-link" href="/autenticacao/logar.html">Logar</a>
           `;
           menu.appendChild(liLogin);
 
           const liCadastro = document.createElement("li");
           liCadastro.className = "nav-item";
           liCadastro.innerHTML = `
-            <a class="nav-link" href="auth/cadastro.html">Cadastre-se</a>
+            <a class="nav-link" href="/autenticacao/cadastro.html">Cadastre-se</a>
           `;
           menu.appendChild(liCadastro);
         }
@@ -251,7 +251,7 @@
             card.innerHTML = `
               <div class="card-paciente">
                 <div class="foto-perfil">
-                  <img src="static/plataforma/img/perfil${
+                  <img src="/static/plataforma/img/perfil${
                     paciente.sexo === "M" ? "2" : "1"
                   }.png" alt="Perfil do Paciente">
                 </div>

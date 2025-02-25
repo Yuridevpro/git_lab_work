@@ -8,7 +8,7 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
     />
-    <link rel="stylesheet" href="static/autenticacao/css/css.css" />
+    <link rel="stylesheet" href="/static/autenticacao/css/css.css" />
     <title>Cadastro</title>
     <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
     <script>
@@ -48,7 +48,7 @@
               <h2 class="logo">
                 <img
                   class="img_logo_sidebar"
-                  src="../static/autenticacao/img/logo_nutri_lab.png"
+                  src="/static/autenticacao/img/logo_nutri_lab.png"
                   alt="Logo NutriLab"
                 />
               </h2>
@@ -140,7 +140,7 @@
           const liSair = document.createElement("li");
           liSair.className = "nav-item";
           liSair.innerHTML = `
-            <a class="nav-link" href="#" onclick="deslogarUsuario()">Sair</a>
+            <a class="nav-link" href="/autenticacao/cadastro.html" onclick="deslogarUsuario()">Sair</a>
           `;
           menu.appendChild(liSair);
         } else {
@@ -148,14 +148,14 @@
           const liLogin = document.createElement("li");
           liLogin.className = "nav-item";
           liLogin.innerHTML = `
-            <a class="nav-link" href="/auth/logar.html">Logar</a>
+            <a class="nav-link" href="/autenticacao/logar.html">Logar</a>
           `;
           menu.appendChild(liLogin);
 
           const liCadastro = document.createElement("li");
           liCadastro.className = "nav-item";
           liCadastro.innerHTML = `
-            <a class="nav-link" href="/auth/cadastro.html">Cadastre-se</a>
+            <a class="nav-link" href="/autenticacao/cadastro.html">Cadastre-se</a>
           `;
           menu.appendChild(liCadastro);
         }
@@ -195,6 +195,6 @@
         }
       });
     </script>
-    <script src="../script.js"></script>
+    <script src="/script.js"></script>
   </body>
 </html>

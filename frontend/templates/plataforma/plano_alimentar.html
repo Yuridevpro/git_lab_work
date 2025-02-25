@@ -5,10 +5,10 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Plano Alimentar</title>
-        <link rel="stylesheet" href="static/plataforma/css/css.css" />
+        <link rel="stylesheet" href="/static/plataforma/css/css.css" />
         <link
           rel="stylesheet"
-          href="static/plataforma/css/plano_alimentar.css"
+          href="/static/plataforma/css/plano_alimentar.css"
         />
         <link
           rel="stylesheet"
@@ -71,7 +71,7 @@
               <a href="plano_alimentar_listar.html" class="link-lateral">
                 <div class="card-lateral">
                   <img
-                    src="../static/plataforma/img/plano_alimentar.png"
+                    src="/static/plataforma/img/plano_alimentar.png"
                     alt="Plano Alimentar"
                   />
                   <br />
@@ -291,7 +291,7 @@
               const liSair = document.createElement("li");
               liSair.className = "nav-item";
               liSair.innerHTML = `
-                <a class="nav-link" href="#" onclick="deslogarUsuario()">Sair</a>
+                <a class="nav-link" href="/autenticacao/cadastro.html" onclick="deslogarUsuario()">Sair</a>
               `;
               menu.appendChild(liSair);
             } else {
@@ -299,14 +299,14 @@
               const liLogin = document.createElement("li");
               liLogin.className = "nav-item";
               liLogin.innerHTML = `
-                <a class="nav-link" href="/auth/logar.html">Logar</a>
+                <a class="nav-link" href="/autenticacao/logar.html">Logar</a>
               `;
               menu.appendChild(liLogin);
 
               const liCadastro = document.createElement("li");
               liCadastro.className = "nav-item";
               liCadastro.innerHTML = `
-                <a class="nav-link" href="/auth/cadastro.html">Cadastre-se</a>
+                <a class="nav-link" href="/autenticacao/cadastro.html">Cadastre-se</a>
               `;
               menu.appendChild(liCadastro);
             }
@@ -334,7 +334,7 @@
               document.getElementById("dadosPacienteContainer").innerHTML = `
                 <div class="row">
                   <div class="col-md-3">
-                    <img src="../static/plataforma/img/perfil1.png" alt="Perfil" />
+                    <img src="/static/plataforma/img/perfil1.png" alt="Perfil" />
                   </div>
                   <div class="col-md-3 dados descricao">
                     <h4>${paciente.get("nome")}</h4>
@@ -353,6 +353,6 @@
           // Chame a função para buscar os dados do paciente quando a página carregar
           buscarDadosPaciente(idPaciente);
         </script>
-        <script src="../script.js"></script>
+        <script src="/script.js"></script>
       </body>
     </html>
