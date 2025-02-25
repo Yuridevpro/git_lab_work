@@ -6,6 +6,9 @@
 // *** Funções para Pacientes ***
 
 // Função para buscar todos os pacientes
+
+
+Parse.serverURL = "https://parseapi.back4app.com/";
 async function buscarPacientes() {
   try {
     const results = await Parse.Cloud.run("buscarTodosPacientes");
