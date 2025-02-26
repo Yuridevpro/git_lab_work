@@ -48,7 +48,7 @@
               <h2 class="logo">
                 <img
                   class="img_logo_sidebar"
-                  src="/static/autenticacao/img/logo_nutri_lab.png"
+                  src="/static/img/logo_nutri_lab.png"
                   alt="Logo NutriLab"
                 />
               </h2>
@@ -116,7 +116,7 @@
           const liSair = document.createElement("li");
           liSair.className = "nav-item";
           liSair.innerHTML = `
-            <a class="nav-link" href="/autenticacao/cadastro.html" onclick="deslogarUsuario()">Sair</a>
+            <a class="nav-link" href="/templates/autenticacao/cadastro.html" onclick="deslogarUsuario()">Sair</a>
           `;
           menu.appendChild(liSair);
         } else {
@@ -124,7 +124,7 @@
           const liLogin = document.createElement("li");
           liLogin.className = "nav-item";
           liLogin.innerHTML = `
-            <a class="nav-link" href="/autenticacao/logar.html">Logar</a>
+            <a class="nav-link" href="/templates/autenticacao/logar.html">Logar</a>
           `;
           menu.appendChild(liLogin);
 

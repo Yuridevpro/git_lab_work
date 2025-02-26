@@ -8,11 +8,11 @@ Parse.Cloud.define("criarDadosPaciente", async (request) => {
   const data = request.params.data;
   const peso = request.params.peso;
   const altura = request.params.altura;
-  const percentual_gordura = request.params.percentual_gordura;
-  const percentual_musculo = request.params.percentual_musculo;
-  const colesterol_hdl = request.params.colesterol_hdl;
-  const colesterol_ldl = request.params.colesterol_ldl;
-  const colesterol_total = request.params.colesterol_total;
+  const gordura = request.params.gordura;
+  const musculo = request.params.musculo;
+  const hdl = request.params.hdl;
+  const ldl = request.params.ldl;
+  const ctotal = request.params.ctotal;
   const trigliceridios = request.params.trigliceridios;
 
   const DadosPaciente = Parse.Object.extend("DadosPaciente");
@@ -27,11 +27,11 @@ Parse.Cloud.define("criarDadosPaciente", async (request) => {
   dadosPaciente.set("data", new Date(data)); // Converte para data
   dadosPaciente.set("peso", peso);
   dadosPaciente.set("altura", altura);
-  dadosPaciente.set("percentual_gordura", percentual_gordura);
-  dadosPaciente.set("percentual_musculo", percentual_musculo);
-  dadosPaciente.set("colesterol_hdl", colesterol_hdl);
-  dadosPaciente.set("colesterol_ldl", colesterol_ldl);
-  dadosPaciente.set("colesterol_total", colesterol_total);
+  dadosPaciente.set("percentual_gordura", gordura);
+  dadosPaciente.set("percentual_musculo", musculo);
+  dadosPaciente.set("colesterol_hdl", hdl);
+  dadosPaciente.set("colesterol_ldl", ldl);
+  dadosPaciente.set("colesterol_total", ctotal);
   dadosPaciente.set("trigliceridios", trigliceridios);
 
   try {
@@ -72,11 +72,11 @@ Parse.Cloud.define("atualizarDadosPaciente", async (request) => {
   const data = request.params.data;
   const peso = request.params.peso;
   const altura = request.params.altura;
-  const percentual_gordura = request.params.percentual_gordura;
-  const percentual_musculo = request.params.percentual_musculo;
-  const colesterol_hdl = request.params.colesterol_hdl;
-  const colesterol_ldl = request.params.colesterol_ldl;
-  const colesterol_total = request.params.colesterol_total;
+  const gordura = request.params.gordura;
+  const musculo = request.params.musculo;
+  const hdl = request.params.hdl;
+  const ldl = request.params.ldl;
+  const ctotal = request.params.ctotal;
   const trigliceridios = request.params.trigliceridios;
 
   const DadosPaciente = Parse.Object.extend("DadosPaciente");
@@ -90,11 +90,11 @@ Parse.Cloud.define("atualizarDadosPaciente", async (request) => {
     dadosPaciente.set("data", new Date(data));
     dadosPaciente.set("peso", peso);
     dadosPaciente.set("altura", altura);
-    dadosPaciente.set("percentual_gordura", percentual_gordura);
-    dadosPaciente.set("percentual_musculo", percentual_musculo);
-    dadosPaciente.set("colesterol_hdl", colesterol_hdl);
-    dadosPaciente.set("colesterol_ldl", colesterol_ldl);
-    dadosPaciente.set("colesterol_total", colesterol_total);
+    dadosPaciente.set("percentual_gordura", gordura);
+    dadosPaciente.set("percentual_musculo", musculo);
+    dadosPaciente.set("colesterol_hdl", hdl);
+    dadosPaciente.set("colesterol_ldl", ldl);
+    dadosPaciente.set("colesterol_total", ctotal);
     dadosPaciente.set("trigliceridios", trigliceridios);
 
     const result = await dadosPaciente.save(null, { useMasterKey: true });

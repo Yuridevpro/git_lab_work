@@ -1,5 +1,3 @@
-// backend/cloud/pacientes/pacientes.js
-
 // *** Funções CRUD para Pacientes ***
 
 // Função para criar um paciente
@@ -125,6 +123,3 @@ Parse.Cloud.define("buscarTodosPacientes", async (request) => {
     );
   }
 });
-
-// *** Mais funções para DadosPaciente, Refeicao, Opcao, etc. ***
-// Seguir a mesma lógica para criar as funções de buscar, criar, atualizar e deletar

@@ -1,5 +1,3 @@
-// backend/cloud/autenticacao.js
-
 // *** Funções de Autenticação ***
 
 // Função para cadastrar um novo usuário
@@ -81,4 +79,3 @@ Parse.Cloud.define("solicitarResetSenha", async (request) => {
     );
   }
 });
-
