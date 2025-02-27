@@ -3,7 +3,7 @@
 // *** Middleware CORS ***
 Parse.Cloud.before("*", (req, res, next) => {
   res.set({
-    "Access-Control-Allow-Origin": "https://git-lab-replit-five.vercel.app", // Substitua pelo domínio do seu Vercel
+    "Access-Control-Allow-Origin": "https://4ed6e85c-4c40-459f-afc4-3e2e0a894ff9-00-2yy51gv juice5.spock.replit.dev", // Substitua pelo domínio do seu Vercel
     "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, X-Parse-Application-Id, X-Parse-REST-API-Key, X-Parse-Session-Token",
   });

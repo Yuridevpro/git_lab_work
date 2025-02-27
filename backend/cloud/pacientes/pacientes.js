@@ -1,7 +1,10 @@
+// backend/cloud/paciente/paciente.js
+
 // *** Funções CRUD para Pacientes ***
 
 // Função para criar um paciente
 Parse.Cloud.define("criarPaciente", async (request) => {
+  console.log("criarPaciente() chamada:", request.params); // ADICIONE ESTE LOG
   const nome = request.params.nome;
   const sexo = request.params.sexo;
   const idade = request.params.idade;

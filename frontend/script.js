@@ -6,8 +6,6 @@
 // *** Funções para Pacientes ***
 
 // Função para buscar todos os pacientes
-
-
 Parse.serverURL = "https://parseapi.back4app.com/";
 async function buscarPacientes() {
   try {
@@ -22,7 +20,9 @@ async function buscarPacientes() {
 
 // Função para criar um paciente
 async function criarPaciente(nome, sexo, idade, email, telefone) {
-  try {
+  console.log("criarPaciente() chamada:", nome, sexo, idade, email, telefone); // ADICIONADO LOG
+
+  try { // ADICIONADO TRY
     const result = await Parse.Cloud.run("criarPaciente", {
       nome: nome,
       sexo: sexo,
@@ -31,7 +31,7 @@ async function criarPaciente(nome, sexo, idade, email, telefone) {
       telefone: telefone,
     });
     return result;
-  } catch (error) {
+  } catch (error) { // ADICIONADO CATCH
     console.error("Erro ao criar paciente:", error);
     alert("Erro ao criar paciente: " + error.message);
     return null; // Retorna null em caso de erro
@@ -111,18 +111,18 @@ async function criarRefeicao(pacienteId, titulo, horario, carboidratos, proteina
 
 // Função para criar opção
 async function criarOpcao(refeicaoId, imagem, descricao) {
-    try {
-      const result = await Parse.Cloud.run("criarOpcao", {
-        refeicaoId: refeicaoId,
-        imagem: imagem,
-        descricao: descricao,
-      });
-      return result;
-    } catch (error) {
-      console.error("Erro ao criar opção:", error);
-      alert("Erro ao criar opção: " + error.message);
-      return null;
-    }
+  try {
+    const result = await Parse.Cloud.run("criarOpcao", {
+      refeicaoId: refeicaoId,
+      imagem: imagem,
+      descricao: descricao,
+    });
+    return result;
+  } catch (error) {
+    console.error("Erro ao criar opção:", error);
+    alert("Erro ao criar opção: " + error.message);
+    return null;
   }
+}
 
 // *** Outras funções CRUD para os outros modelos ***

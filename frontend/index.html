@@ -93,7 +93,7 @@
           const liSair = document.createElement("li");
           liSair.className = "nav-item";
           liSair.innerHTML = `
-            <a class="nav-link" href="#" onclick="deslogarUsuario()">Sair</a>
+            <a class="nav-link" href="/templates/autenticacao/logar.html" onclick="deslogarUsuario()">Sair</a>
           `;
           menu.appendChild(liSair);
         } else {
@@ -101,14 +101,14 @@
           const liLogin = document.createElement("li");
           liLogin.className = "nav-item";
           liLogin.innerHTML = `
-            <a class="nav-link" href="auth/logar.html">Logar</a>
+            <a class="nav-link" href="/templates/autenticacao/logar.html">Logar</a>
           `;
           menu.appendChild(liLogin);
 
           const liCadastro = document.createElement("li");
           liCadastro.className = "nav-item";
           liCadastro.innerHTML = `
-            <a class="nav-link" href="auth/cadastro.html">Cadastre-se</a>
+            <a class="nav-link" href="/templates/autenticacao/cadastro.html">Cadastre-se</a>
           `;
           menu.appendChild(liCadastro);
         }
