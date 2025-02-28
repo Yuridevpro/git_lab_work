@@ -1,3 +1,4 @@
+  // backend/cloud/autenticacao.js
 // Função para cadastrar um novo usuário
 Parse.Cloud.define("cadastrarUsuario", async (request) => {
   const username = request.params.username;

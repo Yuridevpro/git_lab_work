@@ -1,4 +1,4 @@
- // backend/cloud.js
+  // backend/cloud/cloud.js
 
 // *** Middleware CORS ***
 Parse.Cloud.before("*", (req, res, next) => {
@@ -14,16 +14,16 @@ Parse.Cloud.before("*", (req, res, next) => {
 require("./autenticacao");
 
 // *** Funções para Pacientes ***
-require("./paciente/paciente");
+require("./paciente");
 
 // *** Funções para DadosPaciente ***
-require("./dados_paciente/dados_paciente");
+require("./dados_paciente");
 
 // *** Funções para Refeicao ***
-require("./refeicao/refeicao");
+require("./refeicao");
 
 // *** Funções para Opcao ***
-require("./opcao/opcao");
+require("./opcao");
 
 // *** Configurações gerais do Cloud Code ***
 

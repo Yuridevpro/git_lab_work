@@ -1,4 +1,4 @@
-// backend/cloud/paciente/paciente.js
+ // backend/cloud/paciente.js
 
 // *** Funções CRUD para Pacientes ***
 

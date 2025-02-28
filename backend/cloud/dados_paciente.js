@@ -1,4 +1,4 @@
-// backend/cloud/dados_paciente/dados_paciente.js
+ // backend/cloud/dados_paciente.js
 
 // *** Funções CRUD para DadosPaciente ***
 
