@@ -1,358 +1,320 @@
-    <!-- frontend/templates/plataforma/plano_alimentar.html -->
-    <!DOCTYPE html>
-    <html lang="pt-br">
-      <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Plano Alimentar</title>
-        <link rel="stylesheet" href="/static/plataforma/css/plano_alimentar.css"/>
-        <link
-          rel="stylesheet"
-          href="/static/css/plano_alimentar.css"
-        />
-        <link
-          rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
-        />
-        <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
-        <script>
-          Parse.initialize("6Jdql6CigvVAkZOs5mxUCtzlTtYPe5LadGDdkjc2", "fQgUmN1oUpKO92hmWOh5tAJjcbo6tBcsSAisON68");
-          Parse.serverURL = "https://parseapi.back4app.com/";
-        </script>
-      </head>
-      <body>
-        <nav
-          style="background-color: #27db8f"
-          class="navbar navbar-expand-lg navbar-dark"
-        >
-          <a style="font-weight: bold" class="navbar-brand" href="#">NUTRI LAB</a>
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-toggle="collapse"
-            data-target="#navbarNav"
-            aria-controls="navbarNav"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav" id="menu-autenticacao">
-              <!-- Itens de menu dinâmicos serão carregados aqui -->
-            </ul>
+<!-- frontend/templates/plataforma/plano_alimentar.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plano Alimentar</title>
+  <link rel="stylesheet" href="/static/plataforma/css/css.css" />
+  <link rel="stylesheet" href="/static/css/plano_alimentar.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
+  <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+  <script>
+    Parse.initialize("6Jdql6CigvVAkZOs5mxUCtzlTtYPe5LadGDdkjc2", "fQgUmN1oUpKO92hmWOh5tAJjcbo6tBcsSAisON68");
+    Parse.serverURL = "https://parseapi.back4app.com/";
+  </script>
+</head>
+
+<body>
+  <nav style="background-color: #27db8f" class="navbar navbar-expand-lg navbar-dark">
+    <a style="font-weight: bold" class="navbar-brand" href="#">NUTRI LAB</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav" id="menu-autenticacao">
+        <!-- Itens de menu dinâmicos serão carregados aqui -->
+      </ul>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row">
+      <nav id="sidebar" class="col-md-2">
+        <a href="pacientes.html" class="link-lateral">
+          <div class="card-lateral">
+            <img src="/static/img/paciente.png" alt="Pacientes" />
+            <br />
+            <br />
+            <h3>Gerenciar Pacientes</h3>
           </div>
-        </nav>
+        </a>
 
-        <div class="container-fluid">
-          <div class="row">
-            <nav id="sidebar" class="col-md-2">
-              <a href="pacientes.html" class="link-lateral">
-                <div class="card-lateral">
-                  <img src="/static/img/paciente.png" alt="Pacientes" />
-                  <br />
-                  <br />
-                  <h3>Gerenciar Pacientes</h3>
-                </div>
-              </a>
-
-              <a href="dados_paciente_listar.html" class="link-lateral">
-                <div class="card-lateral">
-                  <img
-                    src="/static/img/dados_paciente.png"
-                    alt="Dados do Paciente"
-                  />
-                  <br />
-                  <br />
-                  <h3>Dados do Pacientes</h3>
-                </div>
-              </a>
-
-              <a href="plano_alimentar_listar.html" class="link-lateral">
-                <div class="card-lateral">
-                  <img
-                    src="/static/img/plano_alimentar.png"
-                    alt="Plano Alimentar"
-                  />
-                  <br />
-                  <br />
-                  <h3>Plano alimentar</h3>
-                </div>
-              </a>
-            </nav>
-
-            <main class="col-md-8">
-              <br />
-
-              <div id="dadosPacienteContainer">
-                <!-- Dados do paciente serão carregados aqui -->
-              </div>
-
-              <hr />
-
-              <button
-                type="button"
-                class="btn btn-outline-success"
-                data-toggle="modal"
-                data-target="#modalNovaRefeicao"
-              >
-                + Nova refeição
-              </button>
-
-              <button type="button" class="btn btn-outline-primary">
-                Exportar refeição
-              </button>
-              <br />
-              <br />
-
-              <div class="fundo-alimentar" id="listaRefeicoes">
-                <!-- As refeições serão carregadas aqui pelo JavaScript -->
-              </div>
-
-              <!-- Modal para Adicionar Nova Refeicao -->
-              <div
-                class="modal fade"
-                id="modalNovaRefeicao"
-                tabindex="-1"
-                role="dialog"
-                aria-labelledby="modalNovaRefeicaoLabel"
-                aria-hidden="true"
-              >
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="modalNovaRefeicaoLabel">
-                        Adicionar refeição
-                      </h5>
-                      <button
-                        type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">×</span>
-                      </button>
-                    </div>
-
-                    <div class="modal-body">
-                      <form id="formNovaRefeicao">
-                        <label for="titulo">Título</label>
-                        <div class="input-group">
-                          <input
-                            type="text"
-                            class="form-control"
-                            id="titulo"
-                            placeholder="Ex: Café da manhã"
-                            required
-                          />
-                        </div>
-                        <br />
-                        <label for="horario">Horário</label>
-                        <div class="input-group">
-                          <input type="time" class="form-control" id="horario" required />
-                        </div>
-                        <br />
-                        <h5 class="titulo">Macronutrientes</h5>
-                        <div class="container">
-                          <div class="row">
-                            <div class="col-md-4">
-                              <label for="carboidratos">Carboidratos</label>
-                              <div class="input-group">
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  id="carboidratos"
-                                  placeholder=""
-                                />
-                              </div>
-                            </div>
-
-                            <div class="col-md-4">
-                              <label for="proteinas">Proteínas</label>
-                              <div class="input-group">
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  id="proteinas"
-                                  placeholder=""
-                                />
-                              </div>
-                            </div>
-
-                            <div class="col-md-4">
-                              <label for="gorduras">Gorduras</label>
-                              <div class="input-group">
-                                <input
-                                  type="number"
-                                  class="form-control"
-                                  id="gorduras"
-                                  placeholder=""
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <br />
-                        <button type="submit" class="btn btn-success">
-                          Cadastrar
-                        </button>
-                      </form>
-                      <br />
-                      <button
-                        type="button"
-                        class="btn btn-outline-success"
-                        data-toggle="modal"
-                        data-target="#modalNovaOpcao"
-                      >
-                        + Nova opção
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Modal para Adicionar Nova Opcao -->
-              <div
-                class="modal fade"
-                id="modalNovaOpcao"
-                tabindex="-1"
-                role="dialog"
-                aria-labelledby="modalNovaOpcaoLabel"
-                aria-hidden="true"
-              >
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <h5 class="modal-title" id="modalNovaOpcaoLabel">
-                        Adicionar Opção
-                      </h5>
-                      <button
-                        type="button"
-                        class="close"
-                        data-dismiss="modal"
-                        aria-label="Close"
-                      >
-                        <span aria-hidden="true">×</span>
-                      </button>
-                    </div>
-                    <div class="modal-body">
-                      <form id="formNovaOpcao" enctype="multipart/form-data">
-                        <label for="refeicao">Selecione a refeição</label>
-                        <div class="input-group">
-                          <select class="form-control" id="refeicao" required>
-                            <!-- As refeições serão carregadas aqui pelo JavaScript -->
-                          </select>
-                        </div>
-
-                        <br />
-
-                        <label for="imagem">Imagem</label>
-                        <div class="input-group">
-                          <input
-                            type="file"
-                            class="form-control"
-                            id="imagem"
-                            required
-                          />
-                        </div>
-
-                        <br />
-
-                        <label for="descricao">Descrição</label>
-                        <div class="input-group">
-                          <textarea class="form-control" id="descricao"></textarea>
-                        </div>
-                        <br />
-                        <button type="submit" class="btn btn-success">
-                          Cadastrar
-                        </button>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </main>
+        <a href="dados_paciente_listar.html" class="link-lateral">
+          <div class="card-lateral">
+            <img src="/static/img/dados_paciente.png" alt="Dados do Paciente" />
+            <br />
+            <br />
+            <h3>Dados do Pacientes</h3>
           </div>
+        </a>
+
+        <a href="plano_alimentar_listar.html" class="link-lateral">
+          <div class="card-lateral">
+            <img src="/static/img/plano_alimentar.png" alt="Plano Alimentar" />
+            <br />
+            <br />
+            <h3>Plano alimentar</h3>
+          </div>
+        </a>
+      </nav>
+
+      <main class="col-md-8">
+        <br />
+
+        <div id="dadosPacienteContainer">
+          <!-- Dados do paciente serão carregados aqui -->
         </div>
 
-        <script
-          src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-          integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-          crossorigin="anonymous"
-        ></script>
-        <script>
-          // Função para atualizar o menu de autenticação (login/logout)
-          async function atualizarMenuAutenticacao() {
-            const menu = document.getElementById("menu-autenticacao");
-            menu.innerHTML = ""; // Limpa o menu
+        <hr />
 
-            if (localStorage.getItem("sessionToken")) {
-              // Usuário está logado
-              const liSair = document.createElement("li");
-              liSair.className = "nav-item";
-              liSair.innerHTML = `
-                <a class="nav-link" href="/templates/autenticacao/cadastro.html" onclick="deslogarUsuario()">Sair</a>
-              `;
-              menu.appendChild(liSair);
-            } else {
-              // Usuário não está logado
-              const liLogin = document.createElement("li");
-              liLogin.className = "nav-item";
-              liLogin.innerHTML = `
-                <a class="nav-link" href="/templates/autenticacao/logar.html">Logar</a>
-              `;
-              menu.appendChild(liLogin);
+        <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#modalNovaRefeicao">
+          + Nova refeição
+        </button>
 
-              const liCadastro = document.createElement("li");
-              liCadastro.className = "nav-item";
-              liCadastro.innerHTML = `
-                <a class="nav-link" href="/templates/autenticacao/cadastro.html">Cadastre-se</a>
-              `;
-              menu.appendChild(liCadastro);
-            }
-          }
+        <button type="button" class="btn btn-outline-primary">
+          Exportar refeição
+        </button>
+        <br />
+        <br />
 
-          // Chama a função para atualizar o menu quando a página carrega
-          atualizarMenuAutenticacao();
-        </script>
-        <script>
-          // Função para obter o ID do paciente da URL
-          function obterIdPacienteDaURL() {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get("id");
-          }
+        <div class="fundo-alimentar" id="listaRefeicoes">
+          <!-- As refeições serão carregadas aqui pelo JavaScript -->
+        </div>
 
-          const idPaciente = obterIdPacienteDaURL();
+        <!-- Modal para Adicionar Nova Refeicao -->
+                      <!-- Modal para Adicionar Nova Refeicao -->
+                      <div class="modal fade" id="modalNovaRefeicao" tabindex="-1" role="dialog"
+                           aria-labelledby="modalNovaRefeicaoLabel" aria-hidden="true">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h5 class="modal-title" id="modalNovaRefeicaoLabel">
+                                          Adicionar refeição
+                                      </h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">×</span>
+                                      </button>
+                                  </div>
 
-          // Função para buscar dados do paciente
-          async function buscarDadosPaciente(idPaciente) {
-            try {
-              const Pacientes = Parse.Object.extend("Pacientes");
-              const query = new Parse.Query(Pacientes);
-              const paciente = await query.get(idPaciente);
+                                  <div class="modal-body">
+                                      <form id="formNovaRefeicao">
+                                          <label for="titulo">Título</label>
+                                          <div class="input-group">
+                                              <input
+                                                      type="text"
+                                                      class="form-control"
+                                                      id="titulo"
+                                                      placeholder="Ex: Café da manhã"
+                                                      required
+                                              />
+                                          </div>
+                                          <br />
+                                          <label for="horario">Horário</label>
+                                          <div class="input-group">
+                                              <input type="time" class="form-control" id="horario" required />
+                                          </div>
+                                          <br />
+                                          <h5 class="titulo">Macronutrientes</h5>
+                                          <div class="container">
+                                              <div class="row">
+                                                  <div class="col-md-4">
+                                                      <label for="carboidratos">Carboidratos</label>
+                                                      <div class="input-group">
+                                                          <input
+                                                                  type="number"
+                                                                  class="form-control"
+                                                                  id="carboidratos"
+                                                                  placeholder=""
+                                                          />
+                                                      </div>
+                                                  </div>
 
-              document.getElementById("dadosPacienteContainer").innerHTML = `
-                <div class="row">
-                  <div class="col-md-3">
-                    <img src="/static/img/perfil1.png" alt="Perfil" />
-                  </div>
-                  <div class="col-md-3 dados descricao">
-                    <h4>${paciente.get("nome")}</h4>
-                    <h6>${paciente.get("idade")}</h6>
-                  </div>
-                </div>
-              `;
-            } catch (error) {
-              console.error("Erro ao buscar dados do paciente:", error);
-              alert(
-                "Erro ao buscar dados do paciente. Veja o console para mais details."
-              );
-            }
-          }
+                                                  <div class="col-md-4">
+                                                      <label for="proteinas">Proteínas</label>
+                                                      <div class="input-group">
+                                                          <input
+                                                                  type="number"
+                                                                  class="form-control"
+                                                                  id="proteinas"
+                                                                  placeholder=""
+                                                          />
+                                                      </div>
+                                                  </div>
 
-          // Chame a função para buscar os dados do paciente quando a página carregar
-          buscarDadosPaciente(idPaciente);
-        </script>
-        <script src="/script.js"></script>
-      </body>
-    </html>
+                                                  <div class="col-md-4">
+                                                      <label for="gorduras">Gorduras</label>
+                                                      <div class="input-group">
+                                                          <input
+                                                                  type="number"
+                                                                  class="form-control"
+                                                                  id="gorduras"
+                                                                  placeholder=""
+                                                          />
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                          <br />
+                                          <button type="submit" class="btn btn-success">
+                                              Cadastrar
+                                          </button>
+                                      </form>
+                                      <br />
+                                      <button
+                                              type="button"
+                                              class="btn btn-outline-success"
+                                              data-toggle="modal"
+                                              data-target="#modalNovaOpcao"
+                                      >
+                                          + Nova opção
+                                      </button>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <!-- Modal para Adicionar Nova Opcao -->
+                      <div
+                              class="modal fade"
+                              id="modalNovaOpcao"
+                              tabindex="-1"
+                              role="dialog"
+                              aria-labelledby="modalNovaOpcaoLabel"
+                              aria-hidden="true"
+                      >
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h5 class="modal-title" id="modalNovaOpcaoLabel">
+                                          Adicionar Opção
+                                      </h5>
+                                      <button
+                                              type="button"
+                                              class="close"
+                                              data-dismiss="modal"
+                                              aria-label="Close"
+                                      >
+                                          <span aria-hidden="true">×</span>
+                                      </button>
+                                  </div>
+                                  <div class="modal-body">
+                                      <form id="formNovaOpcao" enctype="multipart/form-data">
+                                          <label for="refeicao">Selecione a refeição</label>
+                                          <div class="input-group">
+                                              <select class="form-control" id="refeicao" required>
+                                                  <!-- As refeições serão carregadas aqui pelo JavaScript -->
+                                              </select>
+                                          </div>
+
+                                          <br />
+
+                                          <label for="imagem">Imagem</label>
+                                          <div class="input-group">
+                                              <input
+                                                      type="file"
+                                                      class="form-control"
+                                                      id="imagem"
+                                                      required
+                                              />
+                                          </div>
+
+                                          <br />
+
+                                          <label for="descricao">Descrição</label>
+                                          <div class="input-group">
+                                              <textarea class="form-control" id="descricao"></textarea>
+                                          </div>
+                                          <br />
+                                          <button type="submit" class="btn btn-success">
+                                              Cadastrar
+                                          </button>
+                                      </form>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                      </main>
+                      </div>
+                      </div>
+
+                      <script
+                              src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+                              integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+                              crossorigin="anonymous"
+                      ></script>
+                      <script>
+                          // Função para atualizar o menu de autenticação (login/logout)
+                          async function atualizarMenuAutenticacao() {
+                              const menu = document.getElementById("menu-autenticacao");
+                              menu.innerHTML = "";
+
+                              if (localStorage.getItem("sessionToken")) {
+                                  const liSair = document.createElement("li");
+                                  liSair.className = "nav-item";
+                                  liSair.innerHTML = `
+                                      <a class="nav-link" href="/templates/autenticacao/cadastro.html" onclick="deslogarUsuario()">Sair</a>
+                                  `;
+                                  menu.appendChild(liSair);
+                              } else {
+                                  const liLogin = document.createElement("li");
+                                  liLogin.className = "nav-item";
+                                  liLogin.innerHTML = `
+                                      <a class="nav-link" href="/templates/autenticacao/logar.html">Logar</a>
+                                  `;
+                                  menu.appendChild(liLogin);
+
+                                  const liCadastro = document.createElement("li");
+                                  liCadastro.className = "nav-item";
+                                  liCadastro.innerHTML = `
+                                      <a class="nav-link" href="/templates/autenticacao/cadastro.html">Cadastre-se</a>
+                                  `;
+                                  menu.appendChild(liCadastro);
+                              }
+                          }
+
+                          // Chama a função para atualizar o menu quando a página carrega
+                          atualizarMenuAutenticacao();
+                      </script>
+                      <script>
+                          // Função para obter o ID do paciente da URL
+                          function obterIdPacienteDaURL() {
+                              const urlParams = new URLSearchParams(window.location.search);
+                              return urlParams.get("id");
+                          }
+
+                          const idPaciente = obterIdPacienteDaURL();
+
+                          // Função para buscar dados do paciente
+                          async function buscarDadosPaciente(idPaciente) {
+                              try {
+                                  const Pacientes = Parse.Object.extend("Pacientes");
+                                  const query = new Parse.Query(Pacientes);
+                                  const paciente = await query.get(idPaciente);
+
+                                  document.getElementById("dadosPacienteContainer").innerHTML = `
+                                      <div class="row">
+                                          <div class="col-md-3">
+                                              <img src="/static/img/perfil1.png" alt="Perfil" />
+                                          </div>
+                                          <div class="col-md-3 dados descricao">
+                                              <h4>${paciente.get("nome")}</h4>
+                                              <h6>${paciente.get("idade")}</h6>
+                                          </div>
+                                      </div>
+                                  `;
+                              } catch (error) {
+                                  console.error("Erro ao buscar dados do paciente:", error);
+                                  // Redireciona para a página de login em caso de erro
+                                  window.location.href = "/templates/autenticacao/logar.html";
+                              }
+                          }
+
+                          // Chame a função para buscar os dados do paciente quando a página carregar
+                          buscarDadosPaciente(idPaciente);
+                      </script>
+                      <script src="/script.js"></script>
+                      </body>
+                      </html>

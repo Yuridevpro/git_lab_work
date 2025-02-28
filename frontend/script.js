@@ -7,16 +7,23 @@
 
 Parse.serverURL = "https://parseapi.back4app.com/";
 
+// frontend/script.js
+
 // Função para buscar todos os pacientes
 async function buscarPacientes() {
   try {
+    // Verifica se há um usuário logado antes de buscar os pacientes
+    if (!Parse.User.current()) {
+      console.log("Nenhum usuário logado.");
+      return []; // Retorna um array vazio se não houver usuário logado
+    }
     const result = await Parse.Cloud.run("buscarTodosPacientes");
     if (result.success) {
       return result.pacientes;
     } else {
       console.error("Erro ao buscar pacientes:", result.message);
       alert("Erro ao buscar pacientes: " + result.message);
-      return []; // Retorna um array vazio em caso de erro
+      return [];
     }
   } catch (error) {
     console.error("Erro ao buscar pacientes:", error);
@@ -28,6 +35,12 @@ async function buscarPacientes() {
 // Função para criar um paciente
 async function criarPaciente(nome, sexo, idade, email, telefone) {
   try {
+       // Verifica se há um usuário logado antes de criar o paciente
+    if (!Parse.User.current()) {
+      alert("Nenhum usuário logado.");
+      window.location.href = "/templates/autenticacao/logar.html"; // Redireciona para a página de login
+      return null;
+    }
     const result = await Parse.Cloud.run("criarPaciente", {
       nome: nome,
       sexo: sexo,
@@ -38,10 +51,9 @@ async function criarPaciente(nome, sexo, idade, email, telefone) {
 
     if (result.success) {
       alert(result.message);
-      // Faça algo com o paciente criado (por exemplo, atualizar a lista de pacientes)
-      return result.paciente; // Retorna o paciente criado
+      return result.paciente;
     } else {
-      alert(result.message); // Exibe a mensagem de erro
+      alert(result.message);
       return null;
     }
   } catch (error) {
@@ -67,6 +79,12 @@ async function criarDadosPaciente(
   trigliceridios
 ) {
   try {
+     // Verifica se há um usuário logado antes de criar os dados do paciente
+    if (!Parse.User.current()) {
+      alert("Nenhum usuário logado.");
+      window.location.href = "/templates/autenticacao/logar.html"; // Redireciona para a página de login
+      return null;
+    }
     const result = await Parse.Cloud.run("criarDadosPaciente", {
       pacienteId: pacienteId,
       data: data,
@@ -90,6 +108,12 @@ async function criarDadosPaciente(
 // Função para buscar dados do paciente
 async function buscarDadosPaciente(id) {
   try {
+     // Verifica se há um usuário logado antes de buscar os dados do paciente
+    if (!Parse.User.current()) {
+      alert("Nenhum usuário logado.");
+      window.location.href = "/templates/autenticacao/logar.html"; // Redireciona para a página de login
+      return null;
+    }
     const result = await Parse.Cloud.run("buscarDadosPaciente", { id: id });
     return result;
   } catch (error) {
@@ -102,15 +126,14 @@ async function buscarDadosPaciente(id) {
 // *** Funções para Refeicao ***
 
 // Função para criar refeição
-async function criarRefeicao(
-  pacienteId,
-  titulo,
-  horario,
-  carboidratos,
-  proteinas,
-  gorduras
-) {
+async function criarRefeicao(pacienteId, titulo, horario, carboidratos, proteinas, gorduras) {
   try {
+     // Verifica se há um usuário logado antes de criar a refeição
+    if (!Parse.User.current()) {
+      alert("Nenhum usuário logado.");
+      window.location.href = "/templates/autenticacao/logar.html"; // Redireciona para a página de login
+      return null;
+    }
     const result = await Parse.Cloud.run("criarRefeicao", {
       pacienteId: pacienteId,
       titulo: titulo,
@@ -131,18 +154,24 @@ async function criarRefeicao(
 
 // Função para criar opção
 async function criarOpcao(refeicaoId, imagem, descricao) {
-  try {
-    const result = await Parse.Cloud.run("criarOpcao", {
-      refeicaoId: refeicaoId,
-      imagem: imagem,
-      descricao: descricao,
-    });
-    return result;
-  } catch (error) {
-    console.error("Erro ao criar opção:", error);
-    alert("Erro ao criar opção: " + error.message);
-    return null;
+    try {
+       // Verifica se há um usuário logado antes de criar a opção
+    if (!Parse.User.current()) {
+      alert("Nenhum usuário logado.");
+      window.location.href = "/templates/autenticacao/logar.html"; // Redireciona para a página de login
+      return null;
+    }
+      const result = await Parse.Cloud.run("criarOpcao", {
+        refeicaoId: refeicaoId,
+        imagem: imagem,
+        descricao: descricao,
+      });
+      return result;
+    } catch (error) {
+      console.error("Erro ao criar opção:", error);
+      alert("Erro ao criar opção: " + error.message);
+      return null;
+    }
   }
-}
 
 // *** Outras funções CRUD para os outros modelos ***

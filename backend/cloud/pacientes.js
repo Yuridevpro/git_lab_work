@@ -1,10 +1,10 @@
- // backend/cloud/paciente.js
+// backend/cloud/paciente.js
 
 // *** Funções CRUD para Pacientes ***
 
 // Função para criar um paciente
 Parse.Cloud.define("criarPaciente", async (request) => {
-  console.log("criarPaciente() chamada:", request.params); // ADICIONE ESTE LOG
+  console.log("criarPaciente() chamada:", request.params);
   const nome = request.params.nome;
   const sexo = request.params.sexo;
   const idade = request.params.idade;
@@ -21,23 +21,55 @@ Parse.Cloud.define("criarPaciente", async (request) => {
 
   paciente.set("nome", nome);
   paciente.set("sexo", sexo);
-  paciente.set("idade", parseInt(idade)); // Converte para número
+  paciente.set("idade", parseInt(idade));
   paciente.set("email", email);
   paciente.set("telefone", telefone);
+  paciente.set("nutri", request.user); // Relaciona o paciente com o nutricionista logado
 
   try {
     const result = await paciente.save(null, { useMasterKey: true });
     return {
       success: true,
       message: "Paciente criado com sucesso!",
-      paciente: result, // Retorna o objeto paciente criado
+      paciente: { // Adapta os dados para evitar exposição direta do objeto Parse
+        id: result.id,
+        nome: result.get("nome"),
+        sexo: result.get("sexo"),
+        idade: result.get("idade"),
+        email: result.get("email"),
+        telefone: result.get("telefone")
+      },
     };
   } catch (error) {
-    console.error("Erro ao criar paciente:", error); // Adicionado log de erro
+    console.error("Erro ao criar paciente:", error);
     return {
       success: false,
       message: "Erro ao criar paciente: " + error.message,
     };
+  }
+});
+
+// Função para buscar todos os pacientes DO NUTRICIONISTA LOGADO
+Parse.Cloud.define("buscarTodosPacientes", async (request) => {
+  const Pacientes = Parse.Object.extend("Pacientes");
+  const query = new Parse.Query(Pacientes);
+    query.equalTo("nutri", request.user); // Busca apenas os pacientes do nutricionista logado
+  try {
+    const results = await query.find({ useMasterKey: true });
+    return {
+      success: true,
+      pacientes: results.map((paciente) => ({
+        id: paciente.id,
+        nome: paciente.get("nome"),
+        sexo: paciente.get("sexo"),
+        idade: paciente.get("idade"),
+        email: paciente.get("email"),
+        telefone: paciente.get("telefone"),
+      })),
+    };
+  } catch (error) {
+    console.error("Erro ao buscar pacientes:", error);
+    return { success: false, message: error.message };
   }
 });
 
@@ -46,18 +78,25 @@ Parse.Cloud.define("buscarPaciente", async (request) => {
   const idPaciente = request.params.id;
   const Pacientes = Parse.Object.extend("Pacientes");
   const query = new Parse.Query(Pacientes);
-
+  query.equalTo("nutri", request.user); // Garante que o paciente pertence ao nutricionista
   try {
     const paciente = await query.get(idPaciente, { useMasterKey: true });
     return {
       success: true,
-      paciente: paciente,
+      paciente: {
+        id: paciente.id,
+        nome: paciente.get("nome"),
+        sexo: paciente.get("sexo"),
+        idade: paciente.get("idade"),
+        email: paciente.get("email"),
+        telefone: paciente.get("telefone")
+      },
     };
   } catch (error) {
-    console.error("Erro ao buscar paciente:", error); // Adicionado log de erro
+    console.error("Erro ao buscar paciente:", error);
     return {
       success: false,
-      message: "Paciente não encontrado: " + error.message,
+      message: "Paciente não encontrado ou não autorizado: " + error.message,
     };
   }
 });
@@ -73,13 +112,14 @@ Parse.Cloud.define("atualizarPaciente", async (request) => {
 
   const Pacientes = Parse.Object.extend("Pacientes");
   const query = new Parse.Query(Pacientes);
+  query.equalTo("nutri", request.user); // Garante que o paciente pertence ao nutricionista
 
   try {
     const paciente = await query.get(idPaciente, { useMasterKey: true });
 
     paciente.set("nome", nome);
     paciente.set("sexo", sexo);
-    paciente.set("idade", parseInt(idade)); // Converte para número
+    paciente.set("idade", parseInt(idade));
     paciente.set("email", email);
     paciente.set("telefone", telefone);
 
@@ -87,13 +127,20 @@ Parse.Cloud.define("atualizarPaciente", async (request) => {
     return {
       success: true,
       message: "Paciente atualizado com sucesso!",
-      paciente: result,
+      paciente: {
+        id: result.id,
+        nome: result.get("nome"),
+        sexo: result.get("sexo"),
+        idade: result.get("idade"),
+        email: result.get("email"),
+        telefone: result.get("telefone")
+      },
     };
   } catch (error) {
-    console.error("Erro ao atualizar paciente:", error); // Adicionado log de erro
+    console.error("Erro ao atualizar paciente:", error);
     return {
       success: false,
-      message: "Erro ao atualizar paciente: " + error.message,
+      message: "Erro ao atualizar paciente ou não autorizado: " + error.message,
     };
   }
 });
@@ -103,46 +150,17 @@ Parse.Cloud.define("deletarPaciente", async (request) => {
   const idPaciente = request.params.id;
   const Pacientes = Parse.Object.extend("Pacientes");
   const query = new Parse.Query(Pacientes);
+  query.equalTo("nutri", request.user); // Garante que o paciente pertence ao nutricionista
 
   try {
     const paciente = await query.get(idPaciente, { useMasterKey: true });
     await paciente.destroy({ useMasterKey: true });
     return { success: true, message: "Paciente deletado com sucesso!" };
   } catch (error) {
-    console.error("Erro ao deletar paciente:", error); // Adicionado log de erro
+    console.error("Erro ao deletar paciente:", error);
     return {
       success: false,
-      message: "Erro ao deletar paciente: " + error.message,
-    };
-  }
-});
-
-// Função para buscar todos os pacientes
-Parse.Cloud.define("buscarTodosPacientes", async (request) => {
-  const Pacientes = Parse.Object.extend("Pacientes");
-  const query = new Parse.Query(Pacientes);
-
-  try {
-    const results = await query.find({ useMasterKey: true });
-    return {
-      success: true,
-      pacientes: results.map((paciente) => {
-        // Adapta os resultados para um formato mais simples
-        return {
-          id: paciente.id,
-          nome: paciente.get("nome"),
-          sexo: paciente.get("sexo"),
-          idade: paciente.get("idade"),
-          email: paciente.get("email"),
-          telefone: paciente.get("telefone"),
-        };
-      }),
-    };
-  } catch (error) {
-    console.error("Erro ao buscar todos os pacientes:", error);
-    return {
-      success: false,
-      message: "Erro ao buscar todos os pacientes: " + error.message,
+      message: "Erro ao deletar paciente ou não autorizado: " + error.message,
     };
   }
 });
