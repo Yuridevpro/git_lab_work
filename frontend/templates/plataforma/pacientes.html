@@ -12,6 +12,16 @@
     />
     <!-- Carrega a biblioteca Parse JavaScript *ANTES* do seu script.js -->
     <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+
+    <script>
+      Parse.initialize(
+        "6Jdql6CigvVAkZOs5mxUCtzlTtYPe5LadGDdkjc2",
+        "fQgUmN1oUpKO92hmWOh5tAJjcbo6tBcsSAisON68"
+      );
+      Parse.serverURL = "https://parseapi.back4app.com/";
+      console.log("Parse.serverURL:", Parse.serverURL);
+      console.log("typeof Parse:", typeof Parse);
+    </script>
   </head>
   <body>
     <nav
@@ -119,10 +129,7 @@
                   <form id="formNovoPaciente">
                     <div class="row">
                       <div class="col-md-3">
-                        <img
-                          src="/static/img/perfil2.png"
-                          alt="Perfil"
-                        />
+                        <img src="/static/img/perfil2.png" alt="Perfil" />
                       </div>
 
                       <div class="col-md-9">
@@ -188,7 +195,7 @@
         </main>
       </div>
     </div>
-   
+
     <script
       src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
       integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -197,7 +204,8 @@
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
     ></script>
-     
+
+    <script src="/script.js"></script>
     <script>
       // Função para atualizar o menu de autenticação (login/logout)
       async function atualizarMenuAutenticacao() {
@@ -230,20 +238,72 @@
         }
       }
 
-      // Chama a função para atualizar o menu quando a página carrega
-      atualizarMenuAutenticacao();
+      // Função para buscar pacientes e exibir na tela
+      async function exibirPacientes() {
+        const pacientes = await buscarPacientes(); // Use a função buscarPacientes do script.js
 
-      // Chame a função de teste "hello"
-      Parse.Cloud.run("hello")
-      .then((result) => {
-        console.log("Resposta da função 'hello':", result);
-      })
-      .catch((error) => {
-        console.error("Erro ao chamar a função 'hello':", error);
+        const listaPacientes = document.getElementById("listaPacientes");
+        listaPacientes.innerHTML = ""; // Limpa a lista antes de adicionar os pacientes
+
+        pacientes.forEach((paciente) => {
+          const card = document.createElement("div");
+          card.className = "col-md-4";
+          card.innerHTML = `
+            <a href="dados_paciente.html?id=${paciente.id}" class="link-hover">
+              <div class="card-paciente">
+                <div class="foto-perfil">
+                  <img src="/static/img/perfil${
+                    paciente.sexo === "M" ? "2" : "1"
+                  }.png" alt="Perfil do Paciente">
+                </div>
+                <br>
+                <p class="dados">${paciente.nome}</p>
+                <p class="dados">${paciente.idade} Anos</p>
+                <p class="dados">${paciente.email}</p>
+              </div>
+            </a>
+          `;
+          listaPacientes.appendChild(card);
+        });
+      }
+
+      // Evento de envio do formulário de novo paciente
+      const formNovoPaciente = document.getElementById("formNovoPaciente");
+      formNovoPaciente.addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const nome = document.getElementById("nome").value;
+        const sexo = document.getElementById("sexo").value;
+        const idade = document.getElementById("idade").value;
+        const email = document.getElementById("email").value;
+        const telefone = document.getElementById("telefone").value;
+
+        // Chama a função criarPaciente do script.js
+        const novoPaciente = await criarPaciente(
+          nome,
+          sexo,
+          idade,
+          email,
+          telefone
+        );
+
+        if (novoPaciente) {
+          // Limpa o formulário
+          formNovoPaciente.reset();
+
+          // Fecha o modal
+          $("#modalNovoPaciente").modal("hide");
+
+          // Atualiza a lista de pacientes na tela
+          exibirPacientes();
+        }
       });
+
+      // Carrega a lista de pacientes ao carregar a página
+      exibirPacientes();
+
+      // Chame a função para atualizar o menu quando a página carrega
+      atualizarMenuAutenticacao();
     </script>
-     <script src="/script.js"></script>
-    
-       
   </body>
 </html>
