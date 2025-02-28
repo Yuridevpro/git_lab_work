@@ -3,7 +3,7 @@
 // *** Middleware CORS ***
 Parse.Cloud.before("*", (req, res, next) => {
   res.set({
-    "Access-Control-Allow-Origin": "https://4ed6e85c-4c40-459f-afc4-3e2e0a894ff9-00-2yy51gv juice5.spock.replit.dev", // Substitua pelo domínio do seu Vercel
+    "Access-Control-Allow-Origin": "https://4ed6e85c-4c40-459f-afc4-3e2e0a894ff9-00-2yy51gvcjuce5.spock.replit.dev",
     "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
     "Access-Control-Allow-Headers": "Content-Type, X-Parse-Application-Id, X-Parse-REST-API-Key, X-Parse-Session-Token",
   });
@@ -14,7 +14,7 @@ Parse.Cloud.before("*", (req, res, next) => {
 require("./autenticacao");
 
 // *** Funções para Pacientes ***
-require("./pacientes/pacientes");
+require("./paciente/paciente");
 
 // *** Funções para DadosPaciente ***
 require("./dados_paciente/dados_paciente");
@@ -30,4 +30,9 @@ require("./opcao/opcao");
 // Exemplo: Definir um tamanho máximo para upload de imagens
 Parse.Cloud.define("getMaxUploadSize", () => {
   return 10 * 1024 * 1024; // 10MB
+});
+
+// *** Função de Teste ***
+Parse.Cloud.define("hello", async (request) => {
+  return "Hello from Cloud Code!";
 });
