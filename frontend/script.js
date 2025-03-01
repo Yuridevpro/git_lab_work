@@ -1,65 +1,53 @@
 // frontend/script.js
 
 // *** Funções de Autenticação ***
-// (Código de autenticação que já estava aqui...)
 
+// Adiciona a função deslogarUsuario
+async function deslogarUsuario() {
+  try {
+      const result = await Parse.Cloud.run("deslogarUsuario");
+
+      if (result.success) {
+          localStorage.removeItem("sessionToken"); // Limpa o token
+          alert(result.message);
+          window.location.href = "/index.html"; // Redireciona para a página inicial
+      } else {
+          alert(result.message);
+      }
+  } catch (error) {
+      console.error("Erro ao deslogar usuário:", error);
+      alert("Erro ao deslogar usuário: " + error.message);
+  }
+}
 // *** Funções para Pacientes ***
-
-Parse.serverURL = "https://parseapi.back4app.com/";
-
-// frontend/script.js
-
 // Função para buscar todos os pacientes
+Parse.serverURL = "https://parseapi.back4app.com/";
 async function buscarPacientes() {
   try {
-    // Verifica se há um usuário logado antes de buscar os pacientes
-    if (!Parse.User.current()) {
-      console.log("Nenhum usuário logado.");
-      return []; // Retorna um array vazio se não houver usuário logado
-    }
-    const result = await Parse.Cloud.run("buscarTodosPacientes");
-    if (result.success) {
-      return result.pacientes;
-    } else {
-      console.error("Erro ao buscar pacientes:", result.message);
-      alert("Erro ao buscar pacientes: " + result.message);
-      return [];
-    }
+      const results = await Parse.Cloud.run("buscarTodosPacientes");
+      return results;
   } catch (error) {
-    console.error("Erro ao buscar pacientes:", error);
-    alert("Erro ao buscar pacientes: " + error.message);
-    return []; // Retorna um array vazio em caso de erro
+      console.error("Erro ao buscar pacientes:", error);
+      alert("Erro ao buscar pacientes: " + error.message);
+      return []; // Retorna um array vazio em caso de erro
   }
 }
 
 // Função para criar um paciente
 async function criarPaciente(nome, sexo, idade, email, telefone) {
   try {
-       // Verifica se há um usuário logado antes de criar o paciente
-    if (!Parse.User.current()) {
-      alert("Nenhum usuário logado.");
-      window.location.href = "/templates/autenticacao/logar.html"; // Redireciona para a página de login
-      return null;
-    }
-    const result = await Parse.Cloud.run("criarPaciente", {
-      nome: nome,
-      sexo: sexo,
-      idade: idade,
-      email: email,
-      telefone: telefone,
-    });
-
-    if (result.success) {
-      alert(result.message);
-      return result.paciente;
-    } else {
-      alert(result.message);
-      return null;
-    }
+      const result = await Parse.Cloud.run("criarPaciente", {
+          nome: nome,
+          sexo: sexo,
+          idade: idade,
+          email: email,
+          telefone: telefone,
+      });
+      return result;
   } catch (error) {
-    console.error("Erro ao criar paciente:", error);
-    alert("Erro ao criar paciente: " + error.message);
-    return null;
+      console.error("Erro ao criar paciente:", error);
+      alert("Erro ao criar paciente: " + error.message);
+      return null; // Retorna null em caso de erro
   }
 }
 
@@ -79,47 +67,35 @@ async function criarDadosPaciente(
   trigliceridios
 ) {
   try {
-     // Verifica se há um usuário logado antes de criar os dados do paciente
-    if (!Parse.User.current()) {
-      alert("Nenhum usuário logado.");
-      window.location.href = "/templates/autenticacao/logar.html"; // Redireciona para a página de login
-      return null;
-    }
-    const result = await Parse.Cloud.run("criarDadosPaciente", {
-      pacienteId: pacienteId,
-      data: data,
-      peso: peso,
-      altura: altura,
-      gordura: gordura,
-      musculo: musculo,
-      hdl: hdl,
-      ldl: ldl,
-      ctotal: ctotal,
-      trigliceridios: trigliceridios,
-    });
-    return result;
+      const result = await Parse.Cloud.run("criarDadosPaciente", {
+          pacienteId: pacienteId,
+          data: data,
+          peso: peso,
+          altura: altura,
+          gordura: gordura,
+          musculo: musculo,
+          hdl: hdl,
+          ldl: ldl,
+          ctotal: ctotal,
+          trigliceridios: trigliceridios,
+      });
+      return result;
   } catch (error) {
-    console.error("Erro ao criar dados do paciente:", error);
-    alert("Erro ao criar dados do paciente: " + error.message);
-    return null;
+      console.error("Erro ao criar dados do paciente:", error);
+      alert("Erro ao criar dados do paciente: " + error.message);
+      return null;
   }
 }
 
 // Função para buscar dados do paciente
 async function buscarDadosPaciente(id) {
   try {
-     // Verifica se há um usuário logado antes de buscar os dados do paciente
-    if (!Parse.User.current()) {
-      alert("Nenhum usuário logado.");
-      window.location.href = "/templates/autenticacao/logar.html"; // Redireciona para a página de login
-      return null;
-    }
-    const result = await Parse.Cloud.run("buscarDadosPaciente", { id: id });
-    return result;
+      const result = await Parse.Cloud.run("buscarDadosPaciente", { id: id });
+      return result;
   } catch (error) {
-    console.error("Erro ao buscar dados do paciente:", error);
-    alert("Erro ao buscar dados do paciente: " + error.message);
-    return null;
+      console.error("Erro ao buscar dados do paciente:", error);
+      alert("Erro ao buscar dados do paciente: " + error.message);
+      return null;
   }
 }
 
@@ -128,25 +104,19 @@ async function buscarDadosPaciente(id) {
 // Função para criar refeição
 async function criarRefeicao(pacienteId, titulo, horario, carboidratos, proteinas, gorduras) {
   try {
-     // Verifica se há um usuário logado antes de criar a refeição
-    if (!Parse.User.current()) {
-      alert("Nenhum usuário logado.");
-      window.location.href = "/templates/autenticacao/logar.html"; // Redireciona para a página de login
-      return null;
-    }
-    const result = await Parse.Cloud.run("criarRefeicao", {
-      pacienteId: pacienteId,
-      titulo: titulo,
-      horario: horario,
-      carboidratos: carboidratos,
-      proteinas: proteinas,
-      gorduras: gorduras,
-    });
-    return result;
+      const result = await Parse.Cloud.run("criarRefeicao", {
+          pacienteId: pacienteId,
+          titulo: titulo,
+          horario: horario,
+          carboidratos: carboidratos,
+          proteinas: proteinas,
+          gorduras: gorduras,
+      });
+      return result;
   } catch (error) {
-    console.error("Erro ao criar refeição:", error);
-    alert("Erro ao criar refeição: " + error.message);
-    return null;
+      console.error("Erro ao criar refeição:", error);
+      alert("Erro ao criar refeição: " + error.message);
+      return null;
   }
 }
 
@@ -154,24 +124,18 @@ async function criarRefeicao(pacienteId, titulo, horario, carboidratos, proteina
 
 // Função para criar opção
 async function criarOpcao(refeicaoId, imagem, descricao) {
-    try {
-       // Verifica se há um usuário logado antes de criar a opção
-    if (!Parse.User.current()) {
-      alert("Nenhum usuário logado.");
-      window.location.href = "/templates/autenticacao/logar.html"; // Redireciona para a página de login
-      return null;
-    }
+  try {
       const result = await Parse.Cloud.run("criarOpcao", {
-        refeicaoId: refeicaoId,
-        imagem: imagem,
-        descricao: descricao,
+          refeicaoId: refeicaoId,
+          imagem: imagem,
+          descricao: descricao,
       });
       return result;
-    } catch (error) {
+  } catch (error) {
       console.error("Erro ao criar opção:", error);
       alert("Erro ao criar opção: " + error.message);
       return null;
-    }
   }
+}
 
 // *** Outras funções CRUD para os outros modelos ***

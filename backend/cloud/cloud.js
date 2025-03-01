@@ -14,7 +14,7 @@ Parse.Cloud.before("*", (req, res, next) => {
 require("./autenticacao");
 
 // *** Funções para Pacientes ***
-require("./paciente");
+require("./pacientes");
 
 // *** Funções para DadosPaciente ***
 require("./dados_paciente");

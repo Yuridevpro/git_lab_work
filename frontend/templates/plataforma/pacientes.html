@@ -3,247 +3,269 @@
 <html lang="pt-br">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pacientes</title>
-  <link rel="stylesheet" href="/static/plataforma/css/css.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
-  <!-- Carrega a biblioteca Parse JavaScript *ANTES* do seu script.js -->
-  <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pacientes</title>
+    <link rel="stylesheet" href="/static/plataforma/css/css.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
+    <!-- Carrega a biblioteca Parse JavaScript *ANTES* do seu script.js -->
+    <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
 
-  <script>
-    Parse.initialize(
-      "6Jdql6CigvVAkZOs5mxUCtzlTtYPe5LadGDdkjc2",
-      "fQgUmN1oUpKO92hmWOh5tAJjcbo6tBcsSAisON68"
-    );
-    Parse.serverURL = "https://parseapi.back4app.com/";
-    console.log("Parse.serverURL:", Parse.serverURL);
-    console.log("typeof Parse:", typeof Parse);
-  </script>
+    <script>
+        Parse.initialize(
+            "6LAVwcoGQ2XX4nDRe7n9Ng1ES0HCP0qDnO5DCmJB",
+            "mt4zRG5t4bIcWOVSCzh08A1BKjUfI6GcgzkLYwCk"
+        );
+        Parse.serverURL = "https://parseapi.back4app.com";
+        console.log("Parse.serverURL:", Parse.serverURL);
+        console.log("typeof Parse:", typeof Parse);
+    </script>
 </head>
 
 <body>
-  <nav style="background-color: #27db8f" class="navbar navbar-expand-lg navbar-dark">
-    <a style="font-weight: bold" class="navbar-brand" href="/">NUTRI LAB</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav" id="menu-autenticacao">
-        <!-- Itens de menu dinâmicos serão carregados aqui -->
-      </ul>
-    </div>
-  </nav>
-
-  <div class="container-fluid">
-    <div class="row">
-      <nav id="sidebar" class="col-md-2">
-        <a href="pacientes.html" class="link-lateral">
-          <div class="card-lateral">
-            <img src="/static/img/paciente.png" alt="Pacientes" />
-            <br />
-            <br />
-            <h3>Gerenciar Pacientes</h3>
-          </div>
-        </a>
-
-        <a href="dados_paciente_listar.html" class="link-lateral">
-          <div class="card-lateral">
-            <img src="/static/img/dados_paciente.png" alt="Dados do Paciente" />
-            <br />
-            <br />
-            <h3>Dados do Pacientes</h3>
-          </div>
-        </a>
-
-        <a href="plano_alimentar_listar.html" class="link-lateral">
-          <div class="card-lateral">
-            <img src="/static/img/plano_alimentar.png" alt="Plano Alimentar" />
-            <br />
-            <br />
-            <h3>Plano alimentar</h3>
-          </div>
-        </a>
-      </nav>
-
-      <main class="col-md-8">
-        <br />
-        <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#modalNovoPaciente">
-          Novo paciente
+    <nav style="background-color: #27db8f" class="navbar navbar-expand-lg navbar-dark">
+        <a style="font-weight: bold" class="navbar-brand" href="/">NUTRI LAB</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
         </button>
-
-        <br />
-        <br />
-        <div class="row" id="listaPacientes">
-          <!-- Lista de pacientes será carregada aqui -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav" id="menu-autenticacao">
+                <!-- Itens de menu dinâmicos serão carregados aqui -->
+            </ul>
         </div>
+    </nav>
 
-        <!-- Modal Novo Paciente -->
-        <div class="modal fade" id="modalNovoPaciente" tabindex="-1" role="dialog"
-          aria-labelledby="modalNovoPacienteLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="modalNovoPacienteLabel">
-                  Cadastrar paciente
-                </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">×</span>
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebar" class="col-md-2">
+                <a href="pacientes.html" class="link-lateral">
+                    <div class="card-lateral">
+                        <img src="/static/img/paciente.png" alt="Pacientes" />
+                        <br />
+                        <br />
+                        <h3>Gerenciar Pacientes</h3>
+                    </div>
+                </a>
+
+                <a href="dados_paciente_listar.html" class="link-lateral">
+                    <div class="card-lateral">
+                        <img src="/static/img/dados_paciente.png" alt="Dados do Paciente" />
+                        <br />
+                        <br />
+                        <h3>Dados do Pacientes</h3>
+                    </div>
+                </a>
+
+                <a href="plano_alimentar_listar.html" class="link-lateral">
+                    <div class="card-lateral">
+                        <img src="/static/img/plano_alimentar.png" alt="Plano Alimentar" />
+                        <br />
+                        <br />
+                        <h3>Plano alimentar</h3>
+                    </div>
+                </a>
+            </nav>
+
+            <main class="col-md-8">
+                <br />
+                <button type="button" class="btn btn-outline-success" data-toggle="modal"
+                    data-target="#modalNovoPaciente">
+                    Novo paciente
                 </button>
-              </div>
-              <div class="modal-body">
-                <form id="formNovoPaciente">
-                  <div class="row">
-                    <div class="col-md-3">
-                      <img src="/static/img/perfil2.png" alt="Perfil" />
-                    </div>
 
-                    <div class="col-md-9">
-                      <label for="nome">Nome:</label>
-                      <input type="text" id="nome" placeholder="Digite o nome do paciente..." class="form-control"
-                        required />
-                    </div>
-                  </div>
+                <br />
+                <br />
+                <div class="row" id="listaPacientes">
+                    <!-- Lista de pacientes será carregada aqui -->
+                </div>
 
-                  <br />
-                  <label for="sexo">Sexo:</label>
-                  <select id="sexo" class="form-control" required>
-                    <option value="M">Masculino</option>
-                    <option value="F">Feminino</option>
-                  </select>
+                <!-- Modal Novo Paciente -->
+                <div class="modal fade" id="modalNovoPaciente" tabindex="-1" role="dialog"
+                    aria-labelledby="modalNovoPacienteLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalNovoPacienteLabel">
+                                    Cadastrar paciente
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="formNovoPaciente">
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <img src="/static/img/perfil2.png" alt="Perfil" />
+                                        </div>
 
-                  <br />
-
-                  <label for="idade">Idade:</label>
-                  <input type="number" id="idade" placeholder="0" class="form-control" required />
-
-                  <br />
-
-                  <label for="email">E-mail:</label>
-                  <input type="email" id="email" placeholder="exemple@email.com" class="form-control" required />
-
-                  <br />
-
-                  <label for="telefone">Telefone:</label>
-                  <input type="text" id="telefone" placeholder="+55 (00) 00000-0000" class="form-control"
-                    required />
-                  <br />
-                  <button type="submit" class="btn btn-success btn-lg">
-                    Registrar
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
-  </div>
-
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-
-  <!-- ***IMPORTANTE***: script.js DEVE ser incluído *ANTES* do código inline -->
-  <script src="/script.js"></script>
-
-  <script>
-    // Função para atualizar o menu de autenticação (login/logout)
-    async function atualizarMenuAutenticacao() {
-      const menu = document.getElementById("menu-autenticacao");
-      menu.innerHTML = "";
-
-      if (localStorage.getItem("sessionToken")) {
-        const liSair = document.createElement("li");
-        liSair.className = "nav-item";
-        liSair.innerHTML = `
-                        <a class="nav-link" href="/templates/autenticacao/cadastro.html" onclick="deslogarUsuario()">Sair</a>
-                    `;
-        menu.appendChild(liSair);
-      } else {
-        const liLogin = document.createElement("li");
-        liLogin.className = "nav-item";
-        liLogin.innerHTML = `
-                        <a class="nav-link" href="/templates/autenticacao/logar.html">Logar</a>
-                    `;
-        menu.appendChild(liLogin);
-
-        const liCadastro = document.createElement("li");
-        liCadastro.className = "nav-item";
-        liCadastro.innerHTML = `
-                        <a class="nav-link" href="/templates/autenticacao/cadastro.html">Cadastre-se</a>
-                    `;
-        menu.appendChild(liCadastro);
-      }
-    }
-
-    // Função para buscar pacientes e exibir na tela
-    async function exibirPacientes() {
-      try {
-        const pacientes = await buscarPacientes();
-
-        const listaPacientes = document.getElementById("listaPacientes");
-        listaPacientes.innerHTML = "";
-
-        pacientes.forEach((paciente) => {
-          const card = document.createElement("div");
-          card.className = "col-md-4";
-          card.innerHTML = `
-                            <a href="dados_paciente.html?id=${paciente.id}" class="link-hover">
-                                <div class="card-paciente">
-                                    <div class="foto-perfil">
-                                        <img src="/static/img/perfil${paciente.sexo === "M" ? "2" : "1"}.png" alt="Perfil do Paciente">
+                                        <div class="col-md-9">
+                                            <label for="nome">Nome:</label>
+                                            <input type="text" id="nome" placeholder="Digite o nome do paciente..."
+                                                class="form-control" required />
+                                        </div>
                                     </div>
-                                    <br>
-                                    <p class="dados">${paciente.nome}</p>
-                                    <p class="dados">${paciente.idade} Anos</p>
-                                    <p class="dados">${paciente.email}</p>
-                                </div>
-                            </a>
-                        `;
-          listaPacientes.appendChild(card);
+
+                                    <br />
+                                    <label for="sexo">Sexo:</label>
+                                    <select id="sexo" class="form-control" required>
+                                        <option value="M">Masculino</option>
+                                        <option value="F">Feminino</option>
+                                    </select>
+
+                                    <br />
+
+                                    <label for="idade">Idade:</label>
+                                    <input type="number" id="idade" placeholder="0" class="form-control" required />
+
+                                    <br />
+
+                                    <label for="email">E-mail:</label>
+                                    <input type="email" id="email" placeholder="exemple@email.com"
+                                        class="form-control" required />
+
+                                    <br />
+
+                                    <label for="telefone">Telefone:</label>
+                                    <input type="text" id="telefone" placeholder="+55 (00) 00000-0000"
+                                        class="form-control" required />
+                                    <br />
+                                    <button type="submit" class="btn btn-success btn-lg">
+                                        Registrar
+                                    </button>
+                                    <div id="pacienteError" class="text-danger"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const formNovoPaciente = document.getElementById("formNovoPaciente");
+        formNovoPaciente.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            document.getElementById("pacienteError").innerText = "";
+            const nome = document.getElementById("nome").value;
+            const sexo = document.getElementById("sexo").value;
+            const idade = document.getElementById("idade").value;
+            const email = document.getElementById("email").value;
+            const telefone = document.getElementById("telefone").value;
+
+            try {
+                 const result = await Parse.Cloud.run("salvarPaciente", {
+                    nome: nome,
+                    sexo: sexo,
+                    idade: idade,
+                    email: email,
+                    telefone: telefone,
+                });
+
+                if (result.success) {
+                    alert("Paciente cadastrado com sucesso!");
+
+                    // Fechar o modal
+                    $('#modalNovoPaciente').modal('hide');
+                    // Limpar o formulário
+                    formNovoPaciente.reset()
+                    exibirPacientes()
+                } else {
+                    document.getElementById("pacienteError").innerText = "Erro ao criar paciente: " + result.message;
+                }
+
+
+            } catch (error) {
+                document.getElementById("pacienteError").innerText = "Erro ao criar paciente: " + error.message;
+                console.error("Erro ao criar paciente:", error);
+                // alert("Erro ao criar paciente: " + error.message);
+            }
         });
-      } catch (error) {
-        console.error("Erro ao exibir pacientes:", error);
-         // Redireciona para a página de login em caso de erro
-        window.location.href = "/templates/autenticacao/logar.html";
-      }
-    }
 
-    // Evento de envio do formulário de novo paciente
-    const formNovoPaciente = document.getElementById("formNovoPaciente");
-    formNovoPaciente.addEventListener("submit", async (event) => {
-      event.preventDefault();
+        async function exibirPacientes() {
+            try {
+                const results = await Parse.Cloud.run('buscarPacientes');
 
-      const nome = document.getElementById("nome").value;
-      const sexo = document.getElementById("sexo").value;
-      const idade = document.getElementById("idade").value;
-      const email = document.getElementById("email").value;
-      const telefone = document.getElementById("telefone").value;
+                const listaPacientes = document.getElementById("listaPacientes");
+                listaPacientes.innerHTML = "";
 
-      try {
-        const novoPaciente = await criarPaciente(nome, sexo, idade, email, telefone);
+                results.forEach((paciente) => {
+                    const nome = paciente.nome;
+                    const idade = paciente.idade;
+                    const sexo = paciente.sexo;
+                    const email = paciente.email;
+                    const telefone = paciente.telefone;
+                    const id = paciente.id;
 
-        if (novoPaciente) {
-          formNovoPaciente.reset();
-          $("#modalNovoPaciente").modal("hide");
-          exibirPacientes();
+                    const card = document.createElement("div");
+                    card.className = "col-md-4";
+                    card.innerHTML = `
+                        <a href="#" class="link-hover">
+                            <div class="card-paciente">
+                                <div class="foto-perfil">
+                                    <img src="/static/img/perfil${sexo === "M" ? "2" : "1"}.png"
+                                        alt="Perfil do Paciente">
+                            </div>
+                            <br>
+                            <p class="dados">${nome}</p>
+                            <p class="dados">${idade} anos</p>
+                        </div>
+                    </a>
+                `;
+
+                    listaPacientes.appendChild(card);
+                });
+            } catch (error) {
+                console.error("Erro ao buscar pacientes:", error);
+                alert("Erro ao buscar pacientes: " + error.message);
+            }
         }
-      } catch (error) {
-        console.error("Erro ao criar paciente:", error);
-         // Redireciona para a página de login em caso de erro
-        window.location.href = "/templates/autenticacao/logar.html";
-      }
-    });
 
-    // Carrega a lista de pacientes ao carregar a página
-    exibirPacientes();
+        // Carregar os pacientes ao carregar a página
+        exibirPacientes();
+    </script>
 
-    // Chame a função para atualizar o menu quando a página carrega
-    atualizarMenuAutenticacao();
-  </script>
+    <script>
+        // Função para atualizar o menu de autenticação (login/logout)
+        async function atualizarMenuAutenticacao() {
+            const menu = document.getElementById("menu-autenticacao");
+            menu.innerHTML = ""; // Limpa o menu
+
+            if (localStorage.getItem("sessionToken")) {
+                // Usuário está logado
+                const liSair = document.createElement("li");
+                liSair.className = "nav-item";
+                liSair.innerHTML = `
+                    <a class="nav-link" href="/templates/autenticacao/cadastro.html" onclick="deslogarUsuario()">Sair</a>
+                `;
+                menu.appendChild(liSair);
+            } else {
+                // Usuário não está logado
+                const liLogin = document.createElement("li");
+                liLogin.className = "nav-item";
+                liLogin.innerHTML = `
+                    <a class="nav-link" href="/templates/autenticacao/logar.html">Logar</a>
+                `;
+                menu.appendChild(liLogin);
+
+                const liCadastro = document.createElement("li");
+                liCadastro.className = "nav-item";
+                liCadastro.innerHTML = `
+                    <a class="nav-link" href="/templates/autenticacao/cadastro.html">Cadastre-se</a>
+                `;
+                menu.appendChild(liCadastro);
+            }
+        }
+
+        // Chama a função para atualizar o menu quando a página carrega
+        atualizarMenuAutenticacao();
+    </script>
+    <script src="/script.js"></script>
 </body>
 
 </html>

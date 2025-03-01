@@ -11,9 +11,14 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
   <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
   <script>
-    Parse.initialize("6Jdql6CigvVAkZOs5mxUCtzlTtYPe5LadGDdkjc2", "fQgUmN1oUpKO92hmWOh5tAJjcbo6tBcsSAisON68");
+    Parse.initialize(
+        "6LAVwcoGQ2XX4nDRe7n9Ng1ES0HCP0qDnO5DCmJB",
+        "mt4zRG5t4bIcWOVSCzh08A1BKjUfI6GcgzkLYwCk"
+    );
     Parse.serverURL = "https://parseapi.back4app.com/";
-  </script>
+    console.log("Parse.serverURL:", Parse.serverURL);
+    console.log("typeof Parse:", typeof Parse);
+</script>
 </head>
 
 <body>
