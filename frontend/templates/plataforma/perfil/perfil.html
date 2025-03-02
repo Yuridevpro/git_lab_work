@@ -1,0 +1,288 @@
+<!-- templates/plataforma/perfil/perfil.html -->
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meu Perfil</title>
+    <link rel="stylesheet" href="/static/plataforma/css/css.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
+    <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+
+    <script>
+        Parse.initialize(
+            "6LAVwcoGQ2XX4nDRe7n9Ng1ES0HCP0qDnO5DCmJB",
+            "mt4zRG5t4bIcWOVSCzh08A1BKjUfI6GcgzkLYwCk"
+        );
+        Parse.serverURL = "https://parseapi.back4app.com";
+        console.log("Parse.serverURL:", Parse.serverURL);
+        console.log("typeof Parse:", typeof Parse);
+    </script>
+</head>
+
+<body>
+    <nav style="background-color: #27db8f" class="navbar navbar-expand-lg navbar-dark">
+        <a style="font-weight: bold" class="navbar-brand" href="/index.html">NUTRI LAB</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav" id="menu-autenticacao">
+                <!-- Itens de menu dinâmicos serão carregados aqui -->
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebar" class="col-md-2">
+                <a href="../pacientes.html" class="link-lateral">
+                    <div class="card-lateral">
+                        <img src="/static/img/paciente.png" alt="Pacientes" />
+                        <br />
+                        <br />
+                        <h3>Gerenciar Pacientes</h3>
+                    </div>
+                </a>
+
+                <a href="../dados_paciente_listar.html" class="link-lateral">
+                    <div class="card-lateral">
+                        <img src="/static/img/dados_paciente.png" alt="Dados do Paciente" />
+                        <br />
+                        <br />
+                        <h3>Dados do Pacientes</h3>
+                    </div>
+                </a>
+
+                <a href="../plano_alimentar_listar.html" class="link-lateral">
+                    <div class="card-lateral">
+                        <img src="/static/img/plano_alimentar.png" alt="Plano Alimentar" />
+                        <br />
+                        <br />
+                        <h3>Plano alimentar</h3>
+                    </div>
+                </a>
+            </nav>
+
+            <main class="col-md-8">
+                <br />
+                <h2>Meu Perfil</h2>
+                <hr />
+
+                <div id="perfilInfo">
+                    <!-- Informações do perfil serão carregadas aqui -->
+                    <p>Carregando informações...</p>
+                </div>
+
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalEditarPerfil">
+                    Editar Perfil
+                </button>
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modalExcluirConta">
+                    Excluir Conta
+                </button>
+
+                <!-- Modal Editar Perfil -->
+                <div class="modal fade" id="modalEditarPerfil" tabindex="-1" role="dialog"
+                    aria-labelledby="modalEditarPerfilLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalEditarPerfilLabel">Editar Perfil</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="formEditarPerfil">
+                                    <div class="form-group">
+                                        <label for="editUsuario">Nome de Usuário</label>
+                                        <input type="text" class="form-control" id="editUsuario" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editEmail">Email</label>
+                                        <input type="email" class="form-control" id="editEmail" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Salvar Alterações</button>
+                                    <div id="editarPerfilError" class="text-danger"></div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Excluir Conta -->
+                <div class="modal fade" id="modalExcluirConta" tabindex="-1" role="dialog"
+                    aria-labelledby="modalExcluirContaLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalExcluirContaLabel">Excluir Conta</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Tem certeza de que deseja excluir sua conta? Esta ação é irreversível.
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-danger" id="confirmarExclusao">Excluir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+    const perfilInfo = document.getElementById("perfilInfo");
+    const editUsuarioInput = document.getElementById("editUsuario");
+    const editEmailInput = document.getElementById("editEmail");
+    const formEditarPerfil = document.getElementById("formEditarPerfil");
+    const editarPerfilError = document.getElementById("editarPerfilError");
+    const confirmarExclusaoButton = document.getElementById("confirmarExclusao");
+
+    // Função para buscar e exibir as informações do perfil
+    async function buscarPerfil() {
+        try {
+            const result = await Parse.Cloud.run("buscarPerfil");
+
+            if (result.success) {
+                perfilInfo.innerHTML = `
+                    <p><strong>Nome de Usuário:</strong> ${result.perfil.username}</p>
+                    <p><strong>Email:</strong> ${result.perfil.email}</p>
+                `;
+                editUsuarioInput.value = result.perfil.username;
+                editEmailInput.value = result.perfil.email;
+            } else {
+                perfilInfo.innerHTML = "<p>Erro ao carregar perfil: " + result.message + "</p>";
+            }
+        } catch (error) {
+            console.error("Erro ao buscar perfil:", error);
+            perfilInfo.innerHTML = "<p>Erro ao carregar perfil.</p>";
+        }
+    }
+
+    // Função para editar o perfil
+    formEditarPerfil.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        editarPerfilError.innerText = "";
+
+        const username = editUsuarioInput.value;
+        const email = editEmailInput.value;
+
+        try {
+            const result = await Parse.Cloud.run("atualizarPerfil", { username: username, email: email });
+
+            if (result.success) {
+                alert("Perfil atualizado com sucesso!");
+                await buscarPerfil(); // Atualiza a exibição do perfil
+                $('#modalEditarPerfil').modal('hide'); // Fecha o modal
+            } else {
+                editarPerfilError.innerText = "Erro ao atualizar perfil: " + result.message;
+            }
+        } catch (error) {
+            console.error("Erro ao editar perfil:", error);
+            editarPerfilError.innerText = "Erro ao atualizar perfil: " + error.message;
+        }
+    });
+
+    confirmarExclusaoButton.addEventListener("click", async () => {
+        // Desabilita o botão para evitar cliques duplos
+        confirmarExclusaoButton.disabled = true;
+        confirmarExclusaoButton.innerText = "Excluindo..."; // Feedback visual
+
+        try {
+            const result = await Parse.Cloud.run("deletarConta");
+
+            if (result.success) {
+                // Limpa o token localmente e redireciona (sem tentar deslogar no servidor)
+                localStorage.removeItem("sessionToken");
+                sessionStorage.removeItem("sessionToken");
+                document.cookie = "sessionToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
+                Parse.User.currentAsync().then(function(user) {
+                    if (user) {
+                      user.become(null); // Invalida o usuário atual no cache
+                    }
+                  }).catch(function(error) {
+                    console.error("Erro ao limpar user atual:", error);
+                  });
+
+                  Parse.User.logOut(); // Garante que não há sessão ativa no Parse SDK.
+
+
+                alert("Conta excluída com sucesso!");
+                window.location.replace("/templates/autenticacao/logar.html");
+            } else {
+                alert("Erro ao excluir conta: " + result.message);
+            }
+        } catch (error) {
+            console.error("Erro ao excluir conta:", error);
+            alert("Erro ao excluir conta: " + error.message);
+        } finally {
+            // Reabilita o botão, mesmo em caso de erro, para permitir nova tentativa
+            confirmarExclusaoButton.disabled = false;
+            confirmarExclusaoButton.innerText = "Excluir";
+        }
+    });
+
+    // Carregar o perfil ao carregar a página
+    await buscarPerfil();
+});
+            </script>
+            <script>
+                
+
+                // Função para atualizar o menu de autenticação (login/logout)
+            async function atualizarMenuAutenticacao() {
+                const menu = document.getElementById("menu-autenticacao");
+                menu.innerHTML = ""; // Limpa o menu
+
+                if (localStorage.getItem("sessionToken")) {
+                    // Usuário está logado
+                    const liSair = document.createElement("li");
+                    liSair.className = "nav-item";
+                    liSair.innerHTML = `
+                        <a class="nav-link" href="../templates/plataforma/perfil/perfil.html">Meu Perfil</a>
+                    `;
+                    menu.appendChild(liSair);
+
+                    const liSair2 = document.createElement("li");
+                    liSair2.className = "nav-item";
+                    liSair2.innerHTML = `
+                        <a class="nav-link" href="#" onclick="deslogarUsuario()">Sair</a>
+                    `;
+                    menu.appendChild(liSair2);
+                } else {
+                    // Usuário não está logado
+                    const liLogin = document.createElement("li");
+                    liLogin.className = "nav-item";
+                    liLogin.innerHTML = `
+                        <a class="nav-link" href="/templates/autenticacao/logar.html">Logar</a>
+                    `;
+                    menu.appendChild(liLogin);
+
+                    const liCadastro = document.createElement("li");
+                    liCadastro.className = "nav-item";
+                    liCadastro.innerHTML = `
+                        <a class="nav-link" href="/templates/autenticacao/cadastro.html">Cadastre-se</a>
+                    `;
+                    menu.appendChild(liCadastro);
+                }
+            }
+
+    // Chama a função para atualizar o menu quando a página carrega
+    atualizarMenuAutenticacao();
+</script>
+    <script src="/script.js"></script>
+</body>
+
+</html>
