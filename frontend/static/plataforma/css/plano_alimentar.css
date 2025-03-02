@@ -24,3 +24,21 @@
   background-color: #a8a8a8;
   padding: 15px;
 }
+
+.refeicao-card {
+  /* Seus estilos personalizados aqui */
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: calc(50% - 20px); /* Para ocupar metade da tela (menos uma margem) */
+  margin-right: 10px; /* Adiciona uma margem entre os cards */
+}
+
+.refeicao-card .card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+
+}
+
+.refeicao-card .card-text {
+  font-size: 1rem;
+}

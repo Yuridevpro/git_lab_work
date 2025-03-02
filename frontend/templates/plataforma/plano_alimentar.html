@@ -3,323 +3,821 @@
 <html lang="pt-br">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Plano Alimentar</title>
-  <link rel="stylesheet" href="/static/plataforma/css/css.css" />
-  <link rel="stylesheet" href="/static/css/plano_alimentar.css" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
-  <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
-  <script>
-    Parse.initialize(
-        "6LAVwcoGQ2XX4nDRe7n9Ng1ES0HCP0qDnO5DCmJB",
-        "mt4zRG5t4bIcWOVSCzh08A1BKjUfI6GcgzkLYwCk"
-    );
-    Parse.serverURL = "https://parseapi.back4app.com/";
-    console.log("Parse.serverURL:", Parse.serverURL);
-    console.log("typeof Parse:", typeof Parse);
-</script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Plano Alimentar</title>
+    <link rel="stylesheet" href="/static/plataforma/css/css.css" />
+    <link rel="stylesheet" href="/static/plataforma/css/plano_alimentar.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+    <script>
+        // Inicializa o Parse
+        Parse.initialize(
+            "6LAVwcoGQ2XX4nDRe7n9Ng1ES0HCP0qDnO5DCmJB",
+            "mt4zRG5t4bIcWOVSCzh08A1BKjUfI6GcgzkLYwCk"
+        );
+        Parse.serverURL = "https://parseapi.back4app.com";
+        console.log("Parse.serverURL:", Parse.serverURL);
+        console.log("typeof Parse:", typeof Parse);
+    </script>
+    <style>
+        .opcao {
+            margin-left: 1px;
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 
 <body>
-  <nav style="background-color: #27db8f" class="navbar navbar-expand-lg navbar-dark">
-    <a style="font-weight: bold" class="navbar-brand" href="#">NUTRI LAB</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav" id="menu-autenticacao">
-        <!-- Itens de menu dinâmicos serão carregados aqui -->
-      </ul>
+    <!-- Barra de navegação -->
+    <nav style="background-color: #27db8f" class="navbar navbar-expand-lg navbar-dark">
+        <a style="font-weight: bold" class="navbar-brand" href="#">NUTRI LAB</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav" id="menu-autenticacao">
+                <!-- Itens de menu dinâmicos serão carregados aqui -->
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="col-md-2">
+                <a href="pacientes.html" class="link-lateral">
+                    <div class="card-lateral">
+                        <img src="/static/img/paciente.png" alt="Pacientes" />
+                        <br /><br />
+                        <h3>Gerenciar Pacientes</h3>
+                    </div>
+                </a>
+                <a href="dados_paciente_listar.html" class="link-lateral">
+                    <div class="card-lateral">
+                        <img src="/static/img/dados_paciente.png" alt="Dados do Paciente" />
+                        <br /><br />
+                        <h3>Dados do Pacientes</h3>
+                    </div>
+                </a>
+                <a href="plano_alimentar_listar.html" class="link-lateral">
+                    <div class="card-lateral">
+                        <img src="/static/img/plano_alimentar.png" alt="Plano Alimentar" />
+                        <br /><br />
+                        <h3>Plano alimentar</h3>
+                    </div>
+                </a>
+            </nav>
+
+            <!-- Conteúdo principal -->
+            <main class="col-md-8">
+                <br />
+
+                <!-- Container para dados do paciente -->
+                <div id="dadosPacienteContainer">
+                    <!-- Dados do paciente serão carregados aqui -->
+                </div>
+
+                <hr />
+
+                <!-- Botões para criar e exportar refeição -->
+                <button type="button" class="btn btn-outline-success" data-toggle="modal"
+                    data-target="#modalNovaRefeicao">
+                    + Nova refeição
+                </button>
+                <button type="button" class="btn btn-outline-primary">
+                    Exportar refeição
+                </button>
+                <br /><br />
+
+                <!-- Container para listagem das refeições -->
+                <div class="fundo-alimentar" id="listaRefeicoes">
+                    <!-- As refeições serão carregadas aqui pelo JavaScript -->
+                </div>
+
+                <!-- Modal para Adicionar Nova Refeição -->
+                <div class="modal fade" id="modalNovaRefeicao" tabindex="-1" role="dialog"
+                    aria-labelledby="modalNovaRefeicaoLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalNovaRefeicaoLabel">
+                                    Adicionar refeição
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="formNovaRefeicao">
+                                    <label for="titulo">Título</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="titulo"
+                                            placeholder="Ex: Café da manhã" required />
+                                    </div>
+                                    <br />
+                                    <label for="horario">Horário</label>
+                                    <div class="input-group">
+                                        <input type="time" class="form-control" id="horario" required />
+                                    </div>
+                                    <br />
+                                    <h5 class="titulo">Macronutrientes</h5>
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label for="carboidratos">Carboidratos</label>
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="carboidratos"
+                                                        placeholder="" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="proteinas">Proteínas</label>
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="proteinas"
+                                                        placeholder="" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="gorduras">Gorduras</label>
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="gorduras"
+                                                        placeholder="" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <button type="submit" class="btn btn-success">Cadastrar</button>
+                                </form>
+                                <br />
+                                <button type="button" class="btn btn-outline-success" data-toggle="modal"
+                                    data-target="#modalNovaOpcao">
+                                    + Nova opção
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal para Adicionar Nova Opção -->
+                <div class="modal fade" id="modalNovaOpcao" tabindex="-1" role="dialog"
+                    aria-labelledby="modalNovaOpcaoLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalNovaOpcaoLabel">Adicionar Opção</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="formNovaOpcao" enctype="multipart/form-data">
+                                    <!-- Campo oculto para o ID do paciente -->
+                                    <input type="hidden" id="pacienteId" name="pacienteId" value="">
+
+                                    <label for="refeicao">Selecione a refeição</label>
+                                    <div class="input-group">
+                                        <select class="form-control" id="refeicao" required>
+                                            <!-- As refeições serão carregadas aqui pelo JavaScript -->
+                                        </select>
+                                    </div>
+                                    <br />
+                                    <label for="imagem">Imagem</label>
+                                    <div class="input-group">
+                                        <input type="file" class="form-control" id="imagem" required />
+                                    </div>
+                                    <br />
+                                    <label for="descricao">Descrição</label>
+                                    <div class="input-group">
+                                        <textarea class="form-control" id="descricao"></textarea>
+                                    </div>
+                                    <br />
+                                    <button type="submit" class="btn btn-success">Cadastrar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal para Editar Refeição -->
+                <div class="modal fade" id="modalEditarRefeicao" tabindex="-1" role="dialog"
+                    aria-labelledby="modalEditarRefeicaoLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalEditarRefeicaoLabel">
+                                    Editar Refeição
+                                </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="formEditarRefeicao">
+                                    <input type="hidden" id="editarRefeicaoId">
+                                    <label for="editarTitulo">Título</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="editarTitulo"
+                                            placeholder="Ex: Café da manhã" required />
+                                    </div>
+                                    <br />
+                                    <label for="editarHorario">Horário</label>
+                                    <div class="input-group">
+                                        <input type="time" class="form-control" id="editarHorario" required />
+                                    </div>
+                                    <br />
+                                    <h5 class="titulo">Macronutrientes</h5>
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <label for="editarCarboidratos">Carboidratos</label>
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="editarCarboidratos"
+                                                        placeholder="" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="editarProteinas">Proteínas</label>
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="editarProteinas"
+                                                        placeholder="" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="editarGorduras">Gorduras</label>
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control" id="editarGorduras"
+                                                        placeholder="" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal de Confirmação de Exclusão -->
+                <div class="modal fade" id="modalExcluirRefeicao" tabindex="-1" role="dialog"
+                    aria-labelledby="modalExcluirRefeicaoLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalExcluirRefeicaoLabel">Confirmar Exclusão</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Tem certeza de que deseja excluir esta refeição?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-danger" id="confirmarExclusao">Excluir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
     </div>
-  </nav>
 
-  <div class="container-fluid">
-    <div class="row">
-      <nav id="sidebar" class="col-md-2">
-        <a href="pacientes.html" class="link-lateral">
-          <div class="card-lateral">
-            <img src="/static/img/paciente.png" alt="Pacientes" />
-            <br />
-            <br />
-            <h3>Gerenciar Pacientes</h3>
+     <!-- Modal de Edição de Opção -->
+     <div class="modal fade" id="modalEditarOpcao" tabindex="-1" role="dialog"
+     aria-labelledby="modalEditarOpcaoLabel" aria-hidden="true">
+     <div class="modal-dialog" role="document">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h5 class="modal-title" id="modalEditarOpcaoLabel">Editar Opção</h5>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">×</span>
+                 </button>
+             </div>
+             <div class="modal-body">
+                 <form id="formEditarOpcao" enctype="multipart/form-data">
+                     <input type="hidden" id="editarOpcaoId">
+                     <label for="editarDescricao">Descrição</label>
+                     <div class="input-group">
+                         <textarea class="form-control" id="editarDescricao"></textarea>
+                     </div>
+                     <br />
+                     <label for="editarImagem">Imagem (Selecione para alterar)</label>
+                     <div class="input-group">
+                         <input type="file" class="form-control" id="editarImagem">
+                     </div>
+                     <br />
+                     <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                 </form>
+             </div>
+         </div>
+     </div>
+ </div>
+
+ <!-- Modal de Confirmação de Exclusão de Opção -->
+ <div class="modal fade" id="modalExcluirOpcao" tabindex="-1" role="dialog"
+     aria-labelledby="modalExcluirOpcaoLabel" aria-hidden="true">
+     <div class="modal-dialog" role="document">
+         <div class="modal-content">
+             <div class="modal-header">
+                 <h5 class="modal-title" id="modalExcluirOpcaoLabel">Confirmar Exclusão da Opção</h5>
+                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">×</span>
+                 </button>
+             </div>
+             <div class="modal-body">
+                 Tem certeza de que deseja excluir esta opção?
+             </div>
+             <div class="modal-footer">
+                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                 <button type="button" class="btn btn-danger" id="confirmarExclusaoOpcao">Excluir</button>
+             </div>
+         </div>
+     </div>
+ </div>
+
+</main>
+</div>
+</div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+
+        <script>
+          // Função para atualizar o menu de autenticação (login/logout)
+    async function atualizarMenuAutenticacao() {
+        const menu = document.getElementById("menu-autenticacao");
+        menu.innerHTML = ""; // Limpa o menu
+
+        if (localStorage.getItem("sessionToken")) {
+            // Usuário está logado
+            const liSair = document.createElement("li");
+            liSair.className = "nav-item";
+            liSair.innerHTML = `
+                <a class="nav-link" href="#" onclick="deslogarUsuario()">Sair</a>
+            `;
+            menu.appendChild(liSair);
+        } else {
+            // Usuário não está logado
+            const liLogin = document.createElement("li");
+            liLogin.className = "nav-item";
+            liLogin.innerHTML = `
+                <a class="nav-link" href="/templates/autenticacao/logar.html">Logar</a>
+            `;
+            menu.appendChild(liLogin);
+
+            const liCadastro = document.createElement("li");
+            liCadastro.className = "nav-item";
+            liCadastro.innerHTML = `
+                <a class="nav-link" href="/templates/autenticacao/cadastro.html">Cadastre-se</a>
+            `;
+            menu.appendChild(liCadastro);
+        }
+    }
+
+    // Chama a função para atualizar o menu quando a página carrega
+    atualizarMenuAutenticacao();
+        </script>
+
+    <script>
+        // Função para obter o ID do paciente da URL (ex.: plano_alimentar.html?id=ALGUM_ID)
+        function obterIdPacienteDaURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get("id");
+        }
+        const idPaciente = obterIdPacienteDaURL();
+
+        // Busca e exibe os dados do paciente
+        async function buscarDadosPaciente(idPaciente) {
+            try {
+                const Pacientes = Parse.Object.extend("Pacientes");
+                const query = new Parse.Query(Pacientes);
+                const paciente = await query.get(idPaciente);
+                document.getElementById("dadosPacienteContainer").innerHTML = `
+          <div class="row">
+            <div class="col-md-3">
+              <img src="/static/img/perfil1.png" alt="Perfil" />
+            </div>
+            <div class="col-md-3 dados descricao">
+              <h4>${paciente.get("nome")}</h4>
+              <h6>${paciente.get("idade")}</h6>
+            </div>
           </div>
-        </a>
+        `;
+            } catch (error) {
+                console.error("Erro ao buscar dados do paciente:", error);
+                window.location.href = "#";
+            }
+        }
+        buscarDadosPaciente(idPaciente);
+    </script>
 
-        <a href="dados_paciente_listar.html" class="link-lateral">
-          <div class="card-lateral">
-            <img src="/static/img/dados_paciente.png" alt="Dados do Paciente" />
-            <br />
-            <br />
-            <h3>Dados do Pacientes</h3>
-          </div>
-        </a>
+    <!-- Script para listar refeições e tratar o envio do formulário de nova refeição -->
+    <script>
+        // frontend/templates/plataforma/plano_alimentar.html (apenas o script)
 
-        <a href="plano_alimentar_listar.html" class="link-lateral">
-          <div class="card-lateral">
-            <img src="/static/img/plano_alimentar.png" alt="Plano Alimentar" />
-            <br />
-            <br />
-            <h3>Plano alimentar</h3>
-          </div>
-        </a>
-      </nav>
+    let refeicaoIdParaExcluir; // Variável global para armazenar o ID da refeição a ser excluída
+    let opcaoIdParaExcluir;
 
-      <main class="col-md-8">
-        <br />
+    async function listarRefeicoes() {
+        if (!idPaciente) {
+            console.error("ID do paciente não definido!");
+            document.getElementById("listaRefeicoes").innerHTML = "<p>Erro: ID do paciente não definido.</p>";
+            return;
+        }
+        console.log("ID do paciente:", idPaciente);
 
-        <div id="dadosPacienteContainer">
-          <!-- Dados do paciente serão carregados aqui -->
-        </div>
+        const Refeicao = Parse.Object.extend("Refeicao");
+        const query = new Parse.Query(Refeicao);
 
-        <hr />
+        // Inclui o pointer do paciente para depuração
+        query.include("paciente");
 
-        <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#modalNovaRefeicao">
-          + Nova refeição
-        </button>
+        // Cria um objeto do tipo Pacientes com o id atual para filtrar as refeições
+        const Paciente = Parse.Object.extend("Pacientes");
+        const paciente = new Paciente();
+        paciente.id = idPaciente;
 
-        <button type="button" class="btn btn-outline-primary">
-          Exportar refeição
-        </button>
-        <br />
-        <br />
+        query.equalTo("paciente", paciente);
+        query.descending("createdAt"); // Ordena pela data de criação
 
-        <div class="fundo-alimentar" id="listaRefeicoes">
-          <!-- As refeições serão carregadas aqui pelo JavaScript -->
-        </div>
+        try {
+            const results = await query.find();
+            console.log("Resultados da consulta de refeições:", results);
+            const listaContainer = document.getElementById("listaRefeicoes");
+            listaContainer.innerHTML = "";
 
-        <!-- Modal para Adicionar Nova Refeicao -->
-                      <!-- Modal para Adicionar Nova Refeicao -->
-                      <div class="modal fade" id="modalNovaRefeicao" tabindex="-1" role="dialog"
-                           aria-labelledby="modalNovaRefeicaoLabel" aria-hidden="true">
-                          <div class="modal-dialog" role="document">
-                              <div class="modal-content">
-                                  <div class="modal-header">
-                                      <h5 class="modal-title" id="modalNovaRefeicaoLabel">
-                                          Adicionar refeição
-                                      </h5>
-                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                          <span aria-hidden="true">×</span>
-                                      </button>
-                                  </div>
+            if (results.length > 0) {
+                let html = '<div class="d-flex flex-wrap">'; // Abre o container flexbox
+                for (const refeicao of results) {
+                    // Busca as opções da refeição
+                    const opcoes = await buscarOpcoesDaRefeicao(refeicao.id);
 
-                                  <div class="modal-body">
-                                      <form id="formNovaRefeicao">
-                                          <label for="titulo">Título</label>
-                                          <div class="input-group">
-                                              <input
-                                                      type="text"
-                                                      class="form-control"
-                                                      id="titulo"
-                                                      placeholder="Ex: Café da manhã"
-                                                      required
-                                              />
-                                          </div>
-                                          <br />
-                                          <label for="horario">Horário</label>
-                                          <div class="input-group">
-                                              <input type="time" class="form-control" id="horario" required />
-                                          </div>
-                                          <br />
-                                          <h5 class="titulo">Macronutrientes</h5>
-                                          <div class="container">
-                                              <div class="row">
-                                                  <div class="col-md-4">
-                                                      <label for="carboidratos">Carboidratos</label>
-                                                      <div class="input-group">
-                                                          <input
-                                                                  type="number"
-                                                                  class="form-control"
-                                                                  id="carboidratos"
-                                                                  placeholder=""
-                                                          />
-                                                      </div>
-                                                  </div>
+                    html += `
+                        <div class="card refeicao-card mb-2">
+                            <div class="card-body">
+                                <h5 class="card-title">${refeicao.get("titulo")}</h5>
+                                <p class="card-text">Horário: ${refeicao.get("horario")}</p>
+                                <p class="card-text">Carboidratos: ${refeicao.get("carboidratos")}</p>
+                                <p class="card-text">Proteínas: ${refeicao.get("proteinas")}</p>
+                                <p class="card-text">Gorduras: ${refeicao.get("gorduras")}</p>
+                                <div>
+                                    ${opcoes}
+                                </div>
+                                <button class="btn btn-sm btn-primary btnEditarRefeicao" data-id="${refeicao.id}"
+                                    data-titulo="${refeicao.get("titulo")}" data-horario="${refeicao.get("horario")}"
+                                    data-carboidratos="${refeicao.get("carboidratos")}" data-proteinas="${refeicao.get("proteinas")}"
+                                    data-gorduras="${refeicao.get("gorduras")}" data-toggle="modal"
+                                    data-target="#modalEditarRefeicao">Editar</button>
+                                <button class="btn btn-sm btn-danger btnExcluirRefeicao" data-id="${refeicao.id}"
+                                    data-toggle="modal" data-target="#modalExcluirRefeicao">Excluir</button>
+                            </div>
+                        </div>
+                    `;
+                }
+                html += '</div>'; // Fecha o container flexbox
+                listaContainer.innerHTML = html;
+            } else {
+                listaContainer.innerHTML = "<p>Nenhuma refeição encontrada.</p>";
+            }
+        } catch (error) {
+            console.error("Erro ao listar refeições:", error);
+            document.getElementById("listaRefeicoes").innerHTML = "<p>Erro ao carregar refeições.</p>";
+        }
+    }
 
-                                                  <div class="col-md-4">
-                                                      <label for="proteinas">Proteínas</label>
-                                                      <div class="input-group">
-                                                          <input
-                                                                  type="number"
-                                                                  class="form-control"
-                                                                  id="proteinas"
-                                                                  placeholder=""
-                                                          />
-                                                      </div>
-                                                  </div>
+    // Função para buscar as opções de uma refeição
+    async function buscarOpcoesDaRefeicao(refeicaoId) {
+        const Opcao = Parse.Object.extend("Opcao");
+        const query = new Parse.Query(Opcao);
+        const Refeicao = Parse.Object.extend("Refeicao");
+        const refeicao = new Refeicao();
+        refeicao.id = refeicaoId;
+        query.equalTo("refeicao", refeicao);
+        query.include("imagem"); // Inclui a imagem para exibir a URL
 
-                                                  <div class="col-md-4">
-                                                      <label for="gorduras">Gorduras</label>
-                                                      <div class="input-group">
-                                                          <input
-                                                                  type="number"
-                                                                  class="form-control"
-                                                                  id="gorduras"
-                                                                  placeholder=""
-                                                          />
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                          <br />
-                                          <button type="submit" class="btn btn-success">
-                                              Cadastrar
-                                          </button>
-                                      </form>
-                                      <br />
-                                      <button
-                                              type="button"
-                                              class="btn btn-outline-success"
-                                              data-toggle="modal"
-                                              data-target="#modalNovaOpcao"
-                                      >
-                                          + Nova opção
-                                      </button>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
+        try {
+            const results = await query.find();
+            let opcoesHTML = "";
+            if (results.length > 0) {
+                results.forEach(opcao => {
+                    opcoesHTML += `
+                        <div class="opcao">
+                            <p>${opcao.get("descricao")}</p>
+                            ${opcao.get("imagem") ? `<img src="${opcao.get("imagem").url()}" width="100" />` : ''}
+                            <button class="btn btn-sm btn-primary btnEditarOpcao" data-id="${opcao.id}"
+                                data-descricao="${opcao.get("descricao")}" data-toggle="modal"
+                                data-target="#modalEditarOpcao">Editar</button>
+                            <button class="btn btn-sm btn-danger btnExcluirOpcao" data-id="${opcao.id}"
+                                data-toggle="modal" data-target="#modalExcluirOpcao">Excluir</button>
+                        </div>
+                    `;
+                });
+            } else {
+                opcoesHTML = "<p>Nenhuma opção encontrada para esta refeição.</p>";
+            }
+            return opcoesHTML;
+        } catch (error) {
+            console.error("Erro ao listar opções:", error);
+            return "<p>Erro ao carregar opções.</p>";
+        }
+    }
 
-                      <!-- Modal para Adicionar Nova Opcao -->
-                      <div
-                              class="modal fade"
-                              id="modalNovaOpcao"
-                              tabindex="-1"
-                              role="dialog"
-                              aria-labelledby="modalNovaOpcaoLabel"
-                              aria-hidden="true"
-                      >
-                          <div class="modal-dialog" role="document">
-                              <div class="modal-content">
-                                  <div class="modal-header">
-                                      <h5 class="modal-title" id="modalNovaOpcaoLabel">
-                                          Adicionar Opção
-                                      </h5>
-                                      <button
-                                              type="button"
-                                              class="close"
-                                              data-dismiss="modal"
-                                              aria-label="Close"
-                                      >
-                                          <span aria-hidden="true">×</span>
-                                      </button>
-                                  </div>
-                                  <div class="modal-body">
-                                      <form id="formNovaOpcao" enctype="multipart/form-data">
-                                          <label for="refeicao">Selecione a refeição</label>
-                                          <div class="input-group">
-                                              <select class="form-control" id="refeicao" required>
-                                                  <!-- As refeições serão carregadas aqui pelo JavaScript -->
-                                              </select>
-                                          </div>
+    listarRefeicoes();
 
-                                          <br />
+    // Função para popular o select de refeições no modal de nova opção
+    async function popularSelectRefeicoes() {
+        const selectRefeicao = document.getElementById("refeicao");
+        selectRefeicao.innerHTML = ""; // Limpa as opções existentes
 
-                                          <label for="imagem">Imagem</label>
-                                          <div class="input-group">
-                                              <input
-                                                      type="file"
-                                                      class="form-control"
-                                                      id="imagem"
-                                                      required
-                                              />
-                                          </div>
+        const Refeicao = Parse.Object.extend("Refeicao");
+        const query = new Parse.Query(Refeicao);
 
-                                          <br />
+        // Cria um objeto do tipo Pacientes com o id atual para filtrar as refeições
+        const Paciente = Parse.Object.extend("Pacientes");
+        const paciente = new Paciente();
+        paciente.id = idPaciente;
 
-                                          <label for="descricao">Descrição</label>
-                                          <div class="input-group">
-                                              <textarea class="form-control" id="descricao"></textarea>
-                                          </div>
-                                          <br />
-                                          <button type="submit" class="btn btn-success">
-                                              Cadastrar
-                                          </button>
-                                      </form>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                      </main>
-                      </div>
-                      </div>
+        query.equalTo("paciente", paciente);
+        query.descending("createdAt"); // Ordena pela data de criação
 
-                      <script
-                              src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-                              integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-                              crossorigin="anonymous"
-                      ></script>
-                      <script>
-                          // Função para atualizar o menu de autenticação (login/logout)
-                          async function atualizarMenuAutenticacao() {
-                              const menu = document.getElementById("menu-autenticacao");
-                              menu.innerHTML = "";
+        try {
+            const results = await query.find();
+            console.log("Resultados da consulta de refeições:", results);
 
-                              if (localStorage.getItem("sessionToken")) {
-                                  const liSair = document.createElement("li");
-                                  liSair.className = "nav-item";
-                                  liSair.innerHTML = `
-                                      <a class="nav-link" href="/templates/autenticacao/cadastro.html" onclick="deslogarUsuario()">Sair</a>
-                                  `;
-                                  menu.appendChild(liSair);
-                              } else {
-                                  const liLogin = document.createElement("li");
-                                  liLogin.className = "nav-item";
-                                  liLogin.innerHTML = `
-                                      <a class="nav-link" href="/templates/autenticacao/logar.html">Logar</a>
-                                  `;
-                                  menu.appendChild(liLogin);
+            if (results.length > 0) {
+                results.forEach(refeicao => {
+                    const option = document.createElement("option");
+                    option.value = refeicao.id;
+                    option.text = refeicao.get("titulo");
+                    selectRefeicao.appendChild(option);
+                });
+            } else {
+                const option = document.createElement("option");
+                option.value = "";
+                option.text = "Nenhuma refeição encontrada";
+                selectRefeicao.appendChild(option);
+            }
+        } catch (error) {
+            console.error("Erro ao buscar refeições:", error);
+            const option = document.createElement("option");
+            option.value = "";
+            option.text = "Erro ao carregar refeições";
+            selectRefeicao.appendChild(option);
+        }
+    }
 
-                                  const liCadastro = document.createElement("li");
-                                  liCadastro.className = "nav-item";
-                                  liCadastro.innerHTML = `
-                                      <a class="nav-link" href="/templates/autenticacao/cadastro.html">Cadastre-se</a>
-                                  `;
-                                  menu.appendChild(liCadastro);
-                              }
-                          }
+    // Chama a função para popular o select quando o modal de nova opção é aberto
+    $('#modalNovaOpcao').on('show.bs.modal', function (event) {
+        popularSelectRefeicoes();
+        document.getElementById("pacienteId").value = idPaciente; // Define o valor do campo oculto
+    });
 
-                          // Chama a função para atualizar o menu quando a página carrega
-                          atualizarMenuAutenticacao();
-                      </script>
-                      <script>
-                          // Função para obter o ID do paciente da URL
-                          function obterIdPacienteDaURL() {
-                              const urlParams = new URLSearchParams(window.location.search);
-                              return urlParams.get("id");
-                          }
+    // Trata o envio do formulário para criar uma nova refeição
+    document.getElementById("formNovaRefeicao").addEventListener("submit", async (event) => {
+        event.preventDefault();
 
-                          const idPaciente = obterIdPacienteDaURL();
+        const titulo = document.getElementById("titulo").value;
+        const horario = document.getElementById("horario").value;
+        const carboidratos = document.getElementById("carboidratos").value;
+        const proteinas = document.getElementById("proteinas").value;
+        const gorduras = document.getElementById("gorduras").value;
 
-                          // Função para buscar dados do paciente
-                          async function buscarDadosPaciente(idPaciente) {
-                              try {
-                                  const Pacientes = Parse.Object.extend("Pacientes");
-                                  const query = new Parse.Query(Pacientes);
-                                  const paciente = await query.get(idPaciente);
+        try {
+            const response = await Parse.Cloud.run("criarRefeicao", {
+                pacienteId: idPaciente,
+                titulo: titulo,
+                horario: horario,
+                carboidratos: carboidratos,
+                proteinas: proteinas,
+                gorduras: gorduras
+            });
+            if (response.success) {
+                alert("Refeição criada com sucesso!");
+                document.getElementById("formNovaRefeicao").reset();
+                $('#modalNovaRefeicao').modal('hide');
+                listarRefeicoes();
+                popularSelectRefeicoes(); // Atualiza o select após criar uma nova refeição
+            } else {
+                alert("Erro ao criar refeição: " + response.message);
+            }
+        } catch (error) {
+            console.error("Erro ao criar refeição:", error);
+            alert("Erro ao criar refeição: " + error.message);
+        }
+    });
 
-                                  document.getElementById("dadosPacienteContainer").innerHTML = `
-                                      <div class="row">
-                                          <div class="col-md-3">
-                                              <img src="/static/img/perfil1.png" alt="Perfil" />
-                                          </div>
-                                          <div class="col-md-3 dados descricao">
-                                              <h4>${paciente.get("nome")}</h4>
-                                              <h6>${paciente.get("idade")}</h6>
-                                          </div>
-                                      </div>
-                                  `;
-                              } catch (error) {
-                                  console.error("Erro ao buscar dados do paciente:", error);
-                                  // Redireciona para a página de login em caso de erro
-                                  window.location.href = "/templates/autenticacao/logar.html";
-                              }
-                          }
+    // Trata o envio do formulário para criar uma nova opção
+    document.getElementById("formNovaOpcao").addEventListener("submit", async (event) => {
+        event.preventDefault();
 
-                          // Chame a função para buscar os dados do paciente quando a página carregar
-                          buscarDadosPaciente(idPaciente);
-                      </script>
-                      <script src="/script.js"></script>
-                      </body>
-                      </html>
+        const refeicaoId = document.getElementById("refeicao").value;
+        const imagemInput = document.getElementById("imagem");
+        const descricao = document.getElementById("descricao").value;
+        const pacienteId = idPaciente; // Obtém o ID do paciente da variável global
+
+        // Verifica se um arquivo de imagem foi selecionado
+        if (imagemInput.files.length === 0) {
+            alert("Por favor, selecione uma imagem.");
+            return;
+        }
+
+        const imagemFile = imagemInput.files[0];
+
+        // Converte a imagem para base64
+        const reader = new FileReader();
+        reader.onloadend = async () => {
+            const imagemBase64 = reader.result.split(',')[1]; // Remove o prefixo data:image/png;base64,
+
+            try {
+                const response = await Parse.Cloud.run("criarOpcao", {
+                    refeicaoId: refeicaoId,
+                    imagem: imagemBase64,
+                    descricao: descricao,
+                    pacienteId: pacienteId // Envia o ID do paciente
+                });
+
+                if (response.success) {
+                    alert("Opção criada com sucesso!");
+                    document.getElementById("formNovaOpcao").reset();
+                    $('#modalNovaOpcao').modal('hide');
+                    // Após criar a opção, atualiza a lista de refeições
+                    listarRefeicoes();
+                } else {
+                    alert("Erro ao criar opção: " + response.message);
+                }
+            } catch (error) {
+                console.error("Erro ao criar opção:", error);
+                alert("Erro ao criar opção: " + error.message);
+            }
+        };
+        reader.readAsDataURL(imagemFile);
+    });
+
+    // Lógica para Excluir Refeição
+    $(document).on('click', '.btnExcluirRefeicao', function () {
+        refeicaoIdParaExcluir = $(this).data('id'); // Armazena o ID da refeição a ser excluída
+    });
+
+    $('#confirmarExclusao').on('click', async function () {
+        try {
+            const response = await Parse.Cloud.run("deletarRefeicao", { id: refeicaoIdParaExcluir });
+
+            if (response.success) {
+                alert("Refeição excluída com sucesso!");
+                $('#modalExcluirRefeicao').modal('hide');
+                listarRefeicoes(); // Atualiza a lista após a exclusão
+            } else {
+                alert("Erro ao excluir refeição: " + response.message);
+            }
+        } catch (error) {
+            console.error("Erro ao excluir refeição:", error);
+            alert("Erro ao excluir refeição: " + error.message);
+        }
+    });
+
+    // Lógica para Editar Refeição
+    $(document).on('click', '.btnEditarRefeicao', function () {
+        const refeicaoId = $(this).data('id');
+        const titulo = $(this).data('titulo');
+        const horario = $(this).data('horario');
+        const carboidratos = $(this).data('carboidratos');
+        const proteinas = $(this).data('proteinas');
+        const gorduras = $(this).data('gorduras');
+
+        // Preenche os campos do modal com os dados da refeição
+        $('#editarRefeicaoId').val(refeicaoId);
+        $('#editarTitulo').val(titulo);
+        $('#editarHorario').val(horario);
+        $('#editarCarboidratos').val(carboidratos);
+        $('#editarProteinas').val(proteinas);
+        $('#editarGorduras').val(gorduras);
+    });
+
+    // Trata o envio do formulário de edição de refeição
+    document.getElementById("formEditarRefeicao").addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const idRefeicao = document.getElementById("editarRefeicaoId").value;
+        const titulo = document.getElementById("editarTitulo").value;
+        const horario = document.getElementById("editarHorario").value;
+        const carboidratos = document.getElementById("editarCarboidratos").value;
+        const proteinas = document.getElementById("editarProteinas").value;
+        const gorduras = document.getElementById("editarGorduras").value;
+
+        try {
+            const response = await Parse.Cloud.run("atualizarRefeicao", {
+                id: idRefeicao,
+                titulo: titulo,
+                horario: horario,
+                carboidratos: carboidratos,
+                proteinas: proteinas,
+                gorduras: gorduras
+            });
+            if (response.success) {
+                alert("Refeição atualizada com sucesso!");
+                $('#modalEditarRefeicao').modal('hide');
+                listarRefeicoes(); // Atualiza a lista após a edição
+            } else {
+                alert("Erro ao atualizar refeição: " + response.message);
+            }
+        } catch (error) {
+            console.error("Erro ao atualizar refeição:", error);
+            alert("Erro ao atualizar refeição: " + error.message);
+        }
+    });
+
+    // Lógica para Editar Opção
+    $(document).on('click', '.btnEditarOpcao', function () {
+        const opcaoId = $(this).data('id');
+        const descricao = $(this).data('descricao');
+
+        // Preenche os campos do modal com os dados da opção
+        $('#editarOpcaoId').val(opcaoId);
+        $('#editarDescricao').val(descricao);
+    });
+
+    // Trata o envio do formulário de edição de opção
+    document.getElementById("formEditarOpcao").addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const opcaoId = document.getElementById("editarOpcaoId").value;
+        const descricao = document.getElementById("editarDescricao").value;
+        const imagemInput = document.getElementById("editarImagem");
+        let imagemBase64 = null;
+
+        // Verifica se uma nova imagem foi selecionada
+        if (imagemInput.files.length > 0) {
+            const imagemFile = imagemInput.files[0];
+            // Converte a imagem para base64
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                imagemBase64 = reader.result.split(',')[1]; // Remove o prefixo data:image/png;base64,
+                atualizarOpcao(opcaoId, descricao, imagemBase64);
+            };
+            reader.readAsDataURL(imagemFile);
+        } else {
+            atualizarOpcao(opcaoId, descricao, null); // Mantém a imagem existente
+        }
+    });
+
+    async function atualizarOpcao(opcaoId, descricao, imagemBase64) {
+        try {
+            const response = await Parse.Cloud.run("atualizarOpcao", {
+                id: opcaoId,
+                descricao: descricao,
+                imagem: imagemBase64
+            });
+
+            if (response.success) {
+                alert("Opção atualizada com sucesso!");
+                $('#modalEditarOpcao').modal('hide');
+                listarRefeicoes(); // Atualiza a lista após a edição
+            } else {
+                alert("Erro ao atualizar opção: " + response.message);
+            }
+        } catch (error) {
+            console.error("Erro ao atualizar opção:", error);
+            alert("Erro ao atualizar opção: " + error.message);
+        }
+    }
+
+    // Lógica para Excluir Opção
+    $(document).on('click', '.btnExcluirOpcao', function () {
+        opcaoIdParaExcluir = $(this).data('id'); // Armazena o ID da opção a ser excluída
+    });
+
+    $('#confirmarExclusaoOpcao').on('click', async function () {
+        try {
+            const response = await Parse.Cloud.run("deletarOpcao", { id: opcaoIdParaExcluir });
+
+            if (response.success) {
+                alert("Opção excluída com sucesso!");
+                $('#modalExcluirOpcao').modal('hide');
+                listarRefeicoes(); // Atualiza a lista após a exclusão
+            } else {
+                alert("Erro ao excluir opção: " + response.message);
+            }
+        } catch (error) {
+            console.error("Erro ao excluir opção:", error);
+            alert("Erro ao excluir opção: " + error.message);
+        }
+    });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/script.js"></script>
+</body>
+
+</html>

@@ -8,7 +8,6 @@
     <title>Pacientes</title>
     <link rel="stylesheet" href="/static/plataforma/css/css.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
-    <!-- Carrega a biblioteca Parse JavaScript *ANTES* do seu script.js -->
     <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
 
     <script>
@@ -24,7 +23,7 @@
 
 <body>
     <nav style="background-color: #27db8f" class="navbar navbar-expand-lg navbar-dark">
-        <a style="font-weight: bold" class="navbar-brand" href="/">NUTRI LAB</a>
+        <a style="font-weight: bold" class="navbar-brand" href="/index.html">NUTRI LAB</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -140,6 +139,28 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Modal de Ações do Paciente -->
+                <div class="modal fade" id="modalAcoesPaciente" tabindex="-1" role="dialog"
+                    aria-labelledby="modalAcoesPacienteLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalAcoesPacienteLabel">Ações do Paciente</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body" id="modalAcoesPacienteBody">
+                                <!-- Conteúdo dinâmico aqui (nome, idade, etc.) -->
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="btnVerDetalhes">Ver Detalhes</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </main>
         </div>
     </div>
@@ -159,7 +180,7 @@
             const telefone = document.getElementById("telefone").value;
 
             try {
-                 const result = await Parse.Cloud.run("salvarPaciente", {
+                const result = await Parse.Cloud.run("salvarPaciente", {
                     nome: nome,
                     sexo: sexo,
                     idade: idade,
@@ -170,9 +191,7 @@
                 if (result.success) {
                     alert("Paciente cadastrado com sucesso!");
 
-                    // Fechar o modal
                     $('#modalNovoPaciente').modal('hide');
-                    // Limpar o formulário
                     formNovoPaciente.reset()
                     exibirPacientes()
                 } else {
@@ -183,7 +202,6 @@
             } catch (error) {
                 document.getElementById("pacienteError").innerText = "Erro ao criar paciente: " + error.message;
                 console.error("Erro ao criar paciente:", error);
-                // alert("Erro ao criar paciente: " + error.message);
             }
         });
 
@@ -205,18 +223,18 @@
                     const card = document.createElement("div");
                     card.className = "col-md-4";
                     card.innerHTML = `
-                        <a href="#" class="link-hover">
+                         <a href="#" class="link-hover" onclick="abrirModalAcoes('${id}', '${nome}', '${idade}', '${sexo}')">
                             <div class="card-paciente">
                                 <div class="foto-perfil">
                                     <img src="/static/img/perfil${sexo === "M" ? "2" : "1"}.png"
                                         alt="Perfil do Paciente">
+                                </div>
+                                <br>
+                                <p class="dados">${nome}</p>
+                                <p class="dados">${idade} anos</p>
                             </div>
-                            <br>
-                            <p class="dados">${nome}</p>
-                            <p class="dados">${idade} anos</p>
-                        </div>
-                    </a>
-                `;
+                        </a>
+                    `;
 
                     listaPacientes.appendChild(card);
                 });
@@ -226,43 +244,55 @@
             }
         }
 
+        function abrirModalAcoes(id, nome, idade, sexo) {
+            const modalBody = document.getElementById("modalAcoesPacienteBody");
+            modalBody.innerHTML = `
+                <p>Nome: ${nome}</p>
+                <p>Idade: ${idade}</p>
+                <img src="/static/img/perfil${sexo === "M" ? "2" : "1"}.png" alt="Perfil do Paciente" style="max-width: 100px;">
+            `;
+
+            const btnVerDetalhes = document.getElementById("btnVerDetalhes");
+            btnVerDetalhes.onclick = function () {
+                window.location.href = `dados_paciente.html?id=${id}`;
+            };
+
+            $('#modalAcoesPaciente').modal('show');
+        }
+
         // Carregar os pacientes ao carregar a página
         exibirPacientes();
     </script>
 
     <script>
-        // Função para atualizar o menu de autenticação (login/logout)
         async function atualizarMenuAutenticacao() {
             const menu = document.getElementById("menu-autenticacao");
-            menu.innerHTML = ""; // Limpa o menu
+            menu.innerHTML = "";
 
             if (localStorage.getItem("sessionToken")) {
-                // Usuário está logado
                 const liSair = document.createElement("li");
                 liSair.className = "nav-item";
                 liSair.innerHTML = `
-                    <a class="nav-link" href="/templates/autenticacao/cadastro.html" onclick="deslogarUsuario()">Sair</a>
-                `;
+                <a class="nav-link" href="#" onclick="deslogarUsuario()">Sair</a>
+            `;
                 menu.appendChild(liSair);
             } else {
-                // Usuário não está logado
                 const liLogin = document.createElement("li");
                 liLogin.className = "nav-item";
                 liLogin.innerHTML = `
-                    <a class="nav-link" href="/templates/autenticacao/logar.html">Logar</a>
-                `;
+                <a class="nav-link" href="/templates/autenticacao/logar.html">Logar</a>
+            `;
                 menu.appendChild(liLogin);
 
                 const liCadastro = document.createElement("li");
                 liCadastro.className = "nav-item";
                 liCadastro.innerHTML = `
-                    <a class="nav-link" href="/templates/autenticacao/cadastro.html">Cadastre-se</a>
-                `;
+                <a class="nav-link" href="/templates/autenticacao/cadastro.html">Cadastre-se</a>
+            `;
                 menu.appendChild(liCadastro);
             }
         }
 
-        // Chama a função para atualizar o menu quando a página carrega
         atualizarMenuAutenticacao();
     </script>
     <script src="/script.js"></script>

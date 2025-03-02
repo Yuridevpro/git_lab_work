@@ -22,29 +22,7 @@
   </script>
   </head>
   <body>
-    <nav
-      style="background-color: #27db8f"
-      class="navbar navbar-expand-lg navbar-dark"
-    >
-      <a style="font-weight: bold" class="navbar-brand" href="/">NUTRI LAB</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav" id="menu-autenticacao">
-          <!-- Itens de menu dinâmicos serão carregados aqui -->
-        </ul>
-      </div>
-    </nav>
-
+    
     <main id="content">
       <div class="container-fluid">
         <div class="row">
@@ -110,59 +88,30 @@
       integrity="sha384-Piv4xVNRyMGpqWDJX0mtvCGYCZEl+6Lg5iIEWIw56rNVMpw=="
       crossorigin="anonymous"
     ></script>
-    <script>
-      // Função para atualizar o menu de autenticação (login/logout)
-      async function atualizarMenuAutenticacao() {
-        const menu = document.getElementById("menu-autenticacao");
-        menu.innerHTML = ""; // Limpa o menu
-
-        if (localStorage.getItem("sessionToken")) {
-          // Usuário está logado
-          const liSair = document.createElement("li");
-          liSair.className = "nav-item";
-          liSair.innerHTML = `
-            <a class="nav-link" href="/templates/autenticacao/cadastro.html" onclick="deslogarUsuario()">Sair</a>
-          `;
-          menu.appendChild(liSair);
-        } else {
-          // Usuário não está logado
-          const liLogin = document.createElement("li");
-          liLogin.className = "nav-item";
-          liLogin.innerHTML = `
-            <a class="nav-link" href="/templates/autenticacao/logar.html">Logar</a>
-          `;
-          menu.appendChild(liLogin);
-
-          const liCadastro = document.createElement("li");
-          liCadastro.className = "nav-item";
-          liCadastro.innerHTML = `
-            <a class="nav-link" href="/autenticacao/cadastro.html">Cadastre-se</a>
-          `;
-          menu.appendChild(liCadastro);
-        }
-      }
-
-      // Chama a função para atualizar o menu quando a página carrega
-      atualizarMenuAutenticacao();
-    </script>
-    <script>
+   
+     <script>
       const formLogin = document.getElementById("loginForm");
       formLogin.addEventListener("submit", async (event) => {
-        event.preventDefault();
-
-        const email = document.getElementById("email").value;
-        const senha = document.getElementById("senha").value;
-
-        try {
-          const user = await Parse.User.logIn(email, senha);
-          alert("Login realizado com sucesso! Redirecionando.");
-          window.location.href = "/templates/plataforma/pacientes.html"; // Redireciona para a página principal
-        } catch (error) {
-          console.error("Erro ao logar:", error);
-          alert("Erro ao logar: " + error.message);
-        }
+          event.preventDefault();
+  
+          const email = document.getElementById("email").value;
+          const senha = document.getElementById("senha").value;
+  
+          try {
+              const user = await Parse.User.logIn(email, senha);
+              const sessionToken = user.getSessionToken();  // Obtém o sessionToken
+              localStorage.setItem("sessionToken", sessionToken); // Armazena o sessionToken
+              console.log("sessionToken armazenado no localStorage:", sessionToken); // Debug
+  
+              alert("Login realizado com sucesso! Redirecionando.");
+              window.location.href = "/templates/plataforma/pacientes.html?id=${user.id}"; // Redireciona para a página principal
+  
+          } catch (error) {
+              console.error("Erro ao logar:", error);
+              alert("Erro ao logar: " + error.message);
+          }
       });
-    </script>
+  </script>
     <script src="/script.js"></script>
   </body>
 </html>
