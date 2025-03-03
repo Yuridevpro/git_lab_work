@@ -79,20 +79,36 @@
     ></script>
     
     <script>
+      // 1. Obtém o formulário de "Esqueci a Senha" pelo seu ID no HTML.
       const formEsqueceuSenha = document.getElementById("esqueceuSenhaForm");
+    
+      // 2. Adiciona um "listener" de evento para o evento "submit" do formulário.
+      //    Isso significa que a função a seguir será executada quando o formulário for enviado.
       formEsqueceuSenha.addEventListener("submit", async (event) => {
+        // 3. Previne o comportamento padrão do envio do formulário,
+        //    que seria recarregar a página. Isso permite que o JavaScript controle o envio.
         event.preventDefault();
-
+    
+        // 4. Obtém o valor do campo de e-mail do formulário.
         const email = document.getElementById("email").value;
-
+    
+        // 5. Usa a função `Parse.User.requestPasswordReset(email)` do Parse SDK
+        //    para solicitar a redefinição de senha para o e-mail fornecido.
+        //    Esta função envia um e-mail para o usuário com um link para redefinir a senha.
         Parse.User.requestPasswordReset(email)
+          // 6. `.then()`: Define o que acontece se a solicitação de redefinição de senha for bem-sucedida.
           .then(() => {
+            // 7. Exibe uma mensagem de sucesso ao usuário, informando que um e-mail foi enviado.
             alert(
               "Um link para redefinir sua senha foi enviado para o seu e-mail."
             );
           })
+          // 8. `.catch()`: Define o que acontece se a solicitação de redefinição de senha falhar.
           .catch((error) => {
+            // 9. Exibe uma mensagem de erro no console para fins de depuração.
             console.error("Erro ao solicitar redefinição de senha:", error);
+            // 10. Exibe uma mensagem de erro ao usuário, informando que houve um problema
+            //     ao solicitar a redefinição de senha e exibindo a mensagem de erro específica.
             alert(
               "Erro ao solicitar redefinição de senha: " + error.message
             );

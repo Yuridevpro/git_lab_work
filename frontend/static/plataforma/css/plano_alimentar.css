@@ -1,4 +1,12 @@
-/* frontend/static/plataforma/css/plano_alimentar.css */
+
+
+/* Estilos para os botões da refeição (no card da refeição) */
+.meal-card .buttons {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center; /* Centraliza os botões */
+  gap: 1px; /* Espaçamento entre os botões */
+}
 
 .fundo-alimentar {
   background-color: #d9d9d9;
@@ -23,6 +31,7 @@
 .opcao {
   background-color: #a8a8a8;
   padding: 15px;
+  overflow: hidden; /* Esconde qualquer conteúdo que ultrapasse as bordas */
 }
 
 .refeicao-card {
@@ -41,4 +50,110 @@
 
 .refeicao-card .card-text {
   font-size: 1rem;
+}
+
+/* style.css (or your existing CSS file) */
+
+/* Style for refeicao-cards  */
+.meal-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  padding: 15px;
+  display: flex;           /* Using flexbox for button alignment */
+  flex-direction: column; /* Stack card content vertically */
+  justify-content: space-between;
+}
+
+.meal-card h5 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.meal-card p {
+  margin-bottom: 5px;
+}
+
+
+
+.meal-card img {
+  max-width: 100%; /* Prevent image overflow */
+  height: auto;
+  margin-bottom: 10px; /* Give some space below */
+}
+
+/* Estilos para a imagem da opção */
+.opcao-imagem {
+  width: 100%; /* Ocupa toda a largura do container */
+  max-height: 15px !important; /* Define uma altura máxima para evitar imagens muito grandes */
+  object-fit: contain; /* Garante que a imagem preencha o espaço sem distorcer */
+  margin-bottom: 10px; /* Adiciona um espaço abaixo da imagem */
+  display: block; /* Evita espaços extras abaixo da imagem */
+}
+
+
+/* Estilo para os cards de refeição (meal-card) */
+.meal-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  padding: 15px;
+  display: flex;              /* Usando flexbox para alinhamento dos botões */
+  flex-direction: column;    /* Empilha o conteúdo do card verticalmente */
+  justify-content: space-between;
+}
+
+.meal-card h5 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.meal-card p {
+  margin-bottom: 5px;
+}
+
+.meal-card .buttons {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between; /* Espaça os botões */
+}
+
+.meal-card img {
+  max-width: 100%;       /* Impede que a imagem transborde */
+  height: auto;
+  margin-bottom: 10px;  /* Adiciona espaço abaixo da imagem */
+}
+
+
+/* Estilos para o container dos botões da opção */
+.modal-footer {
+  display: flex;           /* Alinha os botões horizontalmente */
+  justify-content: center;  /* Centraliza os botões */
+  align-items: center;
+  gap: 5px;                /* Adiciona espaço entre os botões */
+}
+
+
+/* Estilos para o container dos botões da opção */
+.opcao {
+  background-color: #a8a8a8;
+  padding: 15px;
+  overflow: hidden; /* Esconde qualquer conteúdo que ultrapasse as bordas */
+  display: flex; /* added this */
+  flex-direction: column; /* added this */
+  align-items: center; /* added this */
+}
+.opcao-buttons {
+  display: flex;
+  justify-content: center; /* Added this */
+  gap: 5px; /* Added this */
+}
+
+@media (max-width: 767.98px) {
+ 
+  .img-nav{
+    height: 10px;
+    color: black;
+  }
+  
 }

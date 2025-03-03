@@ -1,4 +1,3 @@
-<!-- frontend/templates/plataforma/pacientes.html -->
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -9,28 +8,99 @@
     <link rel="stylesheet" href="/static/plataforma/css/css.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
     <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+    <script src="/script.js"></script>
+    <style>
+        .card-paciente {
+            position: relative;
+            /* Required for absolute positioning of buttons */
+        }
 
-    <script>
-        Parse.initialize(
-            "6LAVwcoGQ2XX4nDRe7n9Ng1ES0HCP0qDnO5DCmJB",
-            "mt4zRG5t4bIcWOVSCzh08A1BKjUfI6GcgzkLYwCk"
-        );
-        Parse.serverURL = "https://parseapi.back4app.com";
-        console.log("Parse.serverURL:", Parse.serverURL);
-        console.log("typeof Parse:", typeof Parse);
-    </script>
+        .card-paciente .btn-group {
+            position: absolute;
+            bottom: 10px;
+            /* Adjust as needed */
+            left: 50%;
+            /* Center horizontally */
+            transform: translateX(-50%);
+            /* Center horizontally */
+            display: block;
+            /* Initially hidden */
+        }
+
+
+
+        .link-hover {
+            text-decoration: none;
+            color: inherit;
+            /* Inherit color from parent */
+            display: block;
+            /* Make the entire card clickable */
+        }
+
+        .link-hover:hover {
+            text-decoration: none;
+            /* Remove underline on hover */
+        }
+
+        .foto-perfil {
+            width: 100%;
+            /* Make the image fill the container */
+            text-align: center;
+            /* Center the image horizontally */
+        }
+
+        .foto-perfil img {
+            max-width: 100px;
+            /* Adjust as needed */
+            border-radius: 50%;
+            /* Make the image circular */
+        }
+
+
+      
+
+        .navbar-nav-sidebar .nav-item {
+            margin-right: 0;
+        }
+
+        .navbar-nav-sidebar .nav-link {
+            padding-left: 1rem;
+        }
+    </style>
 </head>
 
 <body>
     <nav style="background-color: #27db8f" class="navbar navbar-expand-lg navbar-dark">
-        <a style="font-weight: bold" class="navbar-brand" href="/index.html">NUTRI LAB</a>
+        <a style="font-weight: bold" class="navbar-brand" href="#">NUTRI LAB</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav" id="menu-autenticacao">
-                <!-- Itens de menu dinâmicos serão carregados aqui -->
+                <script>atualizarMenuAutenticacao();</script>
+            </ul>
+
+            <!-- Sidebar links for mobile -->
+            <ul class="navbar-nav navbar-nav-sidebar">
+                <li class="nav-item">
+                    <a class="nav-link active" href="pacientes.html">
+                        <img src="/static/img/paciente.png" alt="Pacientes" />
+                        <span>Gerenciar Pacientes</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="dados_paciente_listar.html">
+                        <img src="/static/img/dados_paciente.png" alt="Dados do Paciente" />
+                        <span>Dados do Pacientes</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="plano_alimentar_listar.html">
+                        <img src="/static/img/plano_alimentar.png" alt="Plano Alimentar"/>
+                        <span>Plano alimentar</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -66,15 +136,20 @@
                 </a>
             </nav>
 
-            <main class="col-md-8">
-                <br />
-                <button type="button" class="btn btn-outline-success" data-toggle="modal"
-                    data-target="#modalNovoPaciente">
-                    Novo paciente
-                </button>
+            <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <!-- Updated main content classes -->
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Pacientes</h1>
+                    <!-- Added a main heading -->
+                    <div class="btn-toolbar mb-2 mb-md-0">
+                        <button type="button" class="btn btn-sm btn-outline-secondary" data-toggle="modal"
+                            data-target="#modalNovoPaciente">
+                            Novo paciente
+                        </button>
+                    </div>
+                </div>
 
-                <br />
-                <br />
                 <div class="row" id="listaPacientes">
                     <!-- Lista de pacientes será carregada aqui -->
                 </div>
@@ -94,43 +169,38 @@
                             </div>
                             <div class="modal-body">
                                 <form id="formNovoPaciente">
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            <img src="/static/img/perfil2.png" alt="Perfil" />
-                                        </div>
-
-                                        <div class="col-md-9">
-                                            <label for="nome">Nome:</label>
-                                            <input type="text" id="nome" placeholder="Digite o nome do paciente..."
-                                                class="form-control" required />
-                                        </div>
+                                    <div class="form-group">
+                                        <label for="nome">Nome:</label>
+                                        <input type="text" id="nome" placeholder="Digite o nome do paciente..."
+                                            class="form-control" required />
                                     </div>
 
-                                    <br />
-                                    <label for="sexo">Sexo:</label>
-                                    <select id="sexo" class="form-control" required>
-                                        <option value="M">Masculino</option>
-                                        <option value="F">Feminino</option>
-                                    </select>
+                                    <div class="form-group">
+                                        <label for="sexo">Sexo:</label>
+                                        <select id="sexo" class="form-control" required>
+                                            <option value="M">Masculino</option>
+                                            <option value="F">Feminino</option>
+                                        </select>
+                                    </div>
 
-                                    <br />
+                                    <div class="form-group">
+                                        <label for="idade">Idade:</label>
+                                        <input type="number" id="idade" placeholder="0" class="form-control"
+                                            required />
+                                    </div>
 
-                                    <label for="idade">Idade:</label>
-                                    <input type="number" id="idade" placeholder="0" class="form-control" required />
+                                    <div class="form-group">
+                                        <label for="email">E-mail:</label>
+                                        <input type="email" id="email" placeholder="exemple@email.com"
+                                            class="form-control" required />
+                                    </div>
 
-                                    <br />
-
-                                    <label for="email">E-mail:</label>
-                                    <input type="email" id="email" placeholder="exemple@email.com"
-                                        class="form-control" required />
-
-                                    <br />
-
-                                    <label for="telefone">Telefone:</label>
-                                    <input type="text" id="telefone" placeholder="+55 (00) 00000-0000"
-                                        class="form-control" required />
-                                    <br />
-                                    <button type="submit" class="btn btn-success btn-lg">
+                                    <div class="form-group">
+                                        <label for="telefone">Telefone:</label>
+                                        <input type="text" id="telefone" placeholder="+55 (00) 00000-0000"
+                                            class="form-control" required />
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-block">
                                         Registrar
                                     </button>
                                     <div id="pacienteError" class="text-danger"></div>
@@ -140,23 +210,47 @@
                     </div>
                 </div>
 
-                <!-- Modal de Ações do Paciente -->
-                <div class="modal fade" id="modalAcoesPaciente" tabindex="-1" role="dialog"
-                    aria-labelledby="modalAcoesPacienteLabel" aria-hidden="true">
+
+                <!-- Modal Editar Paciente -->
+                <div class="modal fade" id="modalEditarPaciente" tabindex="-1" role="dialog"
+                    aria-labelledby="modalEditarPacienteLabel" aria-hidden="true">
                     <div class="modal-dialog" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="modalAcoesPacienteLabel">Ações do Paciente</h5>
+                                <h5 class="modal-title" id="modalEditarPacienteLabel">Editar Paciente</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">×</span>
                                 </button>
                             </div>
-                            <div class="modal-body" id="modalAcoesPacienteBody">
-                                <!-- Conteúdo dinâmico aqui (nome, idade, etc.) -->
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary" id="btnVerDetalhes">Ver Detalhes</button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                            <div class="modal-body">
+                                <form id="formEditarPaciente">
+                                    <input type="hidden" id="editarPacienteId">
+                                    <div class="form-group">
+                                        <label for="editarNome">Nome:</label>
+                                        <input type="text" id="editarNome" class="form-control" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editarSexo">Sexo:</label>
+                                        <select id="editarSexo" class="form-control" required>
+                                            <option value="M">Masculino</option>
+                                            <option value="F">Feminino</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editarIdade">Idade:</label>
+                                        <input type="number" id="editarIdade" class="form-control" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editarEmail">E-mail:</label>
+                                        <input type="email" id="editarEmail" class="form-control" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="editarTelefone">Telefone:</label>
+                                        <input type="text" id="editarTelefone" class="form-control" required />
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-block">Salvar Alterações</button>
+                                    <div id="editarPacienteError" class="text-danger"></div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -169,6 +263,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
+        // Chame requireAuth() AQUI antes de todo o seu código
+        requireAuth();
+
         const formNovoPaciente = document.getElementById("formNovoPaciente");
         formNovoPaciente.addEventListener("submit", async (event) => {
             event.preventDefault();
@@ -221,22 +318,64 @@
                     const id = paciente.id;
 
                     const card = document.createElement("div");
-                    card.className = "col-md-4";
+                    card.className = "col-md-4 mb-4";
                     card.innerHTML = `
-                         <a href="#" class="link-hover" onclick="abrirModalAcoes('${id}', '${nome}', '${idade}', '${sexo}')">
-                            <div class="card-paciente">
-                                <div class="foto-perfil">
-                                    <img src="/static/img/perfil${sexo === "M" ? "2" : "1"}.png"
-                                        alt="Perfil do Paciente">
-                                </div>
-                                <br>
-                                <p class="dados">${nome}</p>
-                                <p class="dados">${idade} anos</p>
+                    <div class="card-paciente">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-warning btnEditarPaciente"
+                                data-id="${id}" data-nome="${nome}" data-idade="${idade}" data-sexo="${sexo}"
+                                data-email="${email}" data-telefone="${telefone}">Editar</button>
+                            <button type="button" class="btn btn-sm btn-danger btnExcluirPaciente"
+                                data-id="${id}">Excluir</button>
+                        </div>
+                        <a href="dados_paciente.html?id=${id}" class="link-hover">
+                            <div class="foto-perfil">
+                                <img src="/static/img/perfil${sexo === "M" ? "2" : "1"}.png"
+                                    alt="Perfil do Paciente">
                             </div>
+                            <br>
+                            <p class="dados">${nome}</p>
+                            <p class="dados">${idade} anos</p>
                         </a>
-                    `;
+                    </div>
+                `;
 
                     listaPacientes.appendChild(card);
+                });
+
+                // Add event listeners to the edit buttons
+                document.querySelectorAll('.btnEditarPaciente').forEach(button => {
+                    button.addEventListener('click', function (event) {
+                        event.stopPropagation(); // Prevent card click
+                        const id = this.dataset.id;
+                        const nome = this.dataset.nome;
+                        const idade = this.dataset.idade;
+                        const sexo = this.dataset.sexo;
+                        const email = this.dataset.email;
+                        const telefone = this.dataset.telefone;
+
+                        // Preenche o formulário de edição com os dados do paciente
+                        document.getElementById("editarPacienteId").value = id;
+                        document.getElementById("editarNome").value = nome;
+                        document.getElementById("editarSexo").value = sexo;
+                        document.getElementById("editarIdade").value = idade;
+                        document.getElementById("editarEmail").value = email;
+                        document.getElementById("editarTelefone").value = telefone;
+
+                        // Exibe o modal de edição
+                        $('#modalEditarPaciente').modal('show');
+                    });
+                });
+
+                // Add event listeners to the delete buttons
+                document.querySelectorAll('.btnExcluirPaciente').forEach(button => {
+                    button.addEventListener('click', function (event) {
+                        event.stopPropagation(); // Prevent card click
+                        const id = this.dataset.id;
+                        if (confirm("Tem certeza que deseja excluir este paciente?")) {
+                            excluirPaciente(id);
+                        }
+                    });
                 });
             } catch (error) {
                 console.error("Erro ao buscar pacientes:", error);
@@ -244,58 +383,65 @@
             }
         }
 
-        function abrirModalAcoes(id, nome, idade, sexo) {
-            const modalBody = document.getElementById("modalAcoesPacienteBody");
-            modalBody.innerHTML = `
-                <p>Nome: ${nome}</p>
-                <p>Idade: ${idade}</p>
-                <img src="/static/img/perfil${sexo === "M" ? "2" : "1"}.png" alt="Perfil do Paciente" style="max-width: 100px;">
-            `;
 
-            const btnVerDetalhes = document.getElementById("btnVerDetalhes");
-            btnVerDetalhes.onclick = function () {
-                window.location.href = `dados_paciente.html?id=${id}`;
-            };
+        async function excluirPaciente(id) {
+            try {
+                const result = await Parse.Cloud.run("deletarPaciente", {
+                    id: id
+                });
 
-            $('#modalAcoesPaciente').modal('show');
+                if (result.success) {
+                    alert("Paciente excluído com sucesso!");
+                    exibirPacientes(); // Recarrega a lista de pacientes
+                } else {
+                    alert("Erro ao excluir paciente: " + result.message);
+                }
+            } catch (error) {
+                console.error("Erro ao excluir paciente:", error);
+                alert("Erro ao excluir paciente: " + error.message);
+            }
         }
+
+        const formEditarPaciente = document.getElementById("formEditarPaciente");
+        formEditarPaciente.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            document.getElementById("editarPacienteError").innerText = "";
+
+            const id = document.getElementById("editarPacienteId").value;
+            const nome = document.getElementById("editarNome").value;
+            const sexo = document.getElementById("editarSexo").value;
+            const idade = document.getElementById("editarIdade").value;
+            const email = document.getElementById("editarEmail").value;
+            const telefone = document.getElementById("editarTelefone").value;
+
+            try {
+                const result = await Parse.Cloud.run("atualizarPaciente", {
+                    id: id,
+                    nome: nome,
+                    sexo: sexo,
+                    idade: idade,
+                    email: email,
+                    telefone: telefone,
+                });
+
+                if (result.success) {
+                    alert("Paciente atualizado com sucesso!");
+                    $('#modalEditarPaciente').modal('hide');
+                    exibirPacientes(); // Recarrega a lista de pacientes
+                } else {
+                    document.getElementById("editarPacienteError").innerText = "Erro ao atualizar paciente: " + result.message;
+                }
+            } catch (error) {
+                console.error("Erro ao atualizar paciente:", error);
+                document.getElementById("editarPacienteError").innerText = "Erro ao atualizar paciente: " + error.message;
+            }
+        });
 
         // Carregar os pacientes ao carregar a página
         exibirPacientes();
     </script>
 
-    <script>
-        async function atualizarMenuAutenticacao() {
-            const menu = document.getElementById("menu-autenticacao");
-            menu.innerHTML = "";
 
-            if (localStorage.getItem("sessionToken")) {
-                const liSair = document.createElement("li");
-                liSair.className = "nav-item";
-                liSair.innerHTML = `
-                <a class="nav-link" href="#" onclick="deslogarUsuario()">Sair</a>
-            `;
-                menu.appendChild(liSair);
-            } else {
-                const liLogin = document.createElement("li");
-                liLogin.className = "nav-item";
-                liLogin.innerHTML = `
-                <a class="nav-link" href="/templates/autenticacao/logar.html">Logar</a>
-            `;
-                menu.appendChild(liLogin);
-
-                const liCadastro = document.createElement("li");
-                liCadastro.className = "nav-item";
-                liCadastro.innerHTML = `
-                <a class="nav-link" href="/templates/autenticacao/cadastro.html">Cadastre-se</a>
-            `;
-                menu.appendChild(liCadastro);
-            }
-        }
-
-        atualizarMenuAutenticacao();
-    </script>
-    <script src="/script.js"></script>
 </body>
 
 </html>

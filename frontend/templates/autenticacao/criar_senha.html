@@ -84,39 +84,64 @@
 
        
     <script>
+      // 1. Obtém o formulário de alteração de senha do HTML pelo seu ID.
       const formNovaSenha = document.getElementById("novaSenhaForm");
+    
+      // 2. Adiciona um "listener" (ouvinte) de evento para o evento "submit" do formulário.
+      //    Isso significa que essa função será executada quando o formulário for enviado.
       formNovaSenha.addEventListener("submit", async (event) => {
+        // 3. Previne o comportamento padrão do envio do formulário,
+        //    que seria recarregar a página.  Isso permite que o JavaScript controle o envio.
         event.preventDefault();
-
+    
+        // 4. Obtém os valores dos campos de senha e confirmação de senha do formulário.
         const senha = document.getElementById("senha").value;
         const confirmarSenha = document.getElementById("confirmar_senha").value;
-
+    
+        // 5. Valida se as senhas digitadas são iguais.
         if (senha !== confirmarSenha) {
           alert("As senhas não coincidem.");
-          return;
+          return; // Interrompe a execução da função se as senhas forem diferentes.
         }
-
-        // Recupera o userId do localStorage
+    
+        // 6. Recupera o ID do usuário do localStorage.  O localStorage é um espaço
+        //    de armazenamento no navegador que permite guardar informações entre sessões.
+        //    Assume-se que o userId foi armazenado aqui durante o processo de recuperação de senha.
         const userId = localStorage.getItem("userIdToReset");
-
+    
+        // 7. Verifica se o userId foi encontrado no localStorage.
         if (!userId) {
           alert(
             "Erro: userId não encontrado. Por favor, inicie o processo de recuperação de senha novamente."
           );
-          return;
+          return; // Interrompe a execução da função se o userId não for encontrado.
         }
-
+    
+        // 8. Cria uma nova instância da classe Parse.User.
         const user = new Parse.User();
-        user.id = userId; // Define o ID do usuário a ser atualizado
-
+        user.id = userId; // Define o ID do usuário a ser atualizado.
+    
+        // 9. Define a nova senha do usuário.
         user.setPassword(senha);
-
+    
+        // 10. Envolve o processo de salvar a senha em um bloco try...catch para tratar possíveis erros.
         try {
-          await user.save(null, { useMasterKey: true }); // Salva com a chave master
+          // 11. Salva a nova senha no banco de dados Parse.
+          //     `useMasterKey: true` indica que a operação deve ser realizada com permissões administrativas,
+          //     permitindo que a senha seja alterada mesmo que o usuário não esteja autenticado (o que faz sentido
+          //     no contexto de recuperação de senha).  O `await` garante que a função aguarde a conclusão do salvamento.
+          await user.save(null, { useMasterKey: true });
+    
+          // 12. Exibe uma mensagem de sucesso ao usuário.
           alert("Senha alterada com sucesso! Redirecionando para o login.");
-          localStorage.removeItem("userIdToReset"); // Remove o ID do localStorage
-          window.location.href = "logar.html"; // Redireciona para a página de login
+    
+          // 13. Remove o userId do localStorage, pois não é mais necessário.
+          localStorage.removeItem("userIdToReset");
+    
+          // 14. Redireciona o usuário para a página de login.
+          window.location.href = "logar.html";
         } catch (error) {
+          // 15. Trata erros que possam ocorrer durante o processo de salvamento.
           console.error("Erro ao alterar senha:", error);
           alert("Erro ao alterar senha: " + error.message);
         }

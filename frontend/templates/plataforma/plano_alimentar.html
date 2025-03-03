@@ -1,4 +1,3 @@
-<!-- frontend/templates/plataforma/plano_alimentar.html -->
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -11,6 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+    <script src="/script.js"></script>
     <script>
         // Inicializa o Parse
         Parse.initialize(
@@ -21,19 +21,20 @@
         console.log("Parse.serverURL:", Parse.serverURL);
         console.log("typeof Parse:", typeof Parse);
     </script>
+
     <style>
-        .opcao {
-            margin-left: 1px;
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+       
+        .navbar-nav-sidebar .nav-item {
+            margin-right: 0;
+        }
+
+        .navbar-nav-sidebar .nav-link {
+            padding-left: 1rem;
         }
     </style>
 </head>
 
 <body>
-    <!-- Barra de navegação -->
     <nav style="background-color: #27db8f" class="navbar navbar-expand-lg navbar-dark">
         <a style="font-weight: bold" class="navbar-brand" href="#">NUTRI LAB</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
@@ -42,64 +43,95 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav" id="menu-autenticacao">
-                <!-- Itens de menu dinâmicos serão carregados aqui -->
+                <script>atualizarMenuAutenticacao();</script>
+            </ul>
+
+            <!-- Sidebar links for mobile -->
+            <ul class="navbar-nav navbar-nav-sidebar">
+                <li class="nav-item">
+                    <a class="nav-link active" href="pacientes.html">
+                        <img src="/static/img/paciente.png" alt="Pacientes" />
+                        <span>Gerenciar Pacientes</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="dados_paciente_listar.html">
+                        <img src="/static/img/dados_paciente.png" alt="Dados do Paciente" />
+                        <span>Dados do Pacientes</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="plano_alimentar_listar.html">
+                        <img src="/static/img/plano_alimentar.png" alt="Plano Alimentar" />
+                        <span>Plano alimentar</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>
 
     <div class="container-fluid">
         <div class="row">
-            <!-- Sidebar -->
             <nav id="sidebar" class="col-md-2">
                 <a href="pacientes.html" class="link-lateral">
                     <div class="card-lateral">
                         <img src="/static/img/paciente.png" alt="Pacientes" />
-                        <br /><br />
+                        <br />
+                        <br />
                         <h3>Gerenciar Pacientes</h3>
                     </div>
                 </a>
+
                 <a href="dados_paciente_listar.html" class="link-lateral">
                     <div class="card-lateral">
                         <img src="/static/img/dados_paciente.png" alt="Dados do Paciente" />
-                        <br /><br />
+                        <br />
+                        <br />
                         <h3>Dados do Pacientes</h3>
                     </div>
                 </a>
+
                 <a href="plano_alimentar_listar.html" class="link-lateral">
                     <div class="card-lateral">
                         <img src="/static/img/plano_alimentar.png" alt="Plano Alimentar" />
-                        <br /><br />
+                        <br />
+                        <br />
                         <h3>Plano alimentar</h3>
                     </div>
                 </a>
             </nav>
 
+   
+
             <!-- Conteúdo principal -->
-            <main class="col-md-8">
-                <br />
+            <main class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Plano Alimentar</h1>
+                </div>
 
                 <!-- Container para dados do paciente -->
-                <div id="dadosPacienteContainer">
+                <div id="dadosPacienteContainer" class="mb-4">
                     <!-- Dados do paciente serão carregados aqui -->
                 </div>
 
-                <hr />
-
-                <!-- Botões para criar e exportar refeição -->
-                <button type="button" class="btn btn-outline-success" data-toggle="modal"
-                    data-target="#modalNovaRefeicao">
-                    + Nova refeição
-                </button>
-                <button type="button" class="btn btn-outline-primary">
-                    Exportar refeição
-                </button>
-                <br /><br />
+                <!-- Ações -->
+                <div class="d-flex justify-content-between mb-3">
+                    <button type="button" class="btn btn-outline-success" data-toggle="modal"
+                        data-target="#modalNovaRefeicao">
+                        + Nova refeição
+                    </button>
+                    <button type="button" class="btn btn-outline-primary">
+                        Exportar refeição
+                    </button>
+                </div>
 
                 <!-- Container para listagem das refeições -->
-                <div class="fundo-alimentar" id="listaRefeicoes">
+                <div id="listaRefeicoes" class="row">
                     <!-- As refeições serão carregadas aqui pelo JavaScript -->
                 </div>
 
+                <!-- Modals -->
                 <!-- Modal para Adicionar Nova Refeição -->
                 <div class="modal fade" id="modalNovaRefeicao" tabindex="-1" role="dialog"
                     aria-labelledby="modalNovaRefeicaoLabel" aria-hidden="true">
@@ -115,49 +147,45 @@
                             </div>
                             <div class="modal-body">
                                 <form id="formNovaRefeicao">
-                                    <label for="titulo">Título</label>
-                                    <div class="input-group">
+                                    <div class="form-group">
+                                        <label for="titulo">Título</label>
                                         <input type="text" class="form-control" id="titulo"
-                                            placeholder="Ex: Café da manhã" required />
+                                            placeholder="Ex: Café da manhã" required
+                                            title="Insira o nome da refeição (ex: Café da Manhã)" />
                                     </div>
-                                    <br />
-                                    <label for="horario">Horário</label>
-                                    <div class="input-group">
-                                        <input type="time" class="form-control" id="horario" required />
+                                    <div class="form-group">
+                                        <label for="horario">Horário</label>
+                                        <input type="time" class="form-control" id="horario" required
+                                            title="Insira o horário da refeição" />
                                     </div>
-                                    <br />
-                                    <h5 class="titulo">Macronutrientes</h5>
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-md-4">
+                                    <h5 class="mt-3">Macronutrientes</h5>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
                                                 <label for="carboidratos">Carboidratos</label>
-                                                <div class="input-group">
-                                                    <input type="number" class="form-control" id="carboidratos"
-                                                        placeholder="" />
-                                                </div>
+                                                <input type="number" class="form-control" id="carboidratos"
+                                                    placeholder="" title="Insira a quantidade de carboidratos" />
                                             </div>
-                                            <div class="col-md-4">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
                                                 <label for="proteinas">Proteínas</label>
-                                                <div class="input-group">
-                                                    <input type="number" class="form-control" id="proteinas"
-                                                        placeholder="" />
-                                                </div>
+                                                <input type="number" class="form-control" id="proteinas"
+                                                    placeholder="" title="Insira a quantidade de proteínas" />
                                             </div>
-                                            <div class="col-md-4">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
                                                 <label for="gorduras">Gorduras</label>
-                                                <div class="input-group">
-                                                    <input type="number" class="form-control" id="gorduras"
-                                                        placeholder="" />
-                                                </div>
+                                                <input type="number" class="form-control" id="gorduras"
+                                                    placeholder="" title="Insira a quantidade de gorduras" />
                                             </div>
                                         </div>
                                     </div>
-                                    <br />
-                                    <button type="submit" class="btn btn-success">Cadastrar</button>
+                                    <button type="submit" class="btn btn-success btn-block">Cadastrar</button>
                                 </form>
-                                <br />
-                                <button type="button" class="btn btn-outline-success" data-toggle="modal"
-                                    data-target="#modalNovaOpcao">
+                                <button type="button" class="btn btn-outline-success btn-block mt-3"
+                                    data-toggle="modal" data-target="#modalNovaOpcao">
                                     + Nova opção
                                 </button>
                             </div>
@@ -181,24 +209,36 @@
                                     <!-- Campo oculto para o ID do paciente -->
                                     <input type="hidden" id="pacienteId" name="pacienteId" value="">
 
-                                    <label for="refeicao">Selecione a refeição</label>
-                                    <div class="input-group">
-                                        <select class="form-control" id="refeicao" required>
-                                            <!-- As refeições serão carregadas aqui pelo JavaScript -->
-                                        </select>
+                                    <div class="form-group">
+                                        <label for="refeicao">Selecione a refeição</label>
+                                        <select class="form-control" id="refeicao" required
+                                            title="Selecione a refeição para adicionar a opção"></select>
                                     </div>
-                                    <br />
-                                    <label for="imagem">Imagem</label>
-                                    <div class="input-group">
-                                        <input type="file" class="form-control" id="imagem" required />
+
+                                    <div class="form-group">
+                                        <label for="tamanhoPorcao">Tamanho da Porção</label>
+                                        <input type="number" class="form-control" id="tamanhoPorcao"
+                                            title="Insira o tamanho da porção em gramas ou ml" required />
                                     </div>
-                                    <br />
-                                    <label for="descricao">Descrição</label>
-                                    <div class="input-group">
-                                        <textarea class="form-control" id="descricao"></textarea>
+
+                                    <div class="form-group">
+                                        <label for="imagem">Imagem</label>
+                                        <input type="file" class="form-control" id="imagem" required
+                                            title="Selecione uma imagem para a opção" />
                                     </div>
-                                    <br />
-                                    <button type="submit" class="btn btn-success">Cadastrar</button>
+                                    <div class="form-group">
+                                        <label for="descricao">Descrição</label>
+                                        <textarea class="form-control" id="descricao"
+                                            title="Insira uma descrição do alimento"></textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="informacoesNutricionais">Informações Nutricionais</label>
+                                        <textarea class="form-control" id="informacoesNutricionais"
+                                            title="Insira as informações nutricionais (calorias, macros)"></textarea>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-success btn-block">Cadastrar</button>
                                 </form>
                             </div>
                         </div>
@@ -221,45 +261,42 @@
                             <div class="modal-body">
                                 <form id="formEditarRefeicao">
                                     <input type="hidden" id="editarRefeicaoId">
-                                    <label for="editarTitulo">Título</label>
-                                    <div class="input-group">
+                                    <div class="form-group">
+                                        <label for="editarTitulo">Título</label>
                                         <input type="text" class="form-control" id="editarTitulo"
-                                            placeholder="Ex: Café da manhã" required />
+                                            placeholder="Ex: Café da manhã" required
+                                            title="Insira o nome da refeição (ex: Café da Manhã)" />
                                     </div>
-                                    <br />
-                                    <label for="editarHorario">Horário</label>
-                                    <div class="input-group">
-                                        <input type="time" class="form-control" id="editarHorario" required />
+                                    <div class="form-group">
+                                        <label for="editarHorario">Horário</label>
+                                        <input type="time" class="form-control" id="editarHorario" required
+                                            title="Insira o horário da refeição" />
                                     </div>
-                                    <br />
-                                    <h5 class="titulo">Macronutrientes</h5>
-                                    <div class="container">
-                                        <div class="row">
-                                            <div class="col-md-4">
+                                    <h5 class="mt-3">Macronutrientes</h5>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
                                                 <label for="editarCarboidratos">Carboidratos</label>
-                                                <div class="input-group">
-                                                    <input type="number" class="form-control" id="editarCarboidratos"
-                                                        placeholder="" />
-                                                </div>
+                                                <input type="number" class="form-control" id="editarCarboidratos"
+                                                    placeholder="" title="Insira a quantidade de carboidratos" />
                                             </div>
-                                            <div class="col-md-4">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
                                                 <label for="editarProteinas">Proteínas</label>
-                                                <div class="input-group">
-                                                    <input type="number" class="form-control" id="editarProteinas"
-                                                        placeholder="" />
-                                                </div>
+                                                <input type="number" class="form-control" id="editarProteinas"
+                                                    placeholder="" title="Insira a quantidade de proteínas" />
                                             </div>
-                                            <div class="col-md-4">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
                                                 <label for="editarGorduras">Gorduras</label>
-                                                <div class="input-group">
-                                                    <input type="number" class="form-control" id="editarGorduras"
-                                                        placeholder="" />
-                                                </div>
+                                                <input type="number" class="form-control" id="editarGorduras"
+                                                    placeholder="" title="Insira a quantidade de gorduras" />
                                             </div>
                                         </div>
                                     </div>
-                                    <br />
-                                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                                    <button type="submit" class="btn btn-primary btn-block">Salvar Alterações</button>
                                 </form>
                             </div>
                         </div>
@@ -280,9 +317,75 @@
                             <div class="modal-body">
                                 Tem certeza de que deseja excluir esta refeição?
                             </div>
-                            <div class="modal-footer">
+                            <div class="modal-footer d-flex justify-content-center">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                                 <button type="button" class="btn btn-danger" id="confirmarExclusao">Excluir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal de Edição de Opção -->
+                <div class="modal fade" id="modalEditarOpcao" tabindex="-1" role="dialog"
+                    aria-labelledby="modalEditarOpcaoLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalEditarOpcaoLabel">Editar Opção</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="formEditarOpcao" enctype="multipart/form-data">
+                                    <input type="hidden" id="editarOpcaoId">
+                                    <div class="form-group">
+                                        <label for="editarDescricao">Descrição</label>
+                                        <textarea class="form-control" id="editarDescricao"
+                                            title="Insira uma descrição do alimento"></textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="editarTamanhoPorcao">Tamanho da Porção</label>
+                                        <input type="number" class="form-control" id="editarTamanhoPorcao"
+                                            title="Insira o tamanho da porção em gramas ou ml" />
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="editarInformacoesNutricionais">Informações Nutricionais</label>
+                                        <textarea class="form-control" id="editarInformacoesNutricionais"
+                                            title="Insira as informações nutricionais (calorias, macros)"></textarea>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="editarImagem">Imagem (Selecione para alterar)</label>
+                                        <input type="file" class="form-control" id="editarImagem"
+                                            title="Selecione uma nova imagem para a opção (opcional)" />
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-block">Salvar Alterações</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal de Confirmação de Exclusão de Opção -->
+                <div class="modal fade" id="modalExcluirOpcao" tabindex="-1" role="dialog"
+                    aria-labelledby="modalExcluirOpcaoLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalExcluirOpcaoLabel">Confirmar Exclusão da Opção</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Tem certeza de que deseja excluir esta opção?
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-danger" id="confirmarExclusaoOpcao">Excluir</button>
                             </div>
                         </div>
                     </div>
@@ -292,105 +395,14 @@
         </div>
     </div>
 
-     <!-- Modal de Edição de Opção -->
-     <div class="modal fade" id="modalEditarOpcao" tabindex="-1" role="dialog"
-     aria-labelledby="modalEditarOpcaoLabel" aria-hidden="true">
-     <div class="modal-dialog" role="document">
-         <div class="modal-content">
-             <div class="modal-header">
-                 <h5 class="modal-title" id="modalEditarOpcaoLabel">Editar Opção</h5>
-                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                     <span aria-hidden="true">×</span>
-                 </button>
-             </div>
-             <div class="modal-body">
-                 <form id="formEditarOpcao" enctype="multipart/form-data">
-                     <input type="hidden" id="editarOpcaoId">
-                     <label for="editarDescricao">Descrição</label>
-                     <div class="input-group">
-                         <textarea class="form-control" id="editarDescricao"></textarea>
-                     </div>
-                     <br />
-                     <label for="editarImagem">Imagem (Selecione para alterar)</label>
-                     <div class="input-group">
-                         <input type="file" class="form-control" id="editarImagem">
-                     </div>
-                     <br />
-                     <button type="submit" class="btn btn-primary">Salvar Alterações</button>
-                 </form>
-             </div>
-         </div>
-     </div>
- </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 
- <!-- Modal de Confirmação de Exclusão de Opção -->
- <div class="modal fade" id="modalExcluirOpcao" tabindex="-1" role="dialog"
-     aria-labelledby="modalExcluirOpcaoLabel" aria-hidden="true">
-     <div class="modal-dialog" role="document">
-         <div class="modal-content">
-             <div class="modal-header">
-                 <h5 class="modal-title" id="modalExcluirOpcaoLabel">Confirmar Exclusão da Opção</h5>
-                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                     <span aria-hidden="true">×</span>
-                 </button>
-             </div>
-             <div class="modal-body">
-                 Tem certeza de que deseja excluir esta opção?
-             </div>
-             <div class="modal-footer">
-                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                 <button type="button" class="btn btn-danger" id="confirmarExclusaoOpcao">Excluir</button>
-             </div>
-         </div>
-     </div>
- </div>
-
-</main>
-</div>
-</div>
-
-    <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-
-        <script>
-          // Função para atualizar o menu de autenticação (login/logout)
-    async function atualizarMenuAutenticacao() {
-        const menu = document.getElementById("menu-autenticacao");
-        menu.innerHTML = ""; // Limpa o menu
-
-        if (localStorage.getItem("sessionToken")) {
-            // Usuário está logado
-            const liSair = document.createElement("li");
-            liSair.className = "nav-item";
-            liSair.innerHTML = `
-                <a class="nav-link" href="#" onclick="deslogarUsuario()">Sair</a>
-            `;
-            menu.appendChild(liSair);
-        } else {
-            // Usuário não está logado
-            const liLogin = document.createElement("li");
-            liLogin.className = "nav-item";
-            liLogin.innerHTML = `
-                <a class="nav-link" href="/templates/autenticacao/logar.html">Logar</a>
-            `;
-            menu.appendChild(liLogin);
-
-            const liCadastro = document.createElement("li");
-            liCadastro.className = "nav-item";
-            liCadastro.innerHTML = `
-                <a class="nav-link" href="/templates/autenticacao/cadastro.html">Cadastre-se</a>
-            `;
-            menu.appendChild(liCadastro);
-        }
-    }
-
-    // Chama a função para atualizar o menu quando a página carrega
-    atualizarMenuAutenticacao();
-        </script>
+   
+      
 
     <script>
+         requireAuth();
         // Função para obter o ID do paciente da URL (ex.: plano_alimentar.html?id=ALGUM_ID)
         function obterIdPacienteDaURL() {
             const urlParams = new URLSearchParams(window.location.search);
@@ -404,17 +416,16 @@
                 const Pacientes = Parse.Object.extend("Pacientes");
                 const query = new Parse.Query(Pacientes);
                 const paciente = await query.get(idPaciente);
+
                 document.getElementById("dadosPacienteContainer").innerHTML = `
-          <div class="row">
-            <div class="col-md-3">
-              <img src="/static/img/perfil1.png" alt="Perfil" />
-            </div>
-            <div class="col-md-3 dados descricao">
-              <h4>${paciente.get("nome")}</h4>
-              <h6>${paciente.get("idade")}</h6>
-            </div>
-          </div>
-        `;
+                <div class="d-flex align-items-center border rounded p-3 mb-3">
+                    <img src="/static/img/perfil1.png" alt="Perfil" class="rounded-circle mr-3" style="width: 80px; height: 80px;">
+                    <div>
+                        <h4>${paciente.get("nome")}</h4>
+                        <p class="text-muted">Idade: ${paciente.get("idade")}</p>
+                    </div>
+                </div>
+                `;
             } catch (error) {
                 console.error("Erro ao buscar dados do paciente:", error);
                 window.location.href = "#";
@@ -425,7 +436,6 @@
 
     <!-- Script para listar refeições e tratar o envio do formulário de nova refeição -->
     <script>
-        // frontend/templates/plataforma/plano_alimentar.html (apenas o script)
 
     let refeicaoIdParaExcluir; // Variável global para armazenar o ID da refeição a ser excluída
     let opcaoIdParaExcluir;
@@ -459,14 +469,15 @@
             listaContainer.innerHTML = "";
 
             if (results.length > 0) {
-                let html = '<div class="d-flex flex-wrap">'; // Abre o container flexbox
+                let html = '';
                 for (const refeicao of results) {
                     // Busca as opções da refeição
                     const opcoes = await buscarOpcoesDaRefeicao(refeicao.id);
 
                     html += `
-                        <div class="card refeicao-card mb-2">
-                            <div class="card-body">
+                      <div class="col-md-6 mb-4">
+                        <div class="card meal-card h-100">
+                            <div class="card-body d-flex flex-column">
                                 <h5 class="card-title">${refeicao.get("titulo")}</h5>
                                 <p class="card-text">Horário: ${refeicao.get("horario")}</p>
                                 <p class="card-text">Carboidratos: ${refeicao.get("carboidratos")}</p>
@@ -475,18 +486,20 @@
                                 <div>
                                     ${opcoes}
                                 </div>
-                                <button class="btn btn-sm btn-primary btnEditarRefeicao" data-id="${refeicao.id}"
-                                    data-titulo="${refeicao.get("titulo")}" data-horario="${refeicao.get("horario")}"
-                                    data-carboidratos="${refeicao.get("carboidratos")}" data-proteinas="${refeicao.get("proteinas")}"
-                                    data-gorduras="${refeicao.get("gorduras")}" data-toggle="modal"
-                                    data-target="#modalEditarRefeicao">Editar</button>
-                                <button class="btn btn-sm btn-danger btnExcluirRefeicao" data-id="${refeicao.id}"
-                                    data-toggle="modal" data-target="#modalExcluirRefeicao">Excluir</button>
+                                <div class="mt-auto buttons d-flex justify-content-between">
+                                    <button class="btn btn-sm btn-primary btnEditarRefeicao" data-id="${refeicao.id}"
+                                        data-titulo="${refeicao.get("titulo")}" data-horario="${refeicao.get("horario")}"
+                                        data-carboidratos="${refeicao.get("carboidratos")}" data-proteinas="${refeicao.get("proteinas")}"
+                                        data-gorduras="${refeicao.get("gorduras")}" data-toggle="modal"
+                                        data-target="#modalEditarRefeicao">Editar</button>
+                                    <button class="btn btn-sm btn-danger btnExcluirRefeicao" data-id="${refeicao.id}"
+                                        data-toggle="modal" data-target="#modalExcluirRefeicao">Excluir</button>
+                                </div>
                             </div>
                         </div>
+                      </div>
                     `;
                 }
-                html += '</div>'; // Fecha o container flexbox
                 listaContainer.innerHTML = html;
             } else {
                 listaContainer.innerHTML = "<p>Nenhuma refeição encontrada.</p>";
@@ -497,42 +510,50 @@
         }
     }
 
-    // Função para buscar as opções de uma refeição
     async function buscarOpcoesDaRefeicao(refeicaoId) {
-        const Opcao = Parse.Object.extend("Opcao");
-        const query = new Parse.Query(Opcao);
-        const Refeicao = Parse.Object.extend("Refeicao");
-        const refeicao = new Refeicao();
-        refeicao.id = refeicaoId;
-        query.equalTo("refeicao", refeicao);
-        query.include("imagem"); // Inclui a imagem para exibir a URL
+    const Opcao = Parse.Object.extend("Opcao");
+    const query = new Parse.Query(Opcao);
+    const Refeicao = Parse.Object.extend("Refeicao");
+    const refeicao = new Refeicao();
+    refeicao.id = refeicaoId;
+    query.equalTo("refeicao", refeicao);
+    query.include("imagem"); // Inclui a imagem para exibir a URL
 
-        try {
-            const results = await query.find();
-            let opcoesHTML = "";
-            if (results.length > 0) {
-                results.forEach(opcao => {
-                    opcoesHTML += `
+    try {
+        const results = await query.find();
+        let opcoesHTML = "";
+        if (results.length > 0) {
+            results.forEach(opcao => {
+                opcoesHTML += `
+                    <div class="opcao">
                         <div class="opcao">
-                            <p>${opcao.get("descricao")}</p>
-                            ${opcao.get("imagem") ? `<img src="${opcao.get("imagem").url()}" width="100" />` : ''}
+                        <p><strong>Descrição:</strong> ${opcao.get("descricao")}</p>
+                        <p><strong>Tamanho da Porção:</strong> ${opcao.get("tamanhoPorcao")} g</p>
+                        <p><strong>Informações Nutricionais: </strong>${opcao.get("informacoesNutricionais")}</p>
+                        <p></p>
+                    </div>
+                        ${opcao.get("imagem") ? `<img src="${opcao.get("imagem").url()}" width="100%" />` : ''}
+                         <div class="opcao-buttons">
                             <button class="btn btn-sm btn-primary btnEditarOpcao" data-id="${opcao.id}"
-                                data-descricao="${opcao.get("descricao")}" data-toggle="modal"
-                                data-target="#modalEditarOpcao">Editar</button>
+                                data-descricao="${opcao.get("descricao")}"
+                                data-tamanhoporcao="${opcao.get("tamanhoPorcao")}"
+                                data-informacoesnutricionais="${opcao.get("informacoesNutricionais")}"
+                                data-toggle="modal" data-target="#modalEditarOpcao">Editar</button>
                             <button class="btn btn-sm btn-danger btnExcluirOpcao" data-id="${opcao.id}"
                                 data-toggle="modal" data-target="#modalExcluirOpcao">Excluir</button>
-                        </div>
-                    `;
-                });
-            } else {
-                opcoesHTML = "<p>Nenhuma opção encontrada para esta refeição.</p>";
-            }
-            return opcoesHTML;
-        } catch (error) {
-            console.error("Erro ao listar opções:", error);
-            return "<p>Erro ao carregar opções.</p>";
+                            </div>
+                    </div>
+                `;
+            });
+        } else {
+            opcoesHTML = "<p>Nenhuma opção encontrada para esta refeição.</p>";
         }
+        return opcoesHTML;
+    } catch (error) {
+        console.error("Erro ao listar opções:", error);
+        return "<p>Erro ao carregar opções.</p>";
     }
+}
 
     listarRefeicoes();
 
@@ -619,51 +640,58 @@
     });
 
     // Trata o envio do formulário para criar uma nova opção
-    document.getElementById("formNovaOpcao").addEventListener("submit", async (event) => {
-        event.preventDefault();
+document.getElementById("formNovaOpcao").addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-        const refeicaoId = document.getElementById("refeicao").value;
-        const imagemInput = document.getElementById("imagem");
-        const descricao = document.getElementById("descricao").value;
-        const pacienteId = idPaciente; // Obtém o ID do paciente da variável global
+    const refeicaoId = document.getElementById("refeicao").value;
+    const imagemInput = document.getElementById("imagem");
+    const descricao = document.getElementById("descricao").value;
+    const pacienteId = idPaciente; // Obtém o ID do paciente da variável global
+    const tamanhoPorcao = document.getElementById("tamanhoPorcao").value;
+    const informacoesNutricionais = document.getElementById("informacoesNutricionais").value;
 
-        // Verifica se um arquivo de imagem foi selecionado
-        if (imagemInput.files.length === 0) {
-            alert("Por favor, selecione uma imagem.");
-            return;
-        }
+    console.log("Tamanho da Porção:", tamanhoPorcao);
+    console.log("Informações Nutricionais:", informacoesNutricionais);
 
-        const imagemFile = imagemInput.files[0];
+    // Verifica se um arquivo de imagem foi selecionado
+    if (imagemInput.files.length === 0) {
+        alert("Por favor, selecione uma imagem.");
+        return;
+    }
 
-        // Converte a imagem para base64
-        const reader = new FileReader();
-        reader.onloadend = async () => {
-            const imagemBase64 = reader.result.split(',')[1]; // Remove o prefixo data:image/png;base64,
+    const imagemFile = imagemInput.files[0];
 
-            try {
-                const response = await Parse.Cloud.run("criarOpcao", {
-                    refeicaoId: refeicaoId,
-                    imagem: imagemBase64,
-                    descricao: descricao,
-                    pacienteId: pacienteId // Envia o ID do paciente
-                });
+    // Converte a imagem para base64
+    const reader = new FileReader();
+    reader.onloadend = async () => {
+        const imagemBase64 = reader.result.split(',')[1]; // Remove o prefixo data:image/png;base64,
 
-                if (response.success) {
-                    alert("Opção criada com sucesso!");
-                    document.getElementById("formNovaOpcao").reset();
-                    $('#modalNovaOpcao').modal('hide');
-                    // Após criar a opção, atualiza a lista de refeições
-                    listarRefeicoes();
-                } else {
-                    alert("Erro ao criar opção: " + response.message);
-                }
-            } catch (error) {
-                console.error("Erro ao criar opção:", error);
-                alert("Erro ao criar opção: " + error.message);
+        try {
+            const response = await Parse.Cloud.run("criarOpcao", {
+                refeicaoId: refeicaoId,
+                imagem: imagemBase64,
+                descricao: descricao,
+                pacienteId: pacienteId, // Envia o ID do paciente
+                tamanhoPorcao: tamanhoPorcao,
+                informacoesNutricionais: informacoesNutricionais
+            });
+
+            if (response.success) {
+                alert("Opção criada com sucesso!");
+                document.getElementById("formNovaOpcao").reset();
+                $('#modalNovaOpcao').modal('hide');
+                // Após criar a opção, atualiza a lista de refeições
+                listarRefeicoes();
+            } else {
+                alert("Erro ao criar opção: " + response.message);
             }
-        };
-        reader.readAsDataURL(imagemFile);
-    });
+        } catch (error) {
+            console.error("Erro ao criar opção:", error);
+            alert("Erro ao criar opção: " + error.message);
+        }
+    };
+    reader.readAsDataURL(imagemFile);
+});
 
     // Lógica para Excluir Refeição
     $(document).on('click', '.btnExcluirRefeicao', function () {
@@ -742,10 +770,14 @@
     $(document).on('click', '.btnEditarOpcao', function () {
         const opcaoId = $(this).data('id');
         const descricao = $(this).data('descricao');
+        const tamanhoPorcao = $(this).data('tamanhoporcao');
+        const informacoesNutricionais = $(this).data('informacoesnutricionais');
 
         // Preenche os campos do modal com os dados da opção
         $('#editarOpcaoId').val(opcaoId);
         $('#editarDescricao').val(descricao);
+        $('#editarTamanhoPorcao').val(tamanhoPorcao);
+        $('#editarInformacoesNutricionais').val(informacoesNutricionais);
     });
 
     // Trata o envio do formulário de edição de opção
@@ -754,6 +786,8 @@
 
         const opcaoId = document.getElementById("editarOpcaoId").value;
         const descricao = document.getElementById("editarDescricao").value;
+        const tamanhoPorcao = document.getElementById("editarTamanhoPorcao").value;
+        const informacoesNutricionais = document.getElementById("editarInformacoesNutricionais").value;
         const imagemInput = document.getElementById("editarImagem");
         let imagemBase64 = null;
 
@@ -764,20 +798,22 @@
             const reader = new FileReader();
             reader.onloadend = () => {
                 imagemBase64 = reader.result.split(',')[1]; // Remove o prefixo data:image/png;base64,
-                atualizarOpcao(opcaoId, descricao, imagemBase64);
+                atualizarOpcao(opcaoId, descricao, imagemBase64, tamanhoPorcao, informacoesNutricionais);
             };
             reader.readAsDataURL(imagemFile);
         } else {
-            atualizarOpcao(opcaoId, descricao, null); // Mantém a imagem existente
+            atualizarOpcao(opcaoId, descricao, null, tamanhoPorcao, informacoesNutricionais); // Mantém a imagem existente
         }
     });
 
-    async function atualizarOpcao(opcaoId, descricao, imagemBase64) {
+    async function atualizarOpcao(opcaoId, descricao, imagemBase64, tamanhoPorcao, informacoesNutricionais) {
         try {
             const response = await Parse.Cloud.run("atualizarOpcao", {
                 id: opcaoId,
                 descricao: descricao,
-                imagem: imagemBase64
+                imagem: imagemBase64,
+                tamanhoPorcao: tamanhoPorcao,
+                informacoesNutricionais: informacoesNutricionais
             });
 
             if (response.success) {
@@ -817,7 +853,7 @@
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/script.js"></script>
+
 </body>
 
 </html>

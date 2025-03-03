@@ -1,5 +1,3 @@
-<!-- templates/plataforma/perfil/perfil.html -->
-
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -10,7 +8,7 @@
     <link rel="stylesheet" href="/static/plataforma/css/css.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
     <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
-
+    <script src="/script.js"></script>
     <script>
         Parse.initialize(
             "6LAVwcoGQ2XX4nDRe7n9Ng1ES0HCP0qDnO5DCmJB",
@@ -20,18 +18,52 @@
         console.log("Parse.serverURL:", Parse.serverURL);
         console.log("typeof Parse:", typeof Parse);
     </script>
+
+    <!-- Inclui a função de verificação -->
+    <style>
+       
+        .navbar-nav-sidebar .nav-item {
+            margin-right: 0;
+        }
+
+        .navbar-nav-sidebar .nav-link {
+            padding-left: 1rem;
+        }
+    </style>
 </head>
 
 <body>
     <nav style="background-color: #27db8f" class="navbar navbar-expand-lg navbar-dark">
-        <a style="font-weight: bold" class="navbar-brand" href="/index.html">NUTRI LAB</a>
+        <a style="font-weight: bold" class="navbar-brand" href="#">NUTRI LAB</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav" id="menu-autenticacao">
-                <!-- Itens de menu dinâmicos serão carregados aqui -->
+                <script>atualizarMenuAutenticacao();</script>
+            </ul>
+
+            <!-- Sidebar links for mobile -->
+            <ul class="navbar-nav navbar-nav-sidebar">
+                <li class="nav-item">
+                    <a class="nav-link" href="../pacientes.html">
+                        <img src="/static/img/paciente.png" alt="Pacientes" />
+                        <span>Gerenciar Pacientes</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../dados_paciente_listar.html">
+                        <img src="/static/img/dados_paciente.png" alt="Dados do Paciente" />
+                        <span>Dados do Pacientes</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="../plano_alimentar_listar.html">
+                        <img src="/static/img/plano_alimentar.png" alt="Plano Alimentar" />
+                        <span>Plano alimentar</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </nav>
@@ -137,152 +169,172 @@
             </main>
         </div>
     </div>
-
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        // 1. Chama a função `requireAuth()`. Assumimos que esta função verifica se o usuário está autenticado.
+        //    Se o usuário não estiver autenticado, ela provavelmente o redirecionará para a página de login.
+        requireAuth();
+      
+        // 2. Adiciona um listener para o evento "DOMContentLoaded".
+        //    Isso significa que o código dentro desta função será executado depois que toda a página HTML
+        //    for carregada e o DOM (Document Object Model) estiver pronto.
         document.addEventListener("DOMContentLoaded", async () => {
-    const perfilInfo = document.getElementById("perfilInfo");
-    const editUsuarioInput = document.getElementById("editUsuario");
-    const editEmailInput = document.getElementById("editEmail");
-    const formEditarPerfil = document.getElementById("formEditarPerfil");
-    const editarPerfilError = document.getElementById("editarPerfilError");
-    const confirmarExclusaoButton = document.getElementById("confirmarExclusao");
-
-    // Função para buscar e exibir as informações do perfil
-    async function buscarPerfil() {
-        try {
-            const result = await Parse.Cloud.run("buscarPerfil");
-
-            if (result.success) {
+          // 3. Obtém referências para vários elementos HTML usando seus IDs.
+          //    Estes elementos incluem a área de exibição das informações do perfil, os campos de entrada
+          //    para editar o nome de usuário e o e-mail, o formulário de edição do perfil, a área de exibição
+          //    de erros e o botão de confirmação de exclusão da conta.
+          const perfilInfo = document.getElementById("perfilInfo");
+          const editUsuarioInput = document.getElementById("editUsuario");
+          const editEmailInput = document.getElementById("editEmail");
+          const formEditarPerfil = document.getElementById("formEditarPerfil");
+          const editarPerfilError = document.getElementById("editarPerfilError");
+          const confirmarExclusaoButton = document.getElementById("confirmarExclusao");
+      
+          // 4. Define uma função assíncrona chamada `buscarPerfil()`. Esta função é responsável por buscar
+          //    as informações do perfil do usuário e exibi-las na página.
+          async function buscarPerfil() {
+            // 5. Envolve o processo de busca do perfil em um bloco try...catch para tratar possíveis erros.
+            try {
+              // 6. Usa `Parse.Cloud.run("buscarPerfil")` para chamar uma função na nuvem do Parse chamada "buscarPerfil".
+              //    Assumimos que esta função na nuvem busca as informações do perfil do usuário atual no banco de dados.
+              const result = await Parse.Cloud.run("buscarPerfil");
+      
+              // 7. Verifica se a chamada da função na nuvem foi bem-sucedida.
+              if (result.success) {
+                // 8. Atualiza o conteúdo do elemento `perfilInfo` com as informações do perfil recebidas do servidor.
+                //    As informações incluem o nome de usuário e o e-mail.
                 perfilInfo.innerHTML = `
-                    <p><strong>Nome de Usuário:</strong> ${result.perfil.username}</p>
-                    <p><strong>Email:</strong> ${result.perfil.email}</p>
-                `;
+                          <p><strong>Nome de Usuário:</strong> ${result.perfil.username}</p>
+                          <p><strong>Email:</strong> ${result.perfil.email}</p>
+                      `;
+                // 9. Preenche os campos de entrada de edição com os valores atuais do perfil.
                 editUsuarioInput.value = result.perfil.username;
                 editEmailInput.value = result.perfil.email;
-            } else {
-                perfilInfo.innerHTML = "<p>Erro ao carregar perfil: " + result.message + "</p>";
+              } else {
+                // 10. Se a chamada da função na nuvem falhar, exibe uma mensagem de erro no elemento `perfilInfo`.
+                perfilInfo.innerHTML =
+                  "<p>Erro ao carregar perfil: " + result.message + "</p>";
+              }
+            } catch (error) {
+              // 11. Trata erros que possam ocorrer durante o processo de busca do perfil.
+              console.error("Erro ao buscar perfil:", error);
+              perfilInfo.innerHTML = "<p>Erro ao carregar perfil.</p>";
             }
-        } catch (error) {
-            console.error("Erro ao buscar perfil:", error);
-            perfilInfo.innerHTML = "<p>Erro ao carregar perfil.</p>";
-        }
-    }
-
-    // Função para editar o perfil
-    formEditarPerfil.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        editarPerfilError.innerText = "";
-
-        const username = editUsuarioInput.value;
-        const email = editEmailInput.value;
-
-        try {
-            const result = await Parse.Cloud.run("atualizarPerfil", { username: username, email: email });
-
-            if (result.success) {
+          }
+      
+          // 12. Adiciona um listener para o evento "submit" do formulário de edição do perfil.
+          //     Isso significa que o código dentro desta função será executado quando o formulário for enviado.
+          formEditarPerfil.addEventListener("submit", async (event) => {
+            // 13. Previne o comportamento padrão do envio do formulário, que seria recarregar a página.
+            event.preventDefault();
+            // 14. Limpa qualquer mensagem de erro existente no elemento `editarPerfilError`.
+            editarPerfilError.innerText = "";
+      
+            // 15. Obtém os novos valores do nome de usuário e do e-mail dos campos de entrada.
+            const username = editUsuarioInput.value;
+            const email = editEmailInput.value;
+      
+            // 16. Envolve o processo de atualização do perfil em um bloco try...catch para tratar possíveis erros.
+            try {
+              // 17. Usa `Parse.Cloud.run("atualizarPerfil", { username: username, email: email })` para chamar uma função
+              //     na nuvem do Parse chamada "atualizarPerfil". Esta função na nuvem atualiza as informações do perfil
+              //     do usuário no banco de dados.
+              const result = await Parse.Cloud.run("atualizarPerfil", {
+                username: username,
+                email: email,
+              });
+      
+              // 18. Verifica se a chamada da função na nuvem foi bem-sucedida.
+              if (result.success) {
+                // 19. Exibe uma mensagem de sucesso ao usuário.
                 alert("Perfil atualizado com sucesso!");
+                // 20. Chama a função `buscarPerfil()` para atualizar a exibição das informações do perfil.
                 await buscarPerfil(); // Atualiza a exibição do perfil
-                $('#modalEditarPerfil').modal('hide'); // Fecha o modal
-            } else {
-                editarPerfilError.innerText = "Erro ao atualizar perfil: " + result.message;
+                // 21. Esconde o modal de edição do perfil (presume que está usando Bootstrap).
+                $("#modalEditarPerfil").modal("hide"); // Fecha o modal
+              } else {
+                // 22. Se a chamada da função na nuvem falhar, exibe uma mensagem de erro no elemento `editarPerfilError`.
+                editarPerfilError.innerText =
+                  "Erro ao atualizar perfil: " + result.message;
+              }
+            } catch (error) {
+              // 23. Trata erros que possam ocorrer durante o processo de atualização do perfil.
+              console.error("Erro ao editar perfil:", error);
+              editarPerfilError.innerText =
+                "Erro ao atualizar perfil: " + error.message;
             }
-        } catch (error) {
-            console.error("Erro ao editar perfil:", error);
-            editarPerfilError.innerText = "Erro ao atualizar perfil: " + error.message;
-        }
-    });
-
-    confirmarExclusaoButton.addEventListener("click", async () => {
-        // Desabilita o botão para evitar cliques duplos
-        confirmarExclusaoButton.disabled = true;
-        confirmarExclusaoButton.innerText = "Excluindo..."; // Feedback visual
-
-        try {
-            const result = await Parse.Cloud.run("deletarConta");
-
-            if (result.success) {
-                // Limpa o token localmente e redireciona (sem tentar deslogar no servidor)
+          });
+      
+          // 24. Adiciona um listener para o evento "click" do botão de confirmação de exclusão da conta.
+          //     Isso significa que o código dentro desta função será executado quando o botão for clicado.
+          confirmarExclusaoButton.addEventListener("click", async () => {
+            // 25. Desabilita o botão para evitar cliques duplos enquanto a exclusão está em andamento.
+            confirmarExclusaoButton.disabled = true;
+            // 26. Altera o texto do botão para fornecer feedback visual ao usuário.
+            confirmarExclusaoButton.innerText = "Excluindo..."; // Feedback visual
+      
+            // 27. Envolve o processo de exclusão da conta em um bloco try...catch...finally para tratar possíveis erros
+            //     e garantir que o botão seja reabilitado, independentemente do resultado.
+            try {
+              // 28. Usa `Parse.Cloud.run("deletarConta")` para chamar uma função na nuvem do Parse chamada "deletarConta".
+              //     Assumimos que esta função na nuvem exclui a conta do usuário atual do banco de dados.
+              const result = await Parse.Cloud.run("deletarConta");
+      
+              // 29. Verifica se a chamada da função na nuvem foi bem-sucedida.
+              if (result.success) {
+                // 30. Remove o `sessionToken` do `localStorage` do navegador.
                 localStorage.removeItem("sessionToken");
+      
+                // 31. Remove o `sessionToken` do `sessionStorage` do navegador.
                 sessionStorage.removeItem("sessionToken");
-                document.cookie = "sessionToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-
-                Parse.User.currentAsync().then(function(user) {
-                    if (user) {
-                      user.become(null); // Invalida o usuário atual no cache
-                    }
-                  }).catch(function(error) {
-                    console.error("Erro ao limpar user atual:", error);
-                  });
-
+      
+                // 32. Remove o cookie `sessionToken`.
+                document.cookie =
+                  "sessionToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      
+                  // 33. Obtém o usuário atual de forma assíncrona (Parse.User.currentAsync())
+                  Parse.User.currentAsync().then(function(user) {
+                      // 34. Verifica se há um usuário atual (se user não é nulo)
+                      if (user) {
+                      // 35. Se houver um usuário atual, invalida-o no cache local (user.become(null))
+                        user.become(null); // Invalida o usuário atual no cache
+                      }
+                    }).catch(function(error) {
+                      // 36. Se houver um erro ao limpar o usuário atual, exibe-o no console.
+                      console.error("Erro ao limpar user atual:", error);
+                    });
+      
+                  // 37. Desloga o usuário utilizando Parse.User.logOut()
                   Parse.User.logOut(); // Garante que não há sessão ativa no Parse SDK.
-
-
+      
+                // 38. Exibe uma mensagem de sucesso ao usuário.
                 alert("Conta excluída com sucesso!");
+                // 39. Redireciona o usuário para a página de login. `window.location.replace()` substitui a página atual
+                //     no histórico do navegador, impedindo que o usuário volte para a página de perfil ao clicar no botão "Voltar".
                 window.location.replace("/templates/autenticacao/logar.html");
-            } else {
+              } else {
+                // 40. Se a chamada da função na nuvem falhar, exibe uma mensagem de erro.
                 alert("Erro ao excluir conta: " + result.message);
+              }
+            } catch (error) {
+              // 41. Trata erros que possam ocorrer durante o processo de exclusão da conta.
+              console.error("Erro ao excluir conta:", error);
+              alert("Erro ao excluir conta: " + error.message);
+            } finally {
+              // 42. Reabilita o botão, independentemente do resultado da exclusão (sucesso ou falha).
+              confirmarExclusaoButton.disabled = false;
+              // 43. Restaura o texto original do botão.
+              confirmarExclusaoButton.innerText = "Excluir";
             }
-        } catch (error) {
-            console.error("Erro ao excluir conta:", error);
-            alert("Erro ao excluir conta: " + error.message);
-        } finally {
-            // Reabilita o botão, mesmo em caso de erro, para permitir nova tentativa
-            confirmarExclusaoButton.disabled = false;
-            confirmarExclusaoButton.innerText = "Excluir";
-        }
-    });
-
-    // Carregar o perfil ao carregar a página
-    await buscarPerfil();
-});
-            </script>
-            <script>
-                
-
-                // Função para atualizar o menu de autenticação (login/logout)
-            async function atualizarMenuAutenticacao() {
-                const menu = document.getElementById("menu-autenticacao");
-                menu.innerHTML = ""; // Limpa o menu
-
-                if (localStorage.getItem("sessionToken")) {
-                    // Usuário está logado
-                    const liSair = document.createElement("li");
-                    liSair.className = "nav-item";
-                    liSair.innerHTML = `
-                        <a class="nav-link" href="../templates/plataforma/perfil/perfil.html">Meu Perfil</a>
-                    `;
-                    menu.appendChild(liSair);
-
-                    const liSair2 = document.createElement("li");
-                    liSair2.className = "nav-item";
-                    liSair2.innerHTML = `
-                        <a class="nav-link" href="#" onclick="deslogarUsuario()">Sair</a>
-                    `;
-                    menu.appendChild(liSair2);
-                } else {
-                    // Usuário não está logado
-                    const liLogin = document.createElement("li");
-                    liLogin.className = "nav-item";
-                    liLogin.innerHTML = `
-                        <a class="nav-link" href="/templates/autenticacao/logar.html">Logar</a>
-                    `;
-                    menu.appendChild(liLogin);
-
-                    const liCadastro = document.createElement("li");
-                    liCadastro.className = "nav-item";
-                    liCadastro.innerHTML = `
-                        <a class="nav-link" href="/templates/autenticacao/cadastro.html">Cadastre-se</a>
-                    `;
-                    menu.appendChild(liCadastro);
-                }
-            }
-
-    // Chama a função para atualizar o menu quando a página carrega
-    atualizarMenuAutenticacao();
-</script>
-    <script src="/script.js"></script>
+          });
+      
+          // 44. Chama a função `buscarPerfil()` para carregar as informações do perfil ao carregar a página.
+          await buscarPerfil();
+        });
+      </script>
+           
+ 
 </body>
 
 </html>

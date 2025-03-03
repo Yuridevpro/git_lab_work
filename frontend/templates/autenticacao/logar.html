@@ -22,57 +22,64 @@
   </script>
   </head>
   <body>
-    
     <main id="content">
-      <div class="container-fluid">
+      <div class="container">  <!-- Using a standard Bootstrap container -->
         <div class="row">
-          <div class="col-md-3 sidebar">
-            <div class="logo_sidebar">
-              <h2 class="logo">
-                <img
-                  class="img_logo_sidebar"
-                  src="/static/img/logo_nutri_lab.png"
-                  alt="Logo NutriLab"
-                />
-              </h2>
+          <div class="col-md-4">  <!-- Sidebar on larger screens, occupies 4 columns-->
+            <div class="sidebar">
+              <div class="logo_sidebar">
+                <h2 class="logo">
+                  <img
+                    class="img_logo_sidebar"
+                    src="/static/img/logo_nutri_lab.png"
+                    alt="Logo NutriLab"
+                  />
+                </h2>
+              </div>
             </div>
           </div>
 
-          <div class="col-md-9">
+          <div class="col-md-8"> <!-- Main content area takes up 8 columns on larger screens-->
             <div class="area_cadastrar">
               <h2 class="titulo">Seja bem vindo</h2>
               <p class="sub-titulo">Entre com sua conta</p>
               <hr />
 
               <form id="loginForm">
-                <span class="bold">E-mail</span>
-                <input
-                  class="form-control input-form"
-                  type="email"
-                  id="email"
-                  placeholder="Digite seu E-mail..."
-                  required
-                />
-                <br />
-                <span class="bold">Senha</span>
-                <input
-                  class="form-control input-form"
-                  type="password"
-                  id="senha"
-                  placeholder="Digite sua senha..."
-                  required
-                />
-                <br />
-                <button class="btn-first" type="submit">Logar</button>
+                <div class="form-group">
+                  <label class="bold" for="email">E-mail</label>
+                  <input
+                    class="form-control"
+                    type="email"
+                    id="email"
+                    placeholder="Digite seu E-mail..."
+                    required
+                  />
+                </div>
+
+                <div class="form-group">
+                  <label class="bold" for="senha">Senha</label>
+                  <input
+                    class="form-control"
+                    type="password"
+                    id="senha"
+                    placeholder="Digite sua senha..."
+                    required
+                  />
+                </div>
+
+                <button class="btn btn-success btn-block" type="submit">Logar</button>
+                <!-- Using Bootstrap's button classes -->
               </form>
 
-              <h3 style="position: absolute; bottom: 65px; font-weight: bold">
-                Não tem uma conta ? 
-                <a href="cadastro.html" class="btn btn-outline-success btn-lg"
-                  >Registre-se</a
-                >
+              <h3 class="mt-3 text-center"> <!-- Using Bootstrap's margin and text alignment classes -->
+                Não tem uma conta?
+                <a href="cadastro.html" class="btn btn-outline-success btn-sm">Registre-se</a>
               </h3>
-              <a href="esqueceu_senha.html">Esqueceu a senha?</a>
+
+              <div class="text-center">
+                <a href="esqueceu_senha.html">Esqueceu a senha?</a>
+              </div>
             </div>
           </div>
         </div>
@@ -89,29 +96,56 @@
       crossorigin="anonymous"
     ></script>
    
-     <script>
+    <script>
+      // 1. Obtém o formulário de login pelo seu ID no HTML.
       const formLogin = document.getElementById("loginForm");
+    
+      // 2. Adiciona um "listener" de evento para o evento "submit" do formulário.
+      //    Isso significa que a função a seguir será executada quando o formulário for enviado.
       formLogin.addEventListener("submit", async (event) => {
-          event.preventDefault();
-  
-          const email = document.getElementById("email").value;
-          const senha = document.getElementById("senha").value;
-  
-          try {
-              const user = await Parse.User.logIn(email, senha);
-              const sessionToken = user.getSessionToken();  // Obtém o sessionToken
-              localStorage.setItem("sessionToken", sessionToken); // Armazena o sessionToken
-              console.log("sessionToken armazenado no localStorage:", sessionToken); // Debug
-  
-              alert("Login realizado com sucesso! Redirecionando.");
-              window.location.href = "/templates/plataforma/pacientes.html?id=${user.id}"; // Redireciona para a página principal
-  
-          } catch (error) {
-              console.error("Erro ao logar:", error);
-              alert("Erro ao logar: " + error.message);
-          }
+        // 3. Previne o comportamento padrão do envio do formulário,
+        //    que seria recarregar a página. Isso permite que o JavaScript controle o envio.
+        event.preventDefault();
+    
+        // 4. Obtém os valores dos campos de e-mail e senha do formulário.
+        const email = document.getElementById("email").value;
+        const senha = document.getElementById("senha").value;
+    
+        // 5. Envolve o processo de login em um bloco try...catch para tratar possíveis erros.
+        try {
+          // 6. Usa a função `Parse.User.logIn(email, senha)` do Parse SDK para autenticar o usuário.
+          //    Esta função retorna um objeto `Parse.User` se a autenticação for bem-sucedida.  `await`
+          //    garante que o código espere a resposta do servidor Parse antes de continuar.
+          const user = await Parse.User.logIn(email, senha);
+    
+          // 7. Obtém o sessionToken do objeto `Parse.User`. O sessionToken é uma credencial temporária
+          //    que permite que o usuário acesse recursos protegidos sem precisar inserir o nome de
+          //    usuário e senha novamente a cada vez.
+          const sessionToken = user.getSessionToken();
+    
+          // 8. Armazena o sessionToken no `localStorage` do navegador. Isso permite que o aplicativo
+          //    "lembre" que o usuário está autenticado, mesmo depois de fechar e reabrir a página.
+          localStorage.setItem("sessionToken", sessionToken);
+    
+          // 9. Imprime o sessionToken no console para fins de depuração.
+          console.log("sessionToken armazenado no localStorage:", sessionToken); // Debug
+    
+          // 10. Exibe uma mensagem de sucesso ao usuário.
+          alert("Login realizado com sucesso! Redirecionando.");
+    
+          // 11. Redireciona o usuário para a página principal.
+          //     A URL inclui o ID do usuário como um parâmetro de consulta (`?id=${user.id}`).
+          //     Isso permite que a página principal acesse as informações específicas do usuário.
+          window.location.href = `/templates/plataforma/pacientes.html?id=${user.id}`;
+    
+        } catch (error) {
+          // 12. Trata erros que possam ocorrer durante o processo de login.
+          console.error("Erro ao logar:", error);
+          // 13. Exibe uma mensagem de erro ao usuário.
+          alert("Erro ao logar: " + error.message);
+        }
       });
-  </script>
+    </script>
     <script src="/script.js"></script>
   </body>
 </html>

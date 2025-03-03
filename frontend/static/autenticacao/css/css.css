@@ -1,42 +1,81 @@
-/* frontend/static/autenticacao/css/css.css */
+/* Reset basic styles for better cross-browser consistency */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%; /* Make sure html and body fill the viewport height */
+}
 
-
+/* General Styles (Applicable to All Screen Sizes) */
 .sidebar {
+  /* Adjustments for Mobile */
   background-color: #27db8f;
-  height: 100vh;
+  text-align: center; /* Center logo on mobile */
 }
 
 .logo_sidebar {
-  text-align: center;
+  text-align: center;  /* Keep logo centered  */
+  padding: 10px;       /* Add some padding */
 }
 
 .img_logo_sidebar {
-  width: 100%;
+  max-width: 80%;     /* Make sure it fits in the smaller screen */
+  height: auto;        /* Maintain aspect ratio */
 }
 
 .sidebar {
-  background-image: url("/static/autenticacao/img/fundo_background.png");
+  background-image: url("/static/img/fundo_background.png");
+  /* Set background properties to cover the container */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  /*height: auto;*/ /* Remove height: auto; */
+}
+
+/* Override Bootstrap's container behavior */
+.container {
+  width: 100%;          /* Full width on all screens */
+  max-width: none;      /* Remove max-width */
+  padding-left: 0;     /* Remove default padding */
+  padding-right: 0;
+  margin-left: 0; /* Removing auto margins on the sides */
+  margin-right: 0;
+}
+
+.row {
+  margin-left: 0; /* Remove row's default negative margins */
+  margin-right: 0;
 }
 
 .area_cadastrar {
-  margin-top: 8%;
-  margin-left: 15%;
-  width: 70%;
+  margin: 20px auto; /* Center horizontally and add top/bottom margin */
+  padding: 20px;      /* Add padding inside */
+  width: 90%;         /* Occupy more width on small screens */
+  max-width: 500px;    /* Limit the width on larger screens */
+  /* margin-top: 8%; */ /* Remove fixed top margin for responsiveness */
+  /* margin-left: 15%; */ /* Remove fixed left margin for responsiveness */
+  /* width: 70%; */   /* Removed absolute width */
 }
 
 .titulo {
   font-weight: bold;
+  text-align: center; /* Center title on mobile */
+  font-size: 1.5em;   /* Adjust font size for better readability */
 }
 
 .sub-titulo {
   color: gray;
+  text-align: center; /* Center subtitle on mobile */
 }
 
 .input-form {
-  margin-top: 15px;
+  margin-top: 10px;
+  margin-bottom: 10px;/* Add some space between input and labels */
   width: 100%;
-  padding: 5px;
+  padding: 10px;         /* Increase padding for better touch */
   outline: 0;
+  box-sizing: border-box;/* Include padding and border in the element's total width and height */
+  border: 1px solid #ccc;/* A visible border makes it clearer */
+  border-radius: 5px; /* Optional: Rounded corners */
 }
 
 .input-form:focus {
@@ -47,13 +86,80 @@
 
 .bold {
   font-weight: bold;
+  display: block;       /* Make labels appear above inputs */
+  margin-bottom: 5px;
 }
 
 .btn-first {
   border: none;
-  padding: 5px 15px 5px 15px;
-  font-size: 25px;
+  padding: 10px 20px;    /* Adjust padding for better touch */
+  font-size: 1.2em;     /* Use em for relative sizing */
   background-color: #27db8f;
   color: white;
   font-weight: bold;
+  width: 100%;         /* Make button full width */
+  border-radius: 5px;
+  cursor: pointer;
 }
+
+.btn-first:hover {
+  background-color: #22b377; /* Slightly darker on hover */
+}
+
+/* Hide "Já possui uma conta" on screens smaller than 768px */
+h3[style*="Já possui uma conta"] {
+  position: relative !important; /* remove absolute positioning */
+  bottom: auto !important;       /* remove bottom positioning */
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Optional:  Add some spacing for the "Logar" button */
+a.btn.btn-outline-success.btn-sm {
+  margin-left: 5px;  /* Add a little spacing */
+}
+
+/* Media Query for larger screens (tablets and desktops) */
+@media (min-width: 768px) {
+  .sidebar {
+    height: 100vh;
+  }
+
+  .area_cadastrar {
+    margin-top: 8%;
+    margin-left: 15%;
+    width: 70%;
+  }
+
+  .titulo {
+    text-align: left;  /* Align title left on larger screens */
+    font-size: 2em;
+  }
+
+  .sub-titulo {
+    text-align: left;
+  }
+
+  .btn-first {
+      width: auto; /* Make button fit content again */
+  }
+  h3[style*="Já possui uma conta"] {
+    position: absolute !important;
+    bottom: 65px !important;
+    text-align: left;
+  }
+
+  .col-md {
+      flex: 0 0 48%; /* Adjust width of col-md to accommodate content */
+      max-width: 48%;
+  }
+}
+
+/* Adjust row to use flexbox on larger screens */
+@media (min-width: 768px) {
+    .row {
+      display: flex;
+      flex-wrap: wrap; /* allows items to wrap */
+      justify-content: space-between;
+    }
+  }
