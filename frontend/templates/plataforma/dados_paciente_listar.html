@@ -11,14 +11,33 @@
     <script src="/script.js"></script>
     <style>
        
-
-        
+       .navbar-nav-sidebar {
+        display: none; /* Hidden by default */
+        }
         .navbar-nav-sidebar .nav-item {
             margin-right: 0;
         }
 
         .navbar-nav-sidebar .nav-link {
             padding-left: 1rem;
+        }
+
+        @media (max-width: 767.98px) {
+        .navbar-nav-sidebar {
+            display: flex; /* Show on small screens */
+            flex-direction: column;
+        }
+         #sidebar{
+            display: none;
+         }
+
+        }
+        /* Adjust the size of the sidebar images on smaller screens */
+        @media (max-width: 767.98px) {
+        .navbar-nav-sidebar .nav-link img {
+            max-width: 30px; /* Adjust the pixel value as needed */
+            height: auto;
+        }
         }
     </style>
 </head>

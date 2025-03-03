@@ -12,6 +12,9 @@
     <script src="/script.js"></script>
     <style>
 
+.navbar-nav-sidebar {
+        display: none; /* Hidden by default */
+        }
         .navbar-nav-sidebar .nav-item {
             margin-right: 0;
         }
@@ -20,16 +23,22 @@
             padding-left: 1rem;
         }
 
-        /* Mobile table style fix */
         @media (max-width: 767.98px) {
-            .table-responsive {
-                font-size: 0.8rem;
-            }
+        .navbar-nav-sidebar {
+            display: flex; /* Show on small screens */
+            flex-direction: column;
+        }
+         #sidebar{
+            display: none;
+         }
 
-            .table-responsive .btn {
-                padding: 0.2rem 0.4rem;
-                font-size: 0.7rem;
-            }
+        }
+        /* Adjust the size of the sidebar images on smaller screens */
+        @media (max-width: 767.98px) {
+        .navbar-nav-sidebar .nav-link img {
+            max-width: 30px; /* Adjust the pixel value as needed */
+            height: auto;
+        }
         }
     </style>
 </head>
