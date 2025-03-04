@@ -1,6 +1,6 @@
 /* Reset basic styles for better cross-browser consistency */
 body, html {
-  background-color: #db2727;
+  background-color: #c9db27;
   padding: 0;
   height: 100%; /* Make sure html and body fill the viewport height */
 }
