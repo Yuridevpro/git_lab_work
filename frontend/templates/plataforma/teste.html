@@ -1,0 +1,243 @@
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Plano Alimentar</title>
+    <link rel="stylesheet" href="/static/plataforma/css/css.css" />
+    <link rel="stylesheet" href="/static/plataforma/css/plano_alimentar.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    
+<script type='text/javascript' src='https://html2canvas.hertzen.com/dist/html2canvas.js'></script>
+<script type='text/javascript' src= "https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script> 
+<script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.min.js" integrity="sha512-2ziYH4Qk1Cs0McWDB9jfPYzvRgxC8Cj62BUC2fhwrP/sUBkkfjYk3142xTKyuCyGWL4ooW8wWOzMTX86X1xe3Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <!-- Container para o conteúdo a ser exportado -->
+  <div id="planoAlimentarExport">
+    <!-- Dados do nutricionista serão carregados aqui -->
+    <div id="dadosNutricionista"></div>
+    <h1 style="text-align: center;">Plano Alimentar</h1>
+    <!-- Refeições formatadas para exportação -->
+    <div id="listaRefeicoesExport"></div>
+</div>
+
+<!-- Elemento para o conteúdo do PDF (oculto) -->
+<div id="pdfContent"></div>
+
+
+async function buscarOpcoesDaRefeicao(refeicaoId) {
+    const Opcao = Parse.Object.extend("Opcao");
+    const query = new Parse.Query(Opcao);
+    const Refeicao = Parse.Object.extend("Refeicao");
+    const refeicao = new Refeicao();
+    refeicao.id = refeicaoId;
+    query.equalTo("refeicao", refeicao);
+    query.include("imagem"); // Inclui a imagem para exibir a URL
+
+    try {
+        const results = await query.find();
+        let opcoesHTML = "";
+        if (results.length > 0) {
+            results.forEach(opcao => {
+                opcoesHTML += `
+                    <div class="opcao">
+                        <div class="opcao">
+                            <p><strong>Descrição:</strong> ${opcao.get("descricao")}</p>
+                            <p><strong>Tamanho da Porção:</strong> ${opcao.get("tamanhoPorcao")} g</p>
+                            <p><strong>Informações Nutricionais: </strong>${opcao.get("informacoesNutricionais")}</p>
+                        </div>
+                        ${opcao.get("imagem") ? `<img src="${opcao.get("imagem").url()}" width="100%" />` : ''}
+                         <div class="opcao-buttons">
+                            <button class="btn btn-sm btn-primary btnEditarOpcao" data-id="${opcao.id}"
+                                data-descricao="${opcao.get("descricao")}"
+                                data-tamanhoporcao="${opcao.get("tamanhoPorcao")}"
+                                data-informacoesnutricionais="${opcao.get("informacoesNutricionais")}"
+                                data-toggle="modal" data-target="#modalEditarOpcao">Editar</button>
+                            <button class="btn btn-sm btn-danger btnExcluirOpcao" data-id="${opcao.id}"
+                                data-toggle="modal" data-target="#modalExcluirOpcao">Excluir</button>
+                        </div>
+                    </div>
+                `;
+            });
+        } else {
+            opcoesHTML = "<p>Nenhuma opção encontrada para esta refeição.</p>";
+        }
+        return opcoesHTML;
+    } catch (error) {
+        console.error("Erro ao listar opções:", error);
+        return "<p>Erro ao carregar opções.</p>";
+    }
+}
+
+listarRefeicoes();
+
+ async function exportarPlanoAlimentar() {
+  // 1. Obter dados do nutricionista (usando Parse Cloud Function)
+  const dadosNutricionista = await obterDadosNutricionista();
+
+  // Exibir os dados do nutricionista na página (para garantir que estão sendo carregados corretamente)
+  document.getElementById("dadosNutricionista").innerHTML = `
+        <h2>${dadosNutricionista.nome || "Nutricionista Desconhecido"}</h2>
+        <p>Email: ${dadosNutricionista.email || "Email Desconhecido"}</p>
+        <!-- Adicione a logo da empresa aqui -->
+    `;
+
+  // 2. Preencher o container com os dados do plano alimentar (reutilizando a formatação existente ou criando uma nova)
+  await gerarHTMLPlanoAlimentar(); // Garante que o conteúdo seja gerado no elemento com id pdfContent
+
+  // 3. Exibir o container para que jsPDF possa capturá-lo
+  document.getElementById("planoAlimentarExport").style.display = "block";
+
+  // 4. Converter o conteúdo HTML em um PDF
+  gerarPDF();
+
+  // 5. Ocultar o container novamente
+  document.getElementById("planoAlimentarExport").style.display = "none";
+}
+
+async function obterDadosNutricionista() {
+  try {
+    const response = await Parse.Cloud.run("obterDadosNutricionista");
+    return response;
+  } catch (error) {
+    console.error("Erro ao obter dados do nutricionista:", error);
+    return {
+      nome: "Nutricionista Desconhecido",
+      email: "email@desconhecido.com"
+    };
+  }
+}
+
+async function gerarHTMLPlanoAlimentar() {
+let conteudoHTML = `
+<div class="pdf-header">
+<img src="/static/img/logo_nutri_lab.png" alt="Logo da Empresa" class="pdf-logo">
+<h1>Plano Alimentar Personalizado</h1>
+</div>
+`;
+
+// Adicionar informações do profissional
+conteudoHTML += `
+<div class="pdf-professional-info">
+<p><strong>Nutricionista:</strong> Dra. Ana Paula</p>
+<p><strong>Email:</strong> ana.paula@nutrilab.com</p>
+</div>`;
+
+// Simular a adição de refeições sem imagem (somente texto)
+conteudoHTML += `
+<div class="pdf-meal-card">
+<h3>Refeição 1</h3>
+<p><strong>Horário:</strong> 12:00</p>
+<p><strong>Carboidratos:</strong> 50g</p>
+<p><strong>Proteínas:</strong> 30g</p>
+<p><strong>Gorduras:</strong> 20g</p>
+<p><strong>Descrição:</strong> Opção de refeição 1</p>
+</div>`;
+
+// Adicionar footer
+conteudoHTML += `
+<div class="pdf-footer">
+<p>Este plano alimentar é personalizado e elaborado pela Nutri Lab.</p>
+</div>`;
+
+document.getElementById("pdfContent").innerHTML = conteudoHTML;
+}
+
+
+// Função auxiliar para buscar opções formatadas para o PDF
+async function buscarOpcoesParaPDF(refeicaoId) {
+  const Opcao = Parse.Object.extend("Opcao");
+  const query = new Parse.Query(Opcao);
+  const Refeicao = Parse.Object.extend("Refeicao");
+  const refeicao = new Refeicao();
+  refeicao.id = refeicaoId;
+  query.equalTo("refeicao", refeicao);
+  query.include("imagem");
+
+  try {
+    const results = await query.find();
+    let opcoesHTML = "";
+    if (results.length > 0) {
+      results.forEach(opcao => {
+        opcoesHTML += `
+    <div class="pdf-opcao">
+        <p><strong>Descrição:</strong> ${opcao.get("descricao")}</p>
+        <p><strong>Tamanho da Porção:</strong> ${opcao.get("tamanhoPorcao")} g</p>
+        <p><strong>Informações Nutricionais:</strong> ${opcao.get("informacoesNutricionais")}</p>
+        ${opcao.get("imagem")
+          ? `<img src="${opcao.get("imagem").url()}" alt="Opção" class="opcao-image" />`
+          : ''}
+    </div>`;
+      });
+    } else {
+      opcoesHTML = "<p>Nenhuma opção encontrada para esta refeição.</p>";
+    }
+    return opcoesHTML;
+  } catch (error) {
+    console.error("Erro ao listar opções para PDF:", error);
+    return "<p>Erro ao carregar opções.</p>";
+  }
+}
+
+async function exportarPlanoAlimentarParaPDF() {
+try {
+// Garante que o conteúdo HTML esteja gerado antes de chamar o jsPDF
+await gerarHTMLPlanoAlimentar();
+
+// Use setTimeout para garantir que o conteúdo seja renderizado no DOM
+setTimeout(() => {
+const { jsPDF } = window.jspdf;
+const doc = new jsPDF();
+const content = document.getElementById("pdfContent");
+
+if (!content) {
+console.error("Elemento com id 'pdfContent' não encontrado!");
+return;
+}
+
+doc.html(content, {
+callback: function (doc) {
+  doc.save("plano_alimentar.pdf");
+},
+margin: [10, 10, 10, 10],
+autoPaging: 'text',
+x: 0,
+y: 0,
+width: 190,
+windowWidth: 675
+});
+}, 500); // Aguarda 500ms antes de gerar o PDF
+} catch (error) {
+console.error("Erro durante a geração do PDF:", error);
+}
+}
+
+
+// Event listener para o botão de exportar
+//document.getElementById("exportarPlanoAlimentar").addEventListener("click", exportarPlanoAlimentarParaPDF);
+document.getElementById("exportarPlanoAlimentar").addEventListener("click", exportarPlanoAlimentarParaPDF);
+
+function gerarPDF() {
+  console.log("gerarPDF() chamada");
+  const filename = 'plano_alimentar.pdf';
+  exportarPlanoAlimentarParaPDF();
+}
+
+// Call the function after the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', function () {
+  listarRefeicoes(); // Calling listarRefeicoes() here too, if it depends on DOM
+  //exportarPlanoAlimentar(); // You might want to call it on a button click instead.
+});
+
+async function gerarPDFSimples() {
+const { jsPDF } = window.jspdf;
+const doc = new jsPDF();
+
+doc.text("Plano Alimentar Personalizado", 10, 10);
+doc.text("Nutricionista: Dra. Ana Paula", 10, 20);
+doc.text("Email: ana.paula@nutrilab.com", 10, 30);
+
+doc.save("plano_alimentar_simples.pdf");
+}

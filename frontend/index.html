@@ -36,18 +36,21 @@
           </div>
 
           <div class="col-md-9">
-            <div class="area_cadastrar">
-              <h2 class="titulo">Bem-vindo ao NUTRI LAB</h2>
-              <p class="sub-titulo">
-                Sua plataforma de gestão de pacientes e planos alimentares.
-              </p>
-              <hr />
-              <p>
-                Para começar, crie sua conta ou entre em uma conta existente.
-              </p>
-              <a href="./templates/autenticacao/cadastro.html" class="btn btn-success">Cadastre-se</a>
-       
+            <div class="area_cadastrar d-flex flex-column align-items-center justify-content-center" style="height: 400px;">
+                <h2 class="titulo text-center" style="width: 150%;">Bem-vindo ao NUTRI LAB</h2>
+                <p class="sub-titulo text-center">
+                    Sua plataforma de gestão de pacientes e planos alimentares.
+                </p>
+                <hr class="w-50">
+                <p class="text-center">
+                    Para começar, crie sua conta ou entre em uma conta existente.
+                </p>
+                <div class="d-flex justify-content-center">
+                    <a href="./templates/autenticacao/cadastro.html" class="btn btn-success mx-2">Cadastre-se</a>
+                    <a href="./templates/autenticacao/logar.html" class="btn btn-success mx-2">Login</a>
+                </div>
             </div>
+        </div>
           </div>
         </div>
       </div>
@@ -63,41 +66,6 @@
       integrity="sha384-Piv4xVNRyMGpqWDJX0mtvCGYCZEl+6Lg5iIEWIw56rNVMpw=="
       crossorigin="anonymous"
     ></script>
-    <script>
-      // Função para atualizar o menu de autenticação (login/logout)
-      async function atualizarMenuAutenticacao() {
-        const menu = document.getElementById("menu-autenticacao");
-        menu.innerHTML = ""; // Limpa o menu
-
-        if (localStorage.getItem("sessionToken")) {
-          // Usuário está logado
-          const liSair = document.createElement("li");
-          liSair.className = "nav-item";
-          liSair.innerHTML = `
-            <a class="nav-link" href="#" onclick="deslogarUsuario()">Sair</a>
-          `;
-          menu.appendChild(liSair);
-        } else {
-          // Usuário não está logado
-          const liLogin = document.createElement("li");
-          liLogin.className = "nav-item";
-          liLogin.innerHTML = `
-            <a class="nav-link" href="/templates/autenticacao/logar.html">Logar</a>
-          `;
-          menu.appendChild(liLogin);
-
-          const liCadastro = document.createElement("li");
-          liCadastro.className = "nav-item";
-          liCadastro.innerHTML = `
-            <a class="nav-link" href="/templates/autenticacao/cadastro.html">Cadastre-se</a>
-          `;
-          menu.appendChild(liCadastro);
-        }
-      }
-
-      // Chama a função para atualizar o menu quando a página carrega
-      atualizarMenuAutenticacao();
-    </script>
     <script src="script.js"></script>
   </body>
 </html>
