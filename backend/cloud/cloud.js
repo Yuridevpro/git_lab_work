@@ -1,4 +1,4 @@
-// cloud/cloud.js
+ // cloud/cloud.js
 
 // *** Middleware CORS ***
 Parse.Cloud.define("setCorsHeaders", (request) => {

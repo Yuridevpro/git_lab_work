@@ -19,16 +19,7 @@
         integrity="sha512-2ziYH4Qk1Cs0McWDB9jfPYzvRgxC8Cj62BUC2fhwrP/sUBkkfjYk3142xTKyuCyGWL4ooW8wWOzMTX86X1xe3Q=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="/script.js"></script>
-    <script>
-        // Inicializa o Parse
-        Parse.initialize(
-            "6LAVwcoGQ2XX4nDRe7n9Ng1ES0HCP0qDnO5DCmJB",
-            "mt4zRG5t4bIcWOVSCzh08A1BKjUfI6GcgzkLYwCk"
-        );
-        Parse.serverURL = "https://parseapi.back4app.com";
-        console.log("Parse.serverURL:", Parse.serverURL);
-        console.log("typeof Parse:", typeof Parse);
-    </script>
+
 
     <style>
         .navbar-nav-sidebar {
@@ -63,48 +54,6 @@
                 /* Adjust the pixel value as needed */
                 height: auto;
             }
-        }
-
-        /* Estilos para o PDF */
-        .pdf-header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .pdf-logo {
-            max-width: 150px;
-            margin-bottom: 10px;
-        }
-
-        .pdf-professional-info {
-            text-align: right;
-            margin-bottom: 20px;
-        }
-
-        .pdf-meal-card {
-            border: 1px solid #ddd;
-            margin-bottom: 15px;
-            padding: 10px;
-            border-radius: 5px;
-        }
-
-        .pdf-opcao {
-            margin-bottom: 10px;
-            padding: 5px;
-            border-left: 3px solid #27db8f;
-        }
-
-        .pdf-footer {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 0.8em;
-            color: #777;
-        }
-
-        .opcao-image {
-            max-width: 100%;
-            height: auto;
-            margin-top: 5px;
         }
 
          /* Style to hide the element without using display:none */
@@ -207,9 +156,6 @@
                         data-target="#modalNovaRefeicao">
                         + Nova refeição
                     </button>
-                    <button type="button" id="exportarPlanoAlimentar" class="btn btn-outline-primary">
-                        Exportar Plano Alimentar
-                    </button>
                 </div>
 
                 <!-- Container para listagem das refeições -->
@@ -268,62 +214,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-success btn-block">Cadastrar</button>
-                                </form>
-                                <button type="button" class="btn btn-outline-success btn-block mt-3"
-                                    data-toggle="modal" data-target="#modalNovaOpcao">
-                                    + Nova opção
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Modal para Adicionar Nova Opção -->
-                <div class="modal fade" id="modalNovaOpcao" tabindex="-1" role="dialog"
-                    aria-labelledby="modalNovaOpcaoLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="modalNovaOpcaoLabel">Adicionar Opção</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">×</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="formNovaOpcao" enctype="multipart/form-data">
-                                    <!-- Campo oculto para o ID do paciente -->
-                                    <input type="hidden" id="pacienteId" name="pacienteId" value="">
-
-                                    <div class="form-group">
-                                        <label for="refeicao">Selecione a refeição</label>
-                                        <select class="form-control" id="refeicao" required
-                                            title="Selecione a refeição para adicionar a opção"></select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="tamanhoPorcao">Tamanho da Porção</label>
-                                        <input type="number" class="form-control" id="tamanhoPorcao"
-                                            title="Insira o tamanho da porção em gramas ou ml" required />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="imagem">Imagem</label>
-                                        <input type="file" class="form-control" id="imagem" required
-                                            title="Selecione uma imagem para a opção" />
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="descricao">Descrição</label>
-                                        <textarea class="form-control" id="descricao"
-                                            title="Insira uma descrição do alimento"></textarea>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="informacoesNutricionais">Informações Nutricionais</label>
-                                        <textarea class="form-control" id="informacoesNutricionais"
-                                            title="Insira as informações nutricionais (calorias, macros)"></textarea>
-                                    </div>
-
                                     <button type="submit" class="btn btn-success btn-block">Cadastrar</button>
                                 </form>
                             </div>
@@ -411,87 +301,9 @@
                     </div>
                 </div>
 
-                <!-- Modal de Edição de Opção -->
-                <div class="modal fade" id="modalEditarOpcao" tabindex="-1" role="dialog"
-                    aria-labelledby="modalEditarOpcaoLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="modalEditarOpcaoLabel">Editar Opção</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">×</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="formEditarOpcao" enctype="multipart/form-data">
-                                    <input type="hidden" id="editarOpcaoId">
-                                    <div class="form-group">
-                                        <label for="editarDescricao">Descrição</label>
-                                        <textarea class="form-control" id="editarDescricao"
-                                            title="Insira uma descrição do alimento"></textarea>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="editarTamanhoPorcao">Tamanho da Porção</label>
-                                        <input type="number" class="form-control" id="editarTamanhoPorcao"
-                                            title="Insira o tamanho da porção em gramas ou ml" />
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="editarInformacoesNutricionais">Informações Nutricionais</label>
-                                        <textarea class="form-control" id="editarInformacoesNutricionais"
-                                            title="Insira as informações nutricionais (calorias, macros)"></textarea>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="editarImagem">Imagem (Selecione para alterar)</label>
-                                        <input type="file" class="form-control" id="editarImagem"
-                                            title="Selecione uma nova imagem para a opção (opcional)" />
-                                    </div>
-                                    <button type="submit" class="btn btn-primary btn-block">Salvar Alterações</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Modal de Confirmação de Exclusão de Opção -->
-                <div class="modal fade" id="modalExcluirOpcao" tabindex="-1" role="dialog"
-                    aria-labelledby="modalExcluirOpcaoLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="modalExcluirOpcaoLabel">Confirmar Exclusão da Opção</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">×</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                Tem certeza de que deseja excluir esta opção?
-                            </div>
-                            <div class="modal-footer d-flex justify-content-center">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                                <button type="button" class="btn btn-danger" id="confirmarExclusaoOpcao">Excluir</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </main>
         </div>
     </div>
-    <!-- Container para o conteúdo a ser exportado -->
-    <div id="planoAlimentarExport" style="display:none;">
-        <!-- Dados do nutricionista serão carregados aqui -->
-        <div id="dadosNutricionista"></div>
-        <h1 style="text-align: center;">Plano Alimentar</h1>
-        <!-- Refeições formatadas para exportação -->
-        <div id="listaRefeicoesExport"></div>
-    </div>
-
-    <!-- Elemento para o conteúdo do PDF (oculto) -->
-    <div id="pdfContent" style="display: block;"></div>
-
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
@@ -534,7 +346,6 @@
     <script>
 
         let refeicaoIdParaExcluir; // Variável global para armazenar o ID da refeição a ser excluída
-        let opcaoIdParaExcluir;
 
         async function listarRefeicoes() {
             if (!idPaciente) {
@@ -567,8 +378,6 @@
                 if (results.length > 0) {
                     let html = '';
                     for (const refeicao of results) {
-                        // Busca as opções da refeição
-                        const opcoes = await buscarOpcoesDaRefeicao(refeicao.id);
 
                         html += `
                       <div class="col-md-6 mb-4">
@@ -579,9 +388,6 @@
                                 <p class="card-text">Carboidratos: ${refeicao.get("carboidratos")}</p>
                                 <p class="card-text">Proteínas: ${refeicao.get("proteinas")}</p>
                                 <p class="card-text">Gorduras: ${refeicao.get("gorduras")}</p>
-                                <div>
-                                    ${opcoes}
-                                </div>
                                 <div class="mt-auto buttons d-flex justify-content-between">
                                     <button class="btn btn-sm btn-primary btnEditarRefeicao" data-id="${refeicao.id}"
                                         data-titulo="${refeicao.get("titulo")}" data-horario="${refeicao.get("horario")}"
@@ -606,100 +412,7 @@
             }
         }
 
-        async function buscarOpcoesDaRefeicao(refeicaoId) {
-            const Opcao = Parse.Object.extend("Opcao");
-            const query = new Parse.Query(Opcao);
-            const Refeicao = Parse.Object.extend("Refeicao");
-            const refeicao = new Refeicao();
-            refeicao.id = refeicaoId;
-            query.equalTo("refeicao", refeicao);
-            query.include("imagem"); // Inclui a imagem para exibir a URL
-
-            try {
-                const results = await query.find();
-                let opcoesHTML = "";
-                if (results.length > 0) {
-                    results.forEach(opcao => {
-                        opcoesHTML += `
-                    <div class="opcao">
-                        <div class="opcao">
-                        <p><strong>Descrição:</strong> ${opcao.get("descricao")}</p>
-                        <p><strong>Tamanho da Porção:</strong> ${opcao.get("tamanhoPorcao")} g</p>
-                        <p><strong>Informações Nutricionais: </strong>${opcao.get("informacoesNutricionais")}</p>
-                        <p></p>
-                    </div>
-                        ${opcao.get("imagem") ? `<img src="${opcao.get("imagem").url()}" width="100%" />` : ''}
-                         <div class="opcao-buttons">
-                            <button class="btn btn-sm btn-primary btnEditarOpcao" data-id="${opcao.id}"
-                                data-descricao="${opcao.get("descricao")}"
-                                data-tamanhoporcao="${opcao.get("tamanhoPorcao")}"
-                                data-informacoesnutricionais="${opcao.get("informacoesNutricionais")}"
-                                data-toggle="modal" data-target="#modalEditarOpcao">Editar</button>
-                            <button class="btn btn-sm btn-danger btnExcluirOpcao" data-id="${opcao.id}"
-                                data-toggle="modal" data-target="#modalExcluirOpcao">Excluir</button>
-                            </div>
-                    </div>
-                `;
-                    });
-                } else {
-                    opcoesHTML = "<p>Nenhuma opção encontrada para esta refeição.</p>";
-                }
-                return opcoesHTML;
-            } catch (error) {
-                console.error("Erro ao listar opções:", error);
-                return "<p>Erro ao carregar opções.</p>";
-            }
-        }
-
         listarRefeicoes();
-
-        // Função para popular o select de refeições no modal de nova opção
-        async function popularSelectRefeicoes() {
-            const selectRefeicao = document.getElementById("refeicao");
-            selectRefeicao.innerHTML = ""; // Limpa as opções existentes
-
-            const Refeicao = Parse.Object.extend("Refeicao");
-            const query = new Parse.Query(Refeicao);
-
-            // Cria um objeto do tipo Pacientes com o id atual para filtrar as refeições
-            const Paciente = Parse.Object.extend("Pacientes");
-            const paciente = new Paciente();
-            paciente.id = idPaciente;
-
-            query.equalTo("paciente", paciente);
-            query.descending("createdAt"); // Ordena pela data de criação
-
-            try {
-                const results = await query.find();
-                console.log("Resultados da consulta de refeições:", results);
-
-                if (results.length > 0) {
-                    results.forEach(refeicao => {
-                        const option = document.createElement("option");
-                        option.value = refeicao.id;
-                        option.text = refeicao.get("titulo");
-                        selectRefeicao.appendChild(option);
-                    });
-                } else {
-                    const option = document.createElement("option");
-                    option.value = "";
-                    option.text = "Nenhuma refeição encontrada";
-                    selectRefeicao.appendChild(option);
-                }
-            } catch (error) {
-                console.error("Erro ao buscar refeições:", error);
-                const option = document.createElement("option");
-                option.value = "";
-                option.text = "Erro ao carregar refeições";
-                selectRefeicao.appendChild(option);
-            }
-        }
-
-        // Chama a função para popular o select quando o modal de nova opção é aberto
-        $('#modalNovaOpcao').on('show.bs.modal', function (event) {
-            popularSelectRefeicoes();
-            document.getElementById("pacienteId").value = idPaciente; // Define o valor do campo oculto
-        });
 
         // Trata o envio do formulário para criar uma nova refeição
         document.getElementById("formNovaRefeicao").addEventListener("submit", async (event) => {
@@ -725,7 +438,6 @@
                     document.getElementById("formNovaRefeicao").reset();
                     $('#modalNovaRefeicao').modal('hide');
                     listarRefeicoes();
-                    popularSelectRefeicoes(); // Atualiza o select após criar uma nova refeição
                 } else {
                     alert("Erro ao criar refeição: " + response.message);
                 }
@@ -735,484 +447,78 @@
             }
         });
 
-        // Trata o envio do formulário para criar uma nova opção
-        document.getElementById("formNovaOpcao").addEventListener("submit", async (event) => {
-            event.preventDefault();
-
-            const refeicaoId = document.getElementById("refeicao").value;
-            const imagemInput = document.getElementById("imagem");
-            const descricao = document.getElementById("descricao").value;
-            const pacienteId = idPaciente; // Obtém o ID do paciente da variável global
-            const tamanhoPorcao = document.getElementById("tamanhoPorcao").value;
-            const informacoesNutricionais = document.getElementById("informacoesNutricionais").value;
-
-    // Verifica se um arquivo de imagem foi selecionado
-    if (imagemInput.files.length === 0) {
-        alert("Por favor, selecione uma imagem.");
-        return;
-      }
-    
-     
-const imagemFile = imagemInput.files[0];
-
-// Converte a imagem para base64
-const reader = new FileReader();
-reader.onloadend = async () => {
-    const imagemBase64 = reader.result.split(',')[1]; // Remove o prefixo data:image/png;base64,
-
-    try {
-        const response = await Parse.Cloud.run("criarOpcao", {
-            refeicaoId: refeicaoId,
-            imagem: imagemBase64,
-            descricao: descricao,
-            pacienteId: pacienteId, // Envia o ID do paciente
-            tamanhoPorcao: tamanhoPorcao,
-            informacoesNutricionais: informacoesNutricionais
+        // Lógica para Excluir Refeição
+        $(document).on('click', '.btnExcluirRefeicao', function () {
+        refeicaoIdParaExcluir = $(this).data('id'); // Armazena o ID da refeição a ser excluída
         });
 
-        if (response.success) {
-            alert("Opção criada com sucesso!");
-            document.getElementById("formNovaOpcao").reset();
-            $('#modalNovaOpcao').modal('hide');
-            // Após criar a opção, atualiza a lista de refeições
-            listarRefeicoes();
-        } else {
-            alert("Erro ao criar opção: " + response.message);
-        }
-    } catch (error) {
-        console.error("Erro ao criar opção:", error);
-        alert("Erro ao criar opção: " + error.message);
-    }
-};
-reader.readAsDataURL(imagemFile);
-});
+        $('#confirmarExclusao').on('click', async function () {
+        try {
+            const response = await Parse.Cloud.run("deletarRefeicao", { id: refeicaoIdParaExcluir });
 
-// Lógica para Excluir Refeição
-$(document).on('click', '.btnExcluirRefeicao', function () {
-refeicaoIdParaExcluir = $(this).data('id'); // Armazena o ID da refeição a ser excluída
-});
-
-$('#confirmarExclusao').on('click', async function () {
-try {
-    const response = await Parse.Cloud.run("deletarRefeicao", { id: refeicaoIdParaExcluir });
-
-    if (response.success) {
-        alert("Refeição excluída com sucesso!");
-        $('#modalExcluirRefeicao').modal('hide');
-        listarRefeicoes(); // Atualiza a lista após a exclusão
-    } else {
-        alert("Erro ao excluir refeição: " + response.message);
-    }
-} catch (error) {
-    console.error("Erro ao excluir refeição:", error);
-    alert("Erro ao excluir refeição: " + error.message);
-}
-});
-
-// Lógica para Editar Refeição
-$(document).on('click', '.btnEditarRefeicao', function () {
-const refeicaoId = $(this).data('id');
-const titulo = $(this).data('titulo');
-const horario = $(this).data('horario');
-const carboidratos = $(this).data('carboidratos');
-const proteinas = $(this).data('proteinas');
-const gorduras = $(this).data('gorduras');
-
-// Preenche os campos do modal com os dados da refeição
-$('#editarRefeicaoId').val(refeicaoId);
-$('#editarTitulo').val(titulo);
-$('#editarHorario').val(horario);
-$('#editarCarboidratos').val(carboidratos);
-$('#editarProteinas').val(proteinas);
-$('#editarGorduras').val(gorduras);
-});
-
-// Trata o envio do formulário de edição de refeição
-document.getElementById("formEditarRefeicao").addEventListener("submit", async (event) => {
-event.preventDefault();
-
-const idRefeicao = document.getElementById("editarRefeicaoId").value;
-const titulo = document.getElementById("editarTitulo").value;
-const horario = document.getElementById("editarHorario").value;
-const carboidratos = document.getElementById("editarCarboidratos").value;
-const proteinas = document.getElementById("editarProteinas").value;
-const gorduras = document.getElementById("editarGorduras").value;
-
-try {
-    const response = await Parse.Cloud.run("atualizarRefeicao", {
-        id: idRefeicao,
-        titulo: titulo,
-        horario: horario,
-        carboidratos: carboidratos,
-        proteinas: proteinas,
-        gorduras: gorduras
-    });
-    if (response.success) {
-        alert("Refeição atualizada com sucesso!");
-        $('#modalEditarRefeicao').modal('hide');
-        listarRefeicoes(); // Atualiza a lista após a edição
-    } else {
-        alert("Erro ao atualizar refeição: " + response.message);
-    }
-} catch (error) {
-    console.error("Erro ao atualizar refeição:", error);
-    alert("Erro ao atualizar refeição: " + error.message);
-}
-});
-
-// Lógica para Editar Opção
-$(document).on('click', '.btnEditarOpcao', function () {
-const opcaoId = $(this).data('id');
-const descricao = $(this).data('descricao');
-const tamanhoPorcao = $(this).data('tamanhoporcao');
-const informacoesNutricionais = $(this).data('informacoesnutricionais');
-
-// Preenche os campos do modal com os dados da opção
-$('#editarOpcaoId').val(opcaoId);
-$('#editarDescricao').val(descricao);
-$('#editarTamanhoPorcao').val(tamanhoPorcao);
-$('#editarInformacoesNutricionais').val(informacoesNutricionais);
-});
-
-// Trata o envio do formulário de edição de opção
-document.getElementById("formEditarOpcao").addEventListener("submit", async (event) => {
-event.preventDefault();
-
-const opcaoId = document.getElementById("editarOpcaoId").value;
-const descricao = document.getElementById("editarDescricao").value;
-const tamanhoPorcao = document.getElementById("editarTamanhoPorcao").value;
-const informacoesNutricionais = document.getElementById("editarInformacoesNutricionais").value;
-const imagemInput = document.getElementById("editarImagem");
-let imagemBase64 = null;
-
-// Verifica se uma nova imagem foi selecionada
-if (imagemInput.files.length > 0) {
-    const imagemFile = imagemInput.files[0];
-    // Converte a imagem para base64
-    const reader = new FileReader();
-    reader.onloadend = () => {
-        imagemBase64 = reader.result.split(',')[1]; // Remove o prefixo data:image/png;base64,
-        atualizarOpcao(opcaoId, descricao, imagemBase64, tamanhoPorcao, informacoesNutricionais);
-    };
-    reader.readAsDataURL(imagemFile);
-} else {
-    atualizarOpcao(opcaoId, descricao, null, tamanhoPorcao, informacoesNutricionais); // Mantém a imagem existente
-}
-});
-
-async function atualizarOpcao(opcaoId, descricao, imagemBase64, tamanhoPorcao, informacoesNutricionais) {
-try {
-    const response = await Parse.Cloud.run("atualizarOpcao", {
-        id: opcaoId,
-        descricao: descricao,
-        imagem: imagemBase64,
-        tamanhoPorcao: tamanhoPorcao,
-        informacoesNutricionais: informacoesNutricionais
-    });
-
-    if (response.success) {
-        alert("Opção atualizada com sucesso!");
-        $('#modalEditarOpcao').modal('hide');
-        listarRefeicoes(); // Atualiza a lista após a edição
-    } else {
-        alert("Erro ao atualizar opção: " + response.message);
-    }
-} catch (error) {
-    console.error("Erro ao atualizar opção:", error);
-    alert("Erro ao atualizar opção: " + error.message);
-}
-}
-
-// Lógica para Excluir Opção
-$(document).on('click', '.btnExcluirOpcao', function () {
-opcaoIdParaExcluir = $(this).data('id'); // Armazena o ID da opção a ser excluída
-});
-
-$('#confirmarExclusaoOpcao').on('click', async function () {
-try {
-    const response = await Parse.Cloud.run("deletarOpcao", { id: opcaoIdParaExcluir });
-
-    if (response.success) {
-        alert("Opção excluída com sucesso!");
-        $('#modalExcluirOpcao').modal('hide');
-        listarRefeicoes(); // Atualiza a lista após a exclusão
-    } else {
-        alert("Erro ao excluir opção: " + response.message);
-    }
-} catch (error) {
-    console.error("Erro ao excluir opção:", error);
-    alert("Erro ao excluir opção: " + error.message);
-}
-});
-
-async function buscarOpcoesDaRefeicao(refeicaoId) {
-const Opcao = Parse.Object.extend("Opcao");
-const query = new Parse.Query(Opcao);
-const Refeicao = Parse.Object.extend("Refeicao");
-const refeicao = new Refeicao();
-refeicao.id = refeicaoId;
-query.equalTo("refeicao", refeicao);
-query.include("imagem"); // Inclui a imagem para exibir a URL
-
-try {
-    const results = await query.find();
-    let opcoesHTML = "";
-    if (results.length > 0) {
-        results.forEach(opcao => {
-            opcoesHTML += `
-        <div class="opcao">
-            <div class="opcao">
-                <p><strong>Descrição:</strong> ${opcao.get("descricao")}</p>
-                <p><strong>Tamanho da Porção:</strong> ${opcao.get("tamanhoPorcao")} g</p>
-                <p><strong>Informações Nutricionais: </strong>${opcao.get("informacoesNutricionais")}</p>
-            </div>
-            ${opcao.get("imagem") ? `<img src="${opcao.get("imagem").url()}" width="100%" />` : ''}
-             <div class="opcao-buttons">
-                <button class="btn btn-sm btn-primary btnEditarOpcao" data-id="${opcao.id}"
-                    data-descricao="${opcao.get("descricao")}"
-                    data-tamanhoporcao="${opcao.get("tamanhoPorcao")}"
-                    data-informacoesnutricionais="${opcao.get("informacoesNutricionais")}"
-                    data-toggle="modal" data-target="#modalEditarOpcao">Editar</button>
-                <button class="btn btn-sm btn-danger btnExcluirOpcao" data-id="${opcao.id}"
-                    data-toggle="modal" data-target="#modalExcluirOpcao">Excluir</button>
-            </div>
-        </div>
-    `;
-        });
-    } else {
-        opcoesHTML = "<p>Nenhuma opção encontrada para esta refeição.</p>";
-    }
-    return opcoesHTML;
-} catch (error) {
-    console.error("Erro ao listar opções:", error);
-    return "<p>Erro ao carregar opções.</p>";
-}
-}
-
-listarRefeicoes();
-
-async function exportarPlanoAlimentar() {
-// 1. Obter dados do nutricionista e do paciente (usando Parse Cloud Function)
-const dadosNutricionista = await obterDadosNutricionista();
-const paciente = await buscarDadosPacienteParaPDF(idPaciente);
-
-// 2. Gerar o HTML do plano alimentar
-const planoAlimentarHTML = await gerarHTMLPlanoAlimentarParaPDF(dadosNutricionista, paciente);
-
-// 3. Injetar o HTML no elemento com id "pdfContent"
-document.getElementById("pdfContent").innerHTML = planoAlimentarHTML;
-
-// 4. Converter o conteúdo HTML em um PDF
-gerarPDF();
-}
-
-async function obterDadosNutricionista() {
-try {
-    const response = await Parse.Cloud.run("obterDadosNutricionista");
-    return response;
-} catch (error) {
-    console.error("Erro ao obter dados do nutricionista:", error);
-    return {
-        nome: "Nutricionista Desconhecido",
-        email: "email@desconhecido.com"
-    };
-}
-}
-
-async function buscarDadosPacienteParaPDF(idPaciente) {
-try {
-    const Pacientes = Parse.Object.extend("Pacientes");
-    const query = new Parse.Query(Pacientes);
-    const paciente = await query.get(idPaciente);
-    return {
-        nome: paciente.get("nome"),
-        idade: paciente.get("idade")
-    };
-} catch (error) {
-    console.error("Erro ao buscar dados do paciente:", error);
-    return {
-        nome: "Paciente Desconhecido",
-        idade: "Idade Desconhecida"
-    };
-}
-}
-
-async function gerarHTMLPlanoAlimentarParaPDF(dadosNutricionista, paciente) {
-    let conteudoHTML = `
-        <div class="pdf-header">
-            <img src="/static/img/logo_nutri_lab.png" alt="Logo da Empresa" class="pdf-logo">
-            <h1>Plano Alimentar Personalizado</h1>
-        </div>
-
-        <div class="pdf-professional-info">
-            <p><strong>Nutricionista:</strong> ${dadosNutricionista.nome || "Nutricionista Desconhecido"}</p>
-            <p><strong>Email:</strong> ${dadosNutricionista.email || "Email Desconhecido"}</p>
-        </div>
-
-        <div class="pdf-patient-info">
-            <p><strong>Paciente:</strong> ${paciente.nome || "Paciente Desconhecido"}</p>
-            <p><strong>Idade:</strong> ${paciente.idade || "Idade Desconhecida"}</p>
-        </div>
-    `;
-
-    // Buscar e adicionar as refeições com suas opções
-    const refeicoes = await buscarRefeicoesParaPDF(idPaciente);
-    if (refeicoes && refeicoes.length > 0) {
-        for (const refeicao of refeicoes) {
-            conteudoHTML += `
-                <div class="pdf-meal-card">
-                    <h3>${refeicao.titulo}</h3>
-                    <p><strong>Horário:</strong> ${refeicao.horario}</p>
-                    <p><strong>Carboidratos:</strong> ${refeicao.carboidratos} g</p>
-                    <p><strong>Proteínas:</strong> ${refeicao.proteinas} g</p>
-                    <p><strong>Gorduras:</strong> ${refeicao.gorduras} g</p>
-            `;
-
-            if (refeicao.opcoes && refeicao.opcoes.length > 0) {
-                conteudoHTML += `<h4>Opções:</h4>`;
-                for (const opcao of refeicao.opcoes) {
-                    conteudoHTML += `
-                        <div class="pdf-opcao">
-                            <p><strong>Descrição:</strong> ${opcao.descricao}</p>
-                            <p><strong>Tamanho da Porção:</strong> ${opcao.tamanhoPorcao} g</p>
-                            <p><strong>Informações Nutricionais:</strong> ${opcao.informacoesNutricionais}</p>
-                            ${opcao.imagem ? `<img src="${opcao.imagem}" alt="Opção" class="opcao-image" />` : ''}
-                        </div>
-                    `;
-                }
+            if (response.success) {
+                alert("Refeição excluída com sucesso!");
+                $('#modalExcluirRefeicao').modal('hide');
+                listarRefeicoes(); // Atualiza a lista após a exclusão
             } else {
-                conteudoHTML += `<p>Nenhuma opção adicionada para esta refeição.</p>`;
+                alert("Erro ao excluir refeição: " + response.message);
             }
-
-            conteudoHTML += `</div>`;
-        }
-    } else {
-        conteudoHTML += `<p>Nenhuma refeição encontrada para este plano alimentar.</p>`;
-    }
-
-    conteudoHTML += `
-        <div class="pdf-footer">
-            <p>Este plano alimentar é personalizado e elaborado pela Nutri Lab.</p>
-        </div>
-    `;
-
-    return conteudoHTML;
-}
-
-async function buscarRefeicoesParaPDF(idPaciente) {
-const Refeicao = Parse.Object.extend("Refeicao");
-const query = new Parse.Query(Refeicao);
-
-// Cria um objeto do tipo Pacientes com o id atual para filtrar as refeições
-const Paciente = Parse.Object.extend("Pacientes");
-const paciente = new Paciente();
-paciente.id = idPaciente;
-
-query.equalTo("paciente", paciente);
-query.descending("createdAt"); // Ordena pela data de criação
-
-try {
-    const results = await query.find();
-    const refeicoesFormatadas = [];
-
-    for (const refeicao of results) {
-        const opcoes = await buscarOpcoesParaPDF(refeicao.id);
-        refeicoesFormatadas.push({
-            titulo: refeicao.get("titulo"),
-            horario: refeicao.get("horario"),
-            carboidratos: refeicao.get("carboidratos"),
-            proteinas: refeicao.get("proteinas"),
-            gorduras: refeicao.get("gorduras"),
-            opcoes: opcoes
-        });
-    }
-
-    return refeicoesFormatadas;
         } catch (error) {
-            console.error("Erro ao buscar refeições:", error);
-            return [];
+            console.error("Erro ao excluir refeição:", error);
+            alert("Erro ao excluir refeição: " + error.message);
         }
-        }
+        });
 
-        async function buscarOpcoesParaPDF(refeicaoId) {
-        const Opcao = Parse.Object.extend("Opcao");
-        const query = new Parse.Query(Opcao);
-        const Refeicao = Parse.Object.extend("Refeicao");
-        const refeicao = new Refeicao();
-        refeicao.id = refeicaoId;
-        query.equalTo("refeicao", refeicao);
-        query.include("imagem");
+        // Lógica para Editar Refeição
+        $(document).on('click', '.btnEditarRefeicao', function () {
+        const refeicaoId = $(this).data('id');
+        const titulo = $(this).data('titulo');
+        const horario = $(this).data('horario');
+        const carboidratos = $(this).data('carboidratos');
+        const proteinas = $(this).data('proteinas');
+        const gorduras = $(this).data('gorduras');
+
+        // Preenche os campos do modal com os dados da refeição
+        $('#editarRefeicaoId').val(refeicaoId);
+        $('#editarTitulo').val(titulo);
+        $('#editarHorario').val(horario);
+        $('#editarCarboidratos').val(carboidratos);
+        $('#editarProteinas').val(proteinas);
+        $('#editarGorduras').val(gorduras);
+        });
+
+        // Trata o envio do formulário de edição de refeição
+        document.getElementById("formEditarRefeicao").addEventListener("submit", async (event) => {
+        event.preventDefault();
+
+        const idRefeicao = document.getElementById("editarRefeicaoId").value;
+        const titulo = document.getElementById("editarTitulo").value;
+        const horario = document.getElementById("editarHorario").value;
+        const carboidratos = document.getElementById("editarCarboidratos").value;
+        const proteinas = document.getElementById("editarProteinas").value;
+        const gorduras = document.getElementById("editarGorduras").value;
 
         try {
-            const results = await query.find();
-            const opcoesFormatadas = [];
-
-            for (const opcao of results) {
-                opcoesFormatadas.push({
-                    descricao: opcao.get("descricao"),
-                    tamanhoPorcao: opcao.get("tamanhoPorcao"),
-                    informacoesNutricionais: opcao.get("informacoesNutricionais"),
-                    imagem: opcao.get("imagem") ? opcao.get("imagem").url() : null
-                });
-            }
-
-            return opcoesFormatadas;
-        } catch (error) {
-            console.error("Erro ao listar opções para PDF:", error);
-            return [];
-        }
-        }
-
-        async function exportarPlanoAlimentarParaPDF() {
-    try {
-        // Garante que o conteúdo HTML esteja gerado antes de chamar o jsPDF
-        await exportarPlanoAlimentar();
-
-        // Use setTimeout para garantir que o conteúdo seja renderizado no DOM
-        setTimeout(() => {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            const content = document.getElementById("pdfContent");
-
-            if (!content) {
-                console.error("Elemento com id 'pdfContent' não encontrado!");
-                return;
-            }
-
-            doc.html(content, {
-                callback: function (doc) {
-                    doc.save("plano_alimentar.pdf");
-
-                    // Delay the reload using a Promise and setTimeout.
-                    new Promise(resolve => setTimeout(resolve, 2000)).then(() => { // Adjust the delay as needed
-                        window.location.reload();
-                    });
-                },
-                margin: [10, 10, 10, 10],
-                autoPaging: 'text',
-                x: 0,
-                y: 0,
-                width: 190,
-                windowWidth: 675
+            const response = await Parse.Cloud.run("atualizarRefeicao", {
+                id: idRefeicao,
+                titulo: titulo,
+                horario: horario,
+                carboidratos: carboidratos,
+                proteinas: proteinas,
+                gorduras: gorduras
             });
-
-
-        }, 500); // Aguarda 500ms antes de gerar o PDF
-    } catch (error) {
-        console.error("Erro durante a geração do PDF:", error);
-    }
-}
-
-
-        // Event listener para o botão de exportar
-        //document.getElementById("exportarPlanoAlimentar").addEventListener("click", exportarPlanoAlimentarParaPDF);
-        document.getElementById("exportarPlanoAlimentar").addEventListener("click", exportarPlanoAlimentarParaPDF);
-
-        function gerarPDF() {
-        console.log("gerarPDF() chamada");
-        const filename = 'plano_alimentar.pdf';
-        exportarPlanoAlimentarParaPDF();
+            if (response.success) {
+                alert("Refeição atualizada com sucesso!");
+                $('#modalEditarRefeicao').modal('hide');
+                listarRefeicoes(); // Atualiza a lista após a edição
+            } else {
+                alert("Erro ao atualizar refeição: " + response.message);
+            }
+        } catch (error) {
+            console.error("Erro ao atualizar refeição:", error);
+            alert("Erro ao atualizar refeição: " + error.message);
         }
+        });
 
         // Call the function after the DOM is fully loaded
         document.addEventListener('DOMContentLoaded', function () {

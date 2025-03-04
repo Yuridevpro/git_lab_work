@@ -8,13 +8,14 @@
     <link rel="stylesheet" href="/static/plataforma/css/css.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
     <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/script.js"></script>
-    <style>
 
-.navbar-nav-sidebar {
-        display: none; /* Hidden by default */
+    <style>
+        .navbar-nav-sidebar {
+            display: none;
+            /* Hidden by default */
         }
+
         .navbar-nav-sidebar .nav-item {
             margin-right: 0;
         }
@@ -24,21 +25,25 @@
         }
 
         @media (max-width: 767.98px) {
-        .navbar-nav-sidebar {
-            display: flex; /* Show on small screens */
-            flex-direction: column;
-        }
-         #sidebar{
-            display: none;
-         }
+            .navbar-nav-sidebar {
+                display: flex;
+                /* Show on small screens */
+                flex-direction: column;
+            }
+
+            #sidebar {
+                display: none;
+            }
 
         }
+
         /* Adjust the size of the sidebar images on smaller screens */
         @media (max-width: 767.98px) {
-        .navbar-nav-sidebar .nav-link img {
-            max-width: 30px; /* Adjust the pixel value as needed */
-            height: auto;
-        }
+            .navbar-nav-sidebar .nav-link img {
+                max-width: 30px;
+                /* Adjust the pixel value as needed */
+                height: auto;
+            }
         }
     </style>
 </head>
@@ -52,14 +57,16 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav" id="menu-autenticacao">
-                <script>atualizarMenuAutenticacao();</script>
+                <script>
+                    atualizarMenuAutenticacao();
+                </script>
             </ul>
 
             <!-- Sidebar links for mobile -->
             <ul class="navbar-nav navbar-nav-sidebar">
                 <li class="nav-item">
                     <a class="nav-link active" href="pacientes.html">
-                        <img src="/static/img/paciente.png" alt="Pacientes" class="img-nav"/>
+                        <img src="/static/img/paciente.png" alt="Pacientes" class="img-nav" />
                         <span>Gerenciar Pacientes</span>
                     </a>
                 </li>
@@ -128,7 +135,6 @@
 
                 <hr />
 
-
                 <div class="table-responsive">
                     <table class="table table-striped table-sm">
                         <thead>
@@ -149,11 +155,6 @@
                             <!-- Dados do paciente serão carregados aqui -->
                         </tbody>
                     </table>
-                </div>
-
-                <div class="mt-4" style="width: 100%;">
-                    <canvas id="graficoPeso"></canvas>
-                    <div id="graficoErro" class="text-danger"></div>
                 </div>
 
                 <!-- Modal para Adicionar Dados do Paciente -->
@@ -509,9 +510,6 @@
                     tabelaDadosPaciente.appendChild(row);
                 });
 
-                // Após popular a tabela, buscar os dados para o gráfico
-                buscarDadosParaGrafico(idPaciente);
-
                 // Adiciona event listeners para os botões de editar e excluir
                 adicionarEventListenersBotoes();
 
@@ -542,101 +540,6 @@
         // Chama a função para popular a tabela quando a página carrega
         popularTabelaDadosPaciente(idPaciente);
 
-        // Função para buscar dados para o gráfico e desenhar o gráfico
-async function buscarDadosParaGrafico(idPaciente) {
-    try {
-        const DadosPaciente = Parse.Object.extend("DadosPaciente");
-        const query = new Parse.Query(DadosPaciente);
-        query.equalTo("paciente", {
-            __type: "Pointer",
-            className: "Pacientes",
-            objectId: idPaciente,
-        });
-        query.ascending("createdAt"); // Ordena por data de criação
-
-        const results = await query.find();
-
-        // Preparar os dados para o gráfico
-        const labels = results.map(dado => dado.createdAt ? dado.createdAt.toLocaleDateString() : "N/A");
-        const pesos = results.map(dado => {
-            const peso = parseFloat(dado.get("peso"));
-            return isNaN(peso) ? null : peso; // Retorna null se não for um número válido
-        });
-        const gorduras = results.map(dado => {
-            const gordura = parseFloat(dado.get("percentual_gordura"));
-            return isNaN(gordura) ? null : gordura; // Retorna null se não for um número válido
-        });
-        const musculos = results.map(dado => {
-            const musculo = parseFloat(dado.get("percentual_musculo"));
-            return isNaN(musculo) ? null : musculo; // Retorna null se não for um número válido
-        });
-
-        // Desenhar o gráfico
-        desenharGrafico(labels, pesos, gorduras, musculos);
-
-    } catch (error) {
-        document.getElementById("graficoErro").innerText = "Erro ao buscar dados para o gráfico: " + error.message;
-        console.error("Erro ao buscar dados para o gráfico:", error);
-    }
-}
-
-// Função para desenhar o gráfico
-function desenharGrafico(labels, pesos, gorduras, musculos) {
-    const ctx = document.getElementById('graficoPeso').getContext('2d');
-
-    // Verifica se já existe um gráfico e destrói ele
-    if (window.myChart) {
-        window.myChart.destroy(); // Destroi o gráfico anterior
-    }
-
-    // Encontre os valores máximos para ajustar a escala
-    const maxPeso = Math.max(...pesos.filter(Number.isFinite));
-    const maxGordura = Math.max(...gorduras.filter(Number.isFinite));
-    const maxMusculo = Math.max(...musculos.filter(Number.isFinite));
-
-    const suggestedMaxY = Math.max(maxPeso, maxGordura, maxMusculo) * 1.1; // 10% acima do máximo
-
-    // Cria um novo gráfico
-    window.myChart = new Chart(ctx, {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [
-                {
-                    label: 'Peso do Paciente',
-                    data: pesos,
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    borderWidth: 2,
-                    fill: false
-                },
-                {
-                    label: 'Gordura (%)',
-                    data: gorduras,
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 2,
-                    fill: false
-                },
-                {
-                    label: 'Músculo (%)',
-                    data: musculos,
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    borderWidth: 2,
-                    fill: false
-                }
-            ]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: false,
-                    suggestedMax: suggestedMaxY // Define o valor máximo sugerido
-                }
-            }
-        }
-    });
-}
-
-
         // Associar função ao formulário de adicionar dados
         const formAdicionarDados = document.getElementById("formAdicionarDados");
         formAdicionarDados.addEventListener("submit", async (event) => {
@@ -653,6 +556,7 @@ function desenharGrafico(labels, pesos, gorduras, musculos) {
             const ctotal = parseFloat(document.getElementById("ctotal").value);
             const trigliceridios = parseFloat(document.getElementById("trigliceridios").value);
 
+
             console.log("Dados do formulário:", { peso, altura, gordura, musculo, hdl, ldl, ctotal, trigliceridios }); // ADICIONADO LOG
 
             try {
@@ -667,7 +571,7 @@ function desenharGrafico(labels, pesos, gorduras, musculos) {
                     hdl: hdl,
                     ldl: ldl,
                     ctotal: ctotal,
-                    trigliceridios: trigliceridios
+                    trigliceridios: trigliceridios,
                 });
                 console.log("Parse.Cloud.run('criarDadosPaciente') executado com sucesso!"); // ADICIONADO LOG
                 alert("Dados do paciente adicionados com sucesso.");
@@ -729,7 +633,7 @@ function desenharGrafico(labels, pesos, gorduras, musculos) {
                     hdl: hdl,
                     ldl: ldl,
                     ctotal: ctotal,
-                    trigliceridios: trigliceridios
+                    trigliceridios: trigliceridios,
                 });
 
                 if (result.success) {

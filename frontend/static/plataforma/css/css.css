@@ -1,113 +1,179 @@
+/* css.css - Estilos Gerais da Plataforma */
+
+/* Cores e Fontes */
+.titulo {
+  color: #27db8f; /* Cor principal da plataforma - Título da página */
+}
+
+/* Estilos Gerais de Texto */
+.dados {
+  font-weight: bold; /* Estilo para dados importantes - Texto em negrito */
+}
+
+/* Sidebar */
 .card-lateral {
-  background-color: #27db8f;
-  margin-top: 20px;
-  padding: 10px;
-  color: white;
-  font-weight: bold;
-  text-decoration: none;
-  text-align: center;
-  box-shadow: 5px 5px 5px gray;
+  background-color: #27db8f; /* Cor de fundo - Lateral */
+  margin-top: 20px; /* Espaçamento superior - Lateral */
+  padding: 10px; /* Espaçamento interno - Lateral */
+  color: white; /* Cor do texto - Lateral */
+  font-weight: bold; /* Texto em negrito - Lateral */
+  text-decoration: none; /* Remove sublinhado - Lateral */
+  text-align: center; /* Alinhamento do texto - Lateral */
+  box-shadow: 5px 5px 5px gray; /* Sombra - Lateral */
 }
 
 .link-lateral:hover {
-  text-decoration: none;
+  text-decoration: none; /* Remove sublinhado ao passar o mouse - Lateral */
 }
 
-.titulo {
-  color: #27db8f;
-}
-
-.card-paciente {
-  background-color: #eaeaea;
-  /* width: 80%; */  /* Remove fixed width */
-  box-shadow: 3px 3px 3px gray;
-  padding: 20px;
-  color: black;
-}
-
-.link-hover:hover {
-  text-decoration: none;
-}
-
-.foto-perfil {
-  text-align: center;
-}
-
-.dados {
-  font-weight: bold;
-}
-
-.descricao {
-  margin-left: -12%;
-}
-
-
-
-/* Custom styles for the sidebar */
+/* Custom styles for the sidebar (ajustes para posicionamento e responsividade) */
 .sidebar {
-    position: fixed; /* Fixed positioning */
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 100; /* Ensure it's above other elements */
-    padding: 48px 0 0; /* Account for the navbar height */
-    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+  position: fixed; /* Fixa a posição da barra lateral */
+  top: 0; /* Alinha ao topo da página */
+  bottom: 0; /* Alinha à parte inferior da página */
+  left: 0; /* Alinha à esquerda da página */
+  z-index: 100; /* Garante que a barra lateral fique acima de outros elementos */
+  padding: 48px 0 0; /* Ajusta o preenchimento superior para compensar a barra de navegação */
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1); /* Adiciona uma sombra interna à direita */
 }
 
 .sidebar-sticky {
-    position: relative;
-    top: 0;
-    height: calc(100vh - 48px); /* Adjust for the navbar height */
-    padding-top: .5rem;
-    overflow-x: hidden;
-    overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  position: relative; /* Posicionamento relativo dentro da barra lateral */
+  top: 0; /* Alinha ao topo da barra lateral */
+  height: calc(100vh - 48px); /* Define a altura com base na altura da viewport, ajustando para a barra de navegação */
+  padding-top: 0.5rem; /* Adiciona preenchimento superior */
+  overflow-x: hidden; /* Oculta o estouro horizontal */
+  overflow-y: auto; /* Adiciona rolagem vertical se o conteúdo for muito longo */
 }
 
-/* Style for the sidebar links */
 .sidebar .nav-link {
-  font-weight: 500;
-  color: #333;
-  display: flex;              /* Use flexbox to align image and text */
-  align-items: center;       /* Vertically center the items */
-  padding: .5rem 1rem;       /* Adjust padding as needed */
+  font-weight: 500; /* Define a espessura da fonte como semibold */
+  color: #333; /* Define a cor do texto */
+  display: flex; /* Usa flexbox para alinhar a imagem e o texto */
+  align-items: center; /* Alinha verticalmente os itens */
+  padding: 0.5rem 1rem; /* Adiciona preenchimento superior/inferior e esquerdo/direito */
 }
 
 .sidebar .nav-link .feather {
-  margin-right: 4px;
-  color: #727272;
+  margin-right: 4px; /* Adiciona uma margem à direita do ícone Feather */
+  color: #727272; /* Define a cor do ícone */
 }
 
 .sidebar .nav-link.active {
-  color: #007bff;
+  color: #007bff; /* Define a cor do link ativo */
 }
 
 .sidebar .nav-link:hover .feather,
 .sidebar .nav-link.active .feather {
-  color: inherit;
+  color: inherit; /* Herda a cor do texto no hover ou quando ativo */
 }
 
 .sidebar-heading {
-    font-size: .75rem;
-    text-transform: uppercase;
+  font-size: 0.75rem; /* Define o tamanho da fonte */
+  text-transform: uppercase; /* Converte o texto para maiúsculas */
 }
-/* Style for the sidebar icons */
+
 .sidebar-icon {
-  width: 20px;
-  height: 20px;       /* Ensure a consistent size */
-  margin-right: 5px;
-  vertical-align: middle; /* Keep the icon aligned vertically */
-  flex-shrink: 0;        /* Prevent the icon from shrinking */
+  width: 20px; /* Define a largura do ícone */
+  height: 20px; /* Define a altura do ícone */
+  margin-right: 5px; /* Adiciona uma margem à direita do ícone */
+  vertical-align: middle; /* Alinha o ícone verticalmente no meio do texto */
+  flex-shrink: 0; /* Impede que o ícone se comprima */
 }
 
-.sidebar .nav-link span { /* Style for the text */
-  flex-grow: 1;            /* Allow text to take up remaining space */
-  /* text-align: center; Align text in center */
+.sidebar .nav-link span {
+  flex-grow: 1; /* Permite que o texto se expanda para preencher o espaço restante */
 }
 
+/* pacientes.html */
+
+/* card do paciente */
+.card-paciente {
+  background-color: #eaeaea; /* Cor de fundo do card */
+  box-shadow: 3px 3px 3px gray; /* Sombra do card */
+  padding: 20px; /* Espaçamento interno do card */
+  color: black; /* Cor do texto */
+}
+
+/* foto do perfil */
+.foto-perfil {
+  text-align: center; /* Alinha a foto ao centro */
+}
+
+/* descriçao */
+.descricao {
+  margin-left: -12%; /* Margem esquerda negativa para ajustar o layout */
+}
+
+/* plano_alimentar.css */
+
+/* Estilos para os cards de refeição (meal-card) */
+.meal-card {
+  border: 1px solid #ddd; /* Define uma borda cinza clara */
+  border-radius: 8px; /* Arredonda os cantos */
+  margin-bottom: 15px; /* Espaço abaixo do card */
+  padding: 15px; /* Espaçamento interno */
+  display: flex; /* Usando flexbox para alinhamento dos botões */
+  flex-direction: column; /* Empilha o conteúdo do card verticalmente */
+  justify-content: space-between; /* Alinha o conteúdo verticalmente com espaço entre */
+}
+
+/* Estilos para o título do card de refeição (nome da refeição) */
+.meal-card .card-title {
+  font-size: 1.25rem; /* Tamanho da fonte */
+  margin-bottom: 0.75rem;
+  color: #212529;
+}
+
+.meal-card h5 {
+  margin-bottom: 10px; /* Espaço abaixo do título */
+  font-size: 1.2rem; /* Tamanho da fonte do título */
+}
+
+/* Estilos para o texto do card (horário, macronutrientes) */
+.meal-card .card-text {
+  margin-bottom: 0.5rem;
+  color: #495057;
+}
+
+.meal-card p {
+  margin-bottom: 5px; /* Espaço abaixo do parágrafo */
+}
+
+/* Estilos para a imagem dentro do card */
+.meal-card img {
+  max-width: 100%; /* Impede que a imagem transborde */
+  height: auto;
+  margin-bottom: 10px; /* Adiciona espaço abaixo da imagem */
+}
+
+/* Estilos para os botões da refeição (no card da refeição) */
+.meal-card .buttons {
+  margin-top: 10px; /* Espaço acima dos botões */
+  display: flex; /* Alinha os botões horizontalmente */
+  justify-content: center; /* Centraliza os botões */
+  gap: 1px; /* Espaçamento entre os botões */
+}
+
+/* Media Queries Consolidadas */
 @media (max-width: 1300px) {
   .descricao {
-    margin-left: 1px;
+    margin-left: 1px; /* Ajuste para telas menores */
   }
 }
 
+@media (max-width: 767.98px) {
+  .navbar-nav-sidebar {
+    display: flex; /* Show on small screens */
+    flex-direction: column;
+  }
+  #sidebar {
+    display: none;
+  }
+  .navbar-nav-sidebar .nav-link img {
+    max-width: 30px; /* Adjust the pixel value as needed */
+    height: auto;
+  }
+}
 
+/* Fim */

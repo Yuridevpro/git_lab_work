@@ -1,131 +1,55 @@
+/* plano_alimentar.css */
 
+/* Estilos para os cards de refeição (meal-card) */
+.meal-card {
+  border: 1px solid #ddd; /* Define uma borda cinza clara */
+  border-radius: 8px; /* Arredonda os cantos */
+  margin-bottom: 15px; /* Espaço abaixo do card */
+  padding: 15px; /* Espaçamento interno */
+  display: flex; /* Usando flexbox para alinhamento dos botões */
+  flex-direction: column; /* Empilha o conteúdo do card verticalmente */
+  justify-content: space-between; /* Alinha o conteúdo verticalmente com espaço entre */
+}
+
+/* Estilos para o título do card de refeição (nome da refeição) */
+.meal-card .card-title {
+  font-size: 1.25rem; /* Tamanho da fonte */
+  margin-bottom: 0.75rem;
+  color: #212529;
+}
+
+.meal-card h5 {
+  margin-bottom: 10px; /* Espaço abaixo do título */
+  font-size: 1.2rem; /* Tamanho da fonte do título */
+}
+
+/* Estilos para o texto do card (horário, macronutrientes) */
+.meal-card .card-text {
+  margin-bottom: 0.5rem;
+  color: #495057;
+}
+
+.meal-card p {
+  margin-bottom: 5px; /* Espaço abaixo do parágrafo */
+}
+
+/* Estilos para a imagem dentro do card */
+.meal-card img {
+  max-width: 100%; /* Impede que a imagem transborde */
+  height: auto;
+  margin-bottom: 10px; /* Adiciona espaço abaixo da imagem */
+}
 
 /* Estilos para os botões da refeição (no card da refeição) */
 .meal-card .buttons {
-  margin-top: 10px;
-  display: flex;
+  margin-top: 10px; /* Espaço acima dos botões */
+  display: flex; /* Alinha os botões horizontalmente */
   justify-content: center; /* Centraliza os botões */
   gap: 1px; /* Espaçamento entre os botões */
 }
+/* fim plano_alimentar.css */
 
-.fundo-alimentar {
-  background-color: #d9d9d9;
-  padding: 50px;
-}
-
-.refeicao {
-  box-shadow: 4px 4px 10px gray;
-}
-
-.head-refeicao {
-  background-color: #b0acac;
-  padding: 30px;
-  font-weight: bold;
-}
-
-.body-refeicao {
-  padding: 30px;
-  font-weight: bold;
-}
-
-.opcao {
-  background-color: #a8a8a8;
-  padding: 15px;
-  overflow: hidden; /* Esconde qualquer conteúdo que ultrapasse as bordas */
-}
-
-.refeicao-card {
-  /* Seus estilos personalizados aqui */
-  border: 1px solid #ccc;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: calc(50% - 20px); /* Para ocupar metade da tela (menos uma margem) */
-  margin-right: 10px; /* Adiciona uma margem entre os cards */
-}
-
-.refeicao-card .card-title {
-  font-size: 1.2rem;
-  font-weight: bold;
-
-}
-
-.refeicao-card .card-text {
-  font-size: 1rem;
-}
-
-/* style.css (or your existing CSS file) */
-
-/* Style for refeicao-cards  */
-.meal-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  margin-bottom: 15px;
-  padding: 15px;
-  display: flex;           /* Using flexbox for button alignment */
-  flex-direction: column; /* Stack card content vertically */
-  justify-content: space-between;
-}
-
-.meal-card h5 {
-  margin-bottom: 10px;
-  font-size: 1.2rem;
-}
-
-.meal-card p {
-  margin-bottom: 5px;
-}
-
-
-
-.meal-card img {
-  max-width: 100%; /* Prevent image overflow */
-  height: auto;
-  margin-bottom: 10px; /* Give some space below */
-}
-
-/* Estilos para a imagem da opção */
-.opcao-imagem {
-  width: 100%; /* Ocupa toda a largura do container */
-  max-height: 15px !important; /* Define uma altura máxima para evitar imagens muito grandes */
-  object-fit: contain; /* Garante que a imagem preencha o espaço sem distorcer */
-  margin-bottom: 10px; /* Adiciona um espaço abaixo da imagem */
-  display: block; /* Evita espaços extras abaixo da imagem */
-}
-
-
-/* Estilo para os cards de refeição (meal-card) */
-.meal-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  margin-bottom: 15px;
-  padding: 15px;
-  display: flex;              /* Usando flexbox para alinhamento dos botões */
-  flex-direction: column;    /* Empilha o conteúdo do card verticalmente */
-  justify-content: space-between;
-}
-
-.meal-card h5 {
-  margin-bottom: 10px;
-  font-size: 1.2rem;
-}
-
-.meal-card p {
-  margin-bottom: 5px;
-}
-
-.meal-card .buttons {
-  margin-top: 10px;
-  display: flex;
-  justify-content: space-between; /* Espaça os botões */
-}
-
-.meal-card img {
-  max-width: 100%;       /* Impede que a imagem transborde */
-  height: auto;
-  margin-bottom: 10px;  /* Adiciona espaço abaixo da imagem */
-}
-
-
-/* Estilos para o container dos botões da opção */
+/* Customização do modal */
 .modal-footer {
   display: flex;           /* Alinha os botões horizontalmente */
   justify-content: center;  /* Centraliza os botões */
@@ -133,27 +57,55 @@
   gap: 5px;                /* Adiciona espaço entre os botões */
 }
 
-
 /* Estilos para o container dos botões da opção */
-.opcao {
-  background-color: #a8a8a8;
-  padding: 15px;
-  overflow: hidden; /* Esconde qualquer conteúdo que ultrapasse as bordas */
-  display: flex; /* added this */
-  flex-direction: column; /* added this */
-  align-items: center; /* added this */
-}
-.opcao-buttons {
-  display: flex;
-  justify-content: center; /* Added this */
-  gap: 5px; /* Added this */
+.modal-footer {
+  display: flex; /* Alinha os botões horizontalmente */
+  justify-content: center; /* Centraliza os botões */
+  align-items: center;
+  gap: 5px; /* Adiciona espaço entre os botões */
 }
 
+/* fundo_alimentar.css */
+.fundo-alimentar {
+  background-color: #d9d9d9; /* Cor de fundo */
+  padding: 50px; /* Espaçamento interno */
+}
+
+.refeicao {
+  box-shadow: 4px 4px 10px gray; /* Sombra ao redor da refeição */
+}
+
+.head-refeicao {
+  background-color: #b0acac; /* Cor de fundo do cabeçalho */
+  padding: 30px; /* Espaçamento interno do cabeçalho */
+  font-weight: bold; /* Texto em negrito */
+}
+
+.body-refeicao {
+  padding: 30px; /* Espaçamento interno do corpo */
+  font-weight: bold; /* Texto em negrito */
+}
+
+.refeicao-card {
+  border: 1px solid #ccc; /* Define uma borda cinza */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adiciona uma sombra suave */
+  width: calc(50% - 20px); /* Para ocupar metade da tela (menos uma margem) */
+  margin-right: 10px; /* Adiciona uma margem entre os cards */
+}
+
+.refeicao-card .card-title {
+  font-size: 1.2rem; /* Tamanho da fonte */
+  font-weight: bold; /* Texto em negrito */
+}
+
+.refeicao-card .card-text {
+  font-size: 1rem; /* Tamanho da fonte */
+}
+/*  fim */
+/* Media Queries Consolidadas */
 @media (max-width: 767.98px) {
- 
-  .img-nav{
+  .img-nav {
     height: 10px;
     color: black;
   }
-  
 }

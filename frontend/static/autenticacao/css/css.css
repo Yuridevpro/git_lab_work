@@ -1,165 +1,151 @@
 /* Reset basic styles for better cross-browser consistency */
-body, html {
+body,
+html {
   margin: 0;
   padding: 0;
   height: 100%; /* Make sure html and body fill the viewport height */
 }
 
-/* General Styles (Applicable to All Screen Sizes) */
-.sidebar {
-  /* Adjustments for Mobile */
-  background-color: #27db8f;
-  text-align: center; /* Center logo on mobile */
-}
-
-.logo_sidebar {
-  text-align: center;  /* Keep logo centered  */
-  padding: 10px;       /* Add some padding */
-}
-
-.img_logo_sidebar {
-  max-width: 80%;     /* Make sure it fits in the smaller screen */
-  height: auto;        /* Maintain aspect ratio */
-}
-
-.sidebar {
-  background-image: url("/static/img/fundo_background.png");
-  /* Set background properties to cover the container */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  /*height: auto;*/ /* Remove height: auto; */
-}
-
-/* Override Bootstrap's container behavior */
+/* Geral da plataforma (Aplicável a Todos os Tamanhos de Tela) */
 .container {
-  width: 100%;          /* Full width on all screens */
-  max-width: none;      /* Remove max-width */
-  padding-left: 0;     /* Remove default padding */
-  padding-right: 0;
-  margin-left: 0; /* Removing auto margins on the sides */
+  width: 100%; /* Largura total */
+  max-width: none; /* Remove a largura máxima */
+  padding-left: 0; /* Remove o preenchimento padrão à esquerda */
+  padding-right: 0; /* Remove o preenchimento padrão à direita */
+  margin-left: 0; /* Removendo margens automáticas nas laterais */
   margin-right: 0;
 }
 
 .row {
-  margin-left: 0; /* Remove row's default negative margins */
+  margin-left: 0; /* Remover a margem negativa padrão da linha */
   margin-right: 0;
 }
 
-.area_cadastrar {
-  margin: 20px auto; /* Center horizontally and add top/bottom margin */
-  padding: 20px;      /* Add padding inside */
-  width: 90%;         /* Occupy more width on small screens */
-  max-width: 500px;    /* Limit the width on larger screens */
-  /* margin-top: 8%; */ /* Remove fixed top margin for responsiveness */
-  /* margin-left: 15%; */ /* Remove fixed left margin for responsiveness */
-  /* width: 70%; */   /* Removed absolute width */
-}
-
+/* Estilos de texto gerais */
 .titulo {
-  font-weight: bold;
-  text-align: center; /* Center title on mobile */
-  font-size: 1.5em;   /* Adjust font size for better readability */
+  font-weight: bold; /* Texto em negrito */
+  text-align: center; /* Alinha o texto ao centro (padrão para telas menores) */
+  font-size: 1.5em; /* Ajusta o tamanho da fonte para melhor legibilidade */
 }
 
 .sub-titulo {
-  color: gray;
-  text-align: center; /* Center subtitle on mobile */
+  color: gray; /* Cor do texto */
+  text-align: center; /* Alinha o texto ao centro (padrão para telas menores) */
 }
 
+/* Estilos do formulário */
 .input-form {
-  margin-top: 10px;
-  margin-bottom: 10px;/* Add some space between input and labels */
-  width: 100%;
-  padding: 10px;         /* Increase padding for better touch */
-  outline: 0;
-  box-sizing: border-box;/* Include padding and border in the element's total width and height */
-  border: 1px solid #ccc;/* A visible border makes it clearer */
-  border-radius: 5px; /* Optional: Rounded corners */
+  margin-top: 10px; /* Espaçamento acima do campo */
+  margin-bottom: 10px; /* Espaçamento abaixo do campo */
+  width: 100%; /* Largura total */
+  padding: 10px; /* Espaçamento interno */
+  outline: 0; /* Remove a borda de foco padrão */
+  box-sizing: border-box; /* Inclui preenchimento e borda na largura e altura */
+  border: 1px solid #ccc; /* Borda cinza clara */
+  border-radius: 5px; /* Cantos arredondados */
 }
 
 .input-form:focus {
-  border: 2px solid #27db8f !important;
-  outline: 0 !important;
-  box-shadow: none !important;
+  border: 2px solid #27db8f !important; /* Borda verde ao receber foco */
+  outline: 0 !important; /* Remove o foco padrão */
+  box-shadow: none !important; /* Remove a sombra ao receber foco */
 }
 
 .bold {
-  font-weight: bold;
-  display: block;       /* Make labels appear above inputs */
-  margin-bottom: 5px;
+  font-weight: bold; /* Texto em negrito */
+  display: block; /* Exibe as etiquetas acima das entradas */
+  margin-bottom: 5px; /* Espaçamento abaixo da etiqueta */
 }
 
+/* Botões */
 .btn-first {
-  border: none;
-  padding: 10px 20px;    /* Adjust padding for better touch */
-  font-size: 1.2em;     /* Use em for relative sizing */
-  background-color: #27db8f;
-  color: white;
-  font-weight: bold;
-  width: 100%;         /* Make button full width */
-  border-radius: 5px;
-  cursor: pointer;
+  border: none; /* Remove a borda */
+  padding: 10px 20px; /* Ajusta o preenchimento */
+  font-size: 1.2em; /* Tamanho da fonte */
+  background-color: #27db8f; /* Cor de fundo principal */
+  color: white; /* Cor do texto */
+  font-weight: bold; /* Texto em negrito */
+  width: 100%; /* Largura total */
+  border-radius: 5px; /* Cantos arredondados */
+  cursor: pointer; /* Altera o cursor ao passar o mouse */
 }
 
 .btn-first:hover {
-  background-color: #22b377; /* Slightly darker on hover */
+  background-color: #22b377; /* Cor ligeiramente mais escura ao passar o mouse */
 }
 
-/* Hide "Já possui uma conta" on screens smaller than 768px */
-h3[style*="Já possui uma conta"] {
-  position: relative !important; /* remove absolute positioning */
-  bottom: auto !important;       /* remove bottom positioning */
-  text-align: center;
-  margin-top: 20px;
+/* Layout e sidebar */
+.sidebar {
+  /* Ajustamentos para dispositivos móveis */
+  background-color: #27db8f; /* Cor de fundo */
+  text-align: center; /* Alinha o logo ao centro em dispositivos móveis */
+  background-image: url("/static/img/fundo_background.png"); /* Imagem de fundo */
+  background-size: cover; /* Redimensiona a imagem para cobrir todo o container */
+  background-position: center; /* Centraliza a imagem de fundo */
+  background-repeat: no-repeat; /* Impede que a imagem se repita */
 }
 
-/* Optional:  Add some spacing for the "Logar" button */
-a.btn.btn-outline-success.btn-sm {
-  margin-left: 5px;  /* Add a little spacing */
+.logo_sidebar {
+  text-align: center; /* Manter o logo centralizado */
+  padding: 10px; /* Adicionar algum preenchimento */
 }
 
-/* Media Query for larger screens (tablets and desktops) */
+.img_logo_sidebar {
+  max-width: 80%; /* Certificar-se de que cabe na tela menor */
+  height: auto; /* Manter a proporção da imagem */
+}
+
+/* Área de cadastro/login */
+.area_cadastrar {
+  margin: 20px auto; /* Centraliza horizontalmente e adiciona margem superior/inferior */
+  padding: 20px; /* Adiciona preenchimento interno */
+  width: 90%; /* Ocupa mais largura em telas pequenas */
+  max-width: 500px; /* Limita a largura em telas maiores */
+}
+
+/* Media Queries Consolidadas */
 @media (min-width: 768px) {
-  .sidebar {
-    height: 100vh;
-  }
-
+  /* Telas maiores (tablets e desktops) */
   .area_cadastrar {
-    margin-top: 8%;
-    margin-left: 15%;
-    width: 70%;
+    margin-top: 8%; /* Adiciona margem superior */
+    margin-left: 15%; /* Adiciona margem à esquerda */
+    width: 70%; /* Define a largura */
   }
 
   .titulo {
-    text-align: left;  /* Align title left on larger screens */
-    font-size: 2em;
+    text-align: left; /* Alinha o título à esquerda */
+    font-size: 2em; /* Aumenta o tamanho da fonte */
   }
 
   .sub-titulo {
-    text-align: left;
+    text-align: left; /* Alinha o subtítulo à esquerda */
+  }
+
+  .col-md {
+    flex: 0 0 48%; /* Ajusta a largura da coluna */
+    max-width: 48%;
   }
 
   .btn-first {
       width: auto; /* Make button fit content again */
   }
+
+  /* Ajuste da sidebar em telas maiores */
+  .sidebar {
+    height: 100vh; /* Fixa a altura */
+  }
+
+  /* Posiciona o texto "Já possui uma conta" */
   h3[style*="Já possui uma conta"] {
     position: absolute !important;
     bottom: 65px !important;
     text-align: left;
   }
 
-  .col-md {
-      flex: 0 0 48%; /* Adjust width of col-md to accommodate content */
-      max-width: 48%;
+  /* Ajusta o layout da linha em telas maiores */
+  .row {
+    display: flex; /* Ativa o flexbox */
+    flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha */
+    justify-content: space-between; /* Espaça os itens */
   }
 }
-
-/* Adjust row to use flexbox on larger screens */
-@media (min-width: 768px) {
-    .row {
-      display: flex;
-      flex-wrap: wrap; /* allows items to wrap */
-      justify-content: space-between;
-    }
-  }

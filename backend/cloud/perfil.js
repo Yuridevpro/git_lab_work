@@ -1,4 +1,4 @@
-// backend/cloud/perfil.js
+ // backend/cloud/perfil.js
 
 // Função para buscar informações do perfil do usuário
 Parse.Cloud.define("buscarPerfil", async (request) => {

@@ -3,8 +3,8 @@
 // *** Inicialização do Parse ***
 Parse.serverURL = "https://parseapi.back4app.com/";
 Parse.initialize(
-  "6LAVwcoGQ2XX4nDRe7n9Ng1ES0HCP0qDnO5DCmJB",
-  "mt4zRG5t4bIcWOVSCzh08A1BKjUfI6GcgzkLYwCk"
+  "EDnEyoB0xK3F1wEe8RiEkEXwYNEit4NVMrqqXoux",
+  "FZaVc79lLOddCTeMVwr5aCHDO7Lof0VNgBWeh7gh"
 );
 
 // *** Funções de Autenticação - Verificação de Sessão ***
@@ -174,6 +174,7 @@ async function criarRefeicao(
   proteinas,
   gorduras
 ) {
+  
   try {
     const result = await Parse.Cloud.run("criarRefeicao", {
       pacienteId: pacienteId,
@@ -187,24 +188,6 @@ async function criarRefeicao(
   } catch (error) {
     console.error("Erro ao criar refeição:", error);
     alert("Erro ao criar refeição: " + error.message);
-    return null;
-  }
-}
-
-// *** Funções para Opcao ***
-
-// Função para criar opção
-async function criarOpcao(refeicaoId, imagem, descricao) {
-  try {
-    const result = await Parse.Cloud.run("criarOpcao", {
-      refeicaoId: refeicaoId,
-      imagem: imagem,
-      descricao: descricao,
-    });
-    return result;
-  } catch (error) {
-    console.error("Erro ao criar opção:", error);
-    alert("Erro ao criar opção: " + error.message);
     return null;
   }
 }
