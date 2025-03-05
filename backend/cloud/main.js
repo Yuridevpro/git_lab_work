@@ -1,1 +1,1 @@
-require('./cloud');
+require("./cloud");

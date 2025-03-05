@@ -16,7 +16,6 @@ require("./autenticacao");
 require("./pacientes");
 require("./dados_paciente");
 require("./refeicao");
-require("./opcao");
 require("./perfil");
 
 // *** Configurações gerais do Cloud Code ***
