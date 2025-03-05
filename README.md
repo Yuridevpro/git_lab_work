@@ -72,9 +72,6 @@ A aplicação segue o modelo **cliente-servidor**, onde:
 
 - **Frontend**: Responsável por exibir a interface do usuário e interagir com o backend via Parse SDK.
 - **Backend**: Gerencia as requisições do frontend, acessa o banco de dados e realiza operações CRUD.
-
-![Arquitetura](https://via.placeholder.com/800x400?text=Arquitetura+Nutri+Lab)
-
 ---
 
 ## ⚙️ Configuração do Projeto
