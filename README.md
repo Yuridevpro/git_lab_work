@@ -1,6 +1,5 @@
 # NUTRI LAB - Plataforma de Gestão de Pacientes e Planos Alimentares
 
-![Nutri Lab](https://via.placeholder.com/800x400?text=NUTRI+LAB)
 
 ## ✨ Sobre o Projeto
 
