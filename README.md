@@ -1,6 +1,7 @@
 # NUTRI LAB - Plataforma de Gestão de Pacientes e Planos Alimentares
 
 
+
 ## ✨ Sobre o Projeto
 
 **NUTRI LAB** é uma plataforma web projetada para auxiliar nutricionistas na gestão de seus pacientes e na elaboração de planos alimentares personalizados. A aplicação proporciona um ambiente intuitivo e acessível para:
@@ -71,6 +72,9 @@ A aplicação segue o modelo **cliente-servidor**, onde:
 
 - **Frontend**: Responsável por exibir a interface do usuário e interagir com o backend via Parse SDK.
 - **Backend**: Gerencia as requisições do frontend, acessa o banco de dados e realiza operações CRUD.
+
+![Arquitetura](https://via.placeholder.com/800x400?text=Arquitetura+Nutri+Lab)
+
 ---
 
 ## ⚙️ Configuração do Projeto
@@ -100,7 +104,21 @@ Antes de iniciar, você precisará de:
 
 3. **Configure as credenciais do Parse Server:**
 
-Edite o arquivo de configuração `.env` com suas chaves do Back4App.
+Edite o arquivo de configuração **JavaScript** do frontend onde está localizado este trecho de código:
+
+```javascript
+Parse.serverURL = "https://parseapi.back4app.com/";
+Parse.initialize(
+  "SEU_APPLICATION_ID_AQUI",
+  "SEU_JAVASCRIPT_KEY_AQUI"
+);
+```
+
+⚠ **Atenção:** Substitua `SEU_APPLICATION_ID_AQUI` e `SEU_JAVASCRIPT_KEY_AQUI` pelos valores reais obtidos no **Back4App**. Para encontrá-los:
+
+- Acesse seu projeto no **Back4App**.
+- Vá até a aba **App Settings > Security & Keys**.
+- Copie os valores de **Application ID** e **JavaScript Key**.
 
 4. **Instale as dependências do backend:**
 
@@ -108,7 +126,21 @@ Edite o arquivo de configuração `.env` com suas chaves do Back4App.
  npm install express
 ```
 
-5. **Inicie o servidor:**
+5. **Crie um arquivo `server.js` na raiz do projeto e adicione o seguinte código:**
+
+```javascript
+const express = require('express');
+const app = express();
+const port = 3000;
+
+app.use(express.static('frontend'));
+
+app.listen(port, () => {
+  console.log(`Servidor rodando em http://localhost:${port}`);
+});
+```
+
+6. **Inicie o servidor:**
 
 ```bash
  node server.js
@@ -119,6 +151,7 @@ Edite o arquivo de configuração `.env` com suas chaves do Back4App.
 ## 📸 Telas da Aplicação
 
 | Tela de Login | Dashboard | Gestão de Pacientes |
+
 | ![Login](https://via.placeholder.com/250x150) | ![Dashboard](https://via.placeholder.com/250x150) | ![Pacientes](https://via.placeholder.com/250x150) |
 
 ---
