@@ -5,9 +5,10 @@
 // Função para criar refeição
 Parse.Cloud.define("criarRefeicao", async (request) => {
   console.log("Criar Refeicao - Usuário que chamou:", request.user);
-  
+
   const pacienteId = request.params.pacienteId;
   const titulo = request.params.titulo;
+  const descricao = request.params.descricao;  // Nova descrição
   const horario = request.params.horario;
   const carboidratos = request.params.carboidratos;
   const proteinas = request.params.proteinas;
@@ -36,6 +37,7 @@ Parse.Cloud.define("criarRefeicao", async (request) => {
 
   // Define os demais campos
   refeicao.set("titulo", titulo);
+  refeicao.set("descricao", descricao); // Nova descrição
   refeicao.set("horario", horario);
   refeicao.set("carboidratos", carboidratos);
   refeicao.set("proteinas", proteinas);
@@ -69,6 +71,7 @@ Parse.Cloud.define("buscarRefeicao", async (request) => {
       refeicao: {
         id: refeicao.id,
         titulo: refeicao.get("titulo"),
+        descricao: refeicao.get("descricao"),//nova descricao
         horario: refeicao.get("horario"),
         carboidratos: refeicao.get("carboidratos"),
         proteinas: refeicao.get("proteinas"),
@@ -85,6 +88,7 @@ Parse.Cloud.define("buscarRefeicao", async (request) => {
 Parse.Cloud.define("atualizarRefeicao", async (request) => {
   const idRefeicao = request.params.id;
   const titulo = request.params.titulo;
+  const descricao = request.params.descricao; // Nova Descrição
   const horario = request.params.horario;
   const carboidratos = request.params.carboidratos;
   const proteinas = request.params.proteinas;
@@ -102,6 +106,7 @@ Parse.Cloud.define("atualizarRefeicao", async (request) => {
     }
 
     refeicao.set("titulo", titulo);
+    refeicao.set("descricao", descricao); // Nova Descrição
     refeicao.set("horario", horario);
     refeicao.set("carboidratos", carboidratos);
     refeicao.set("proteinas", proteinas);

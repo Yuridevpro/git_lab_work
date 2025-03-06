@@ -149,6 +149,14 @@ Parse.Object.registerSubclass(
             this.set("titulo", titulo);
         }
 
+        // New Getters and Setters for Descricao
+        getDescricao() {
+            return this.get("descricao");
+        }
+        setDescricao(descricao) {
+            this.set("descricao", descricao);
+        }
+
         getHorario() {
             return this.get("horario");
         }

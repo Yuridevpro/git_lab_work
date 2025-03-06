@@ -178,6 +178,13 @@
                                             title="Insira o nome da refeição (ex: Café da Manhã)" />
                                     </div>
                                     <div class="form-group">
+                                        <label for="descricao">Descrição</label>
+                                        <textarea class="form-control" id="descricao" rows="3"
+                                            placeholder="Ex: 200g de arroz branco, 100g de feijão, 1 filé de frango grelhado (150g), salada de folhas verdes à vontade."
+                                            title="Insira a descrição detalhada da refeição, incluindo os alimentos e suas quantidades."></textarea>
+                                    </div>
+
+                                    <div class="form-group">
                                         <label for="horario">Horário</label>
                                         <input type="time" class="form-control" id="horario" required
                                             title="Insira o horário da refeição" />
@@ -235,6 +242,14 @@
                                             placeholder="Ex: Café da manhã" required
                                             title="Insira o nome da refeição (ex: Café da Manhã)" />
                                     </div>
+
+                                    <div class="form-group">
+                                        <label for="editarDescricao">Descrição</label>
+                                        <textarea class="form-control" id="editarDescricao" rows="3"
+                                            placeholder="Ex: 200g de arroz branco, 100g de feijão, 1 filé de frango grelhado (150g), salada de folhas verdes à vontade."
+                                            title="Insira a descrição detalhada da refeição, incluindo os alimentos e suas quantidades."></textarea>
+                                    </div>
+
                                     <div class="form-group">
                                         <label for="editarHorario">Horário</label>
                                         <input type="time" class="form-control" id="editarHorario" required
@@ -376,13 +391,14 @@
                         <div class="card meal-card h-100">
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title">${refeicao.get("titulo")}</h5>
+                                <p class="card-text">Descrição: ${refeicao.get("descricao")}</p>
                                 <p class="card-text">Horário: ${refeicao.get("horario")}</p>
                                 <p class="card-text">Carboidratos: ${refeicao.get("carboidratos")}</p>
                                 <p class="card-text">Proteínas: ${refeicao.get("proteinas")}</p>
                                 <p class="card-text">Gorduras: ${refeicao.get("gorduras")}</p>
                                 <div class="mt-auto buttons d-flex justify-content-between">
                                     <button class="btn btn-sm btn-primary btnEditarRefeicao" data-id="${refeicao.id}"
-                                        data-titulo="${refeicao.get("titulo")}" data-horario="${refeicao.get("horario")}"
+                                        data-titulo="${refeicao.get("titulo")}" data-descricao="${refeicao.get("descricao")}" data-horario="${refeicao.get("horario")}"
                                         data-carboidratos="${refeicao.get("carboidratos")}" data-proteinas="${refeicao.get("proteinas")}"
                                         data-gorduras="${refeicao.get("gorduras")}" data-toggle="modal"
                                         data-target="#modalEditarRefeicao">Editar</button>
@@ -411,6 +427,7 @@
             event.preventDefault();
 
             const titulo = document.getElementById("titulo").value;
+            const descricao = document.getElementById("descricao").value;
             const horario = document.getElementById("horario").value;
             const carboidratos = document.getElementById("carboidratos").value;
             const proteinas = document.getElementById("proteinas").value;
@@ -420,6 +437,7 @@
                 const response = await Parse.Cloud.run("criarRefeicao", {
                     pacienteId: idPaciente,
                     titulo: titulo,
+                    descricao: descricao,
                     horario: horario,
                     carboidratos: carboidratos,
                     proteinas: proteinas,
@@ -465,6 +483,7 @@
         $(document).on('click', '.btnEditarRefeicao', function () {
         const refeicaoId = $(this).data('id');
         const titulo = $(this).data('titulo');
+        const descricao = $(this).data('descricao');
         const horario = $(this).data('horario');
         const carboidratos = $(this).data('carboidratos');
         const proteinas = $(this).data('proteinas');
@@ -473,6 +492,7 @@
         // Preenche os campos do modal com os dados da refeição
         $('#editarRefeicaoId').val(refeicaoId);
         $('#editarTitulo').val(titulo);
+        $('#editarDescricao').val(descricao);
         $('#editarHorario').val(horario);
         $('#editarCarboidratos').val(carboidratos);
         $('#editarProteinas').val(proteinas);
@@ -485,6 +505,7 @@
 
         const idRefeicao = document.getElementById("editarRefeicaoId").value;
         const titulo = document.getElementById("editarTitulo").value;
+        const descricao = document.getElementById("editarDescricao").value;
         const horario = document.getElementById("editarHorario").value;
         const carboidratos = document.getElementById("editarCarboidratos").value;
         const proteinas = document.getElementById("editarProteinas").value;
@@ -494,6 +515,7 @@
             const response = await Parse.Cloud.run("atualizarRefeicao", {
                 id: idRefeicao,
                 titulo: titulo,
+                descricao: descricao,
                 horario: horario,
                 carboidratos: carboidratos,
                 proteinas: proteinas,
