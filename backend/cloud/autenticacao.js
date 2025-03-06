@@ -26,6 +26,7 @@
     }
   });
   
+  
   // Função para fazer login
   Parse.Cloud.define("logarUsuario", async (request) => {
     const email = request.params.email;
