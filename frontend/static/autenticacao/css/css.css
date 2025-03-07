@@ -94,6 +94,14 @@ html {
   max-width: 80%; /* Certificar-se de que cabe na tela menor */
   height: auto; /* Manter a proporção da imagem */
 }
+
+.area_cadastrar {
+  margin: 20px auto; /* Centraliza horizontalmente e adiciona margem superior/inferior */
+  padding: 20px; /* Adiciona preenchimento interno */
+  width: 90%; /* Ocupa mais largura em telas pequenas */
+  max-width: 500px; /* Limita a largura em telas maiores */
+}
+
 /* estilos gerais FIM*/
 
 
@@ -102,12 +110,6 @@ html {
 
 /* ALVES  e Alisson*/
 /* Área de cadastro/login */
-.area_cadastrar {
-  margin: 20px auto; /* Centraliza horizontalmente e adiciona margem superior/inferior */
-  padding: 20px; /* Adiciona preenchimento interno */
-  width: 90%; /* Ocupa mais largura em telas pequenas */
-  max-width: 500px; /* Limita a largura em telas maiores */
-}
 
 /* Media Queries Consolidadas */
 @media (min-width: 768px) {
