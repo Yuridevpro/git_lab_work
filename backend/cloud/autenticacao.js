@@ -1,8 +1,8 @@
 // cloud/autenticacao.js
 
-
-
 // backend/cloud/autenticacao.js
+
+// alves
   // Função para cadastrar um novo usuário
   Parse.Cloud.define("cadastrarUsuario", async (request) => {
     const username = request.params.username;
@@ -25,8 +25,9 @@
       );
     }
   });
-  
-  
+// Fim alves
+
+// alisson
   // Função para fazer login
   Parse.Cloud.define("logarUsuario", async (request) => {
     const email = request.params.email;
@@ -47,7 +48,9 @@
       );
     }
   });
+  // fim alisson
   
+  // yuri
   // Função para fazer logout
   Parse.Cloud.define("deslogarUsuario", async (request) => {
     const user = request.user; // Usuário atual
@@ -67,8 +70,10 @@
       );
     }
   });
-  
-  // Função para solicitar reset de senha
+// fim yuri
+
+// Kairo
+// Função para solicitar reset de senha
   Parse.Cloud.define("solicitarResetSenha", async (request) => {
     const email = request.params.email;
   
@@ -83,3 +88,4 @@
       );
     }
   });
+// fim Kairo

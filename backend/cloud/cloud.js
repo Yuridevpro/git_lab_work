@@ -1,5 +1,5 @@
- // cloud/cloud.js
-
+// Yuri
+// cloud/cloud.js
 
 // *** Importando funções do Cloud Code ***
 require("./autenticacao");

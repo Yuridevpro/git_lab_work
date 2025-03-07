@@ -2,6 +2,7 @@
 
 // *** Definição das Classes (Modelos) ***
 
+// Alan
 // Classe Pacientes
 Parse.Object.registerSubclass(
     "Pacientes",
@@ -47,7 +48,10 @@ Parse.Object.registerSubclass(
         }
     }
 );
+// Fim Alan
 
+
+// Gabriel
 // Classe DadosPaciente
 Parse.Object.registerSubclass(
     "DadosPaciente",
@@ -127,7 +131,9 @@ Parse.Object.registerSubclass(
         }
     }
 );
+// FIm gabriel
 
+// Yuri
 // Classe Refeicao
 Parse.Object.registerSubclass(
     "Refeicao",
@@ -186,3 +192,4 @@ Parse.Object.registerSubclass(
         }
     }
 );
+// Fim Yuri

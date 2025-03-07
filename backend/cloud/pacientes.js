@@ -1,3 +1,4 @@
+//  Alan
  // cloud/pacientes.js
 
 // *** Funções CRUD para Pacientes ***
@@ -169,3 +170,4 @@ Parse.Cloud.define("deletarPaciente", async (request) => {
     throw new Error("Erro ao deletar paciente ou não autorizado: " + error.message);
   }
 });
+// Fim alan

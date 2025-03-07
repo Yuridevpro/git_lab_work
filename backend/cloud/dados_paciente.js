@@ -1,3 +1,5 @@
+// Gabriel
+
  // backend/cloud/dados_paciente.js
 
 // *** Funções CRUD para DadosPaciente ***
@@ -179,3 +181,5 @@ Parse.Cloud.define("deletarDadosPaciente", async (request) => {
     };
   }
 });
+
+// Fim gabriel

@@ -1,4 +1,5 @@
- // backend/cloud/perfil.js
+// Yuri
+// backend/cloud/perfil.js
 
 // Função para buscar informações do perfil do usuário
 Parse.Cloud.define("buscarPerfil", async (request) => {
@@ -120,3 +121,4 @@ Parse.Cloud.define("deletarConta", async (request) => {
         throw new Error("Erro ao excluir conta: " + error.message);
     }
 });
+// Fim Yuri

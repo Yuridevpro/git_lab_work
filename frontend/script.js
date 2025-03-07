@@ -1,5 +1,5 @@
 // frontend/script.js
-
+// Yuri
 // *** Inicialização do Parse ***
 Parse.serverURL = "https://parseapi.back4app.com/";
 Parse.initialize(
@@ -25,6 +25,8 @@ async function requireAuth() {
   }
 }
 
+
+
 // Adiciona a função deslogarUsuario
 async function deslogarUsuario() {
   try {
@@ -39,7 +41,9 @@ async function deslogarUsuario() {
     alert("Erro ao deslogar usuário: " + error.message);
   }
 }
+// Fim Yuri
 
+// Alan
 // Função para atualizar o menu de autenticação (login/logout)
 async function atualizarMenuAutenticacao() {
   const menu = document.getElementById("menu-autenticacao");
@@ -83,6 +87,8 @@ async function atualizarMenuAutenticacao() {
   }
 }
 
+
+
 // *** Funções para Pacientes ***
 
 // Função para buscar todos os pacientes
@@ -114,7 +120,9 @@ async function criarPaciente(nome, sexo, idade, email, telefone) {
     return null; // Retorna null em caso de erro
   }
 }
+// Fim Alan
 
+// Gabriel
 // *** Funções para DadosPaciente ***
 
 // Função para criar dados do paciente
@@ -162,7 +170,9 @@ async function buscarDadosPaciente(id) {
     return null;
   }
 }
+// Fim gabriel
 
+// Yuri
 // *** Funções para Refeicao ***
 
 // Função para criar refeição
@@ -191,3 +201,4 @@ async function criarRefeicao(
     return null;
   }
 }
+// Fim yuri
