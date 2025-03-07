@@ -1,9 +1,9 @@
-/* Reset basic styles for better cross-browser consistency */
+/* estilos gerais */
 body,
 html {
   margin: 0;
   padding: 0;
-  height: 100%; /* Make sure html and body fill the viewport height */
+  height: 100%; 
 }
 
 /* Geral da plataforma (Aplicável a Todos os Tamanhos de Tela) */
@@ -94,7 +94,13 @@ html {
   max-width: 80%; /* Certificar-se de que cabe na tela menor */
   height: auto; /* Manter a proporção da imagem */
 }
+/* estilos gerais FIM*/
 
+
+
+
+
+/* ALVES  e Alisson*/
 /* Área de cadastro/login */
 .area_cadastrar {
   margin: 20px auto; /* Centraliza horizontalmente e adiciona margem superior/inferior */
@@ -127,7 +133,7 @@ html {
   }
 
   .btn-first {
-      width: auto; /* Make button fit content again */
+      width: auto;
   }
 
   /* Ajuste da sidebar em telas maiores */
@@ -149,3 +155,5 @@ html {
     justify-content: space-between; /* Espaça os itens */
   }
 }
+
+/* fim alves e alisson */

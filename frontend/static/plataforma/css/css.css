@@ -85,6 +85,34 @@
   flex-grow: 1; /* Permite que o texto se expanda para preencher o espaço restante */
 }
 
+/* Media Queries Consolidadas */
+@media (max-width: 1300px) {
+  .descricao {
+    margin-left: 1px; /* Ajuste para telas menores */
+  }
+}
+
+@media (max-width: 767.98px) {
+  .navbar-nav-sidebar {
+    display: flex; /* Show on small screens */
+    flex-direction: column;
+  }
+  #sidebar {
+    display: none;
+  }
+  .navbar-nav-sidebar .nav-link img {
+    max-width: 30px; /* Adjust the pixel value as needed */
+    height: auto;
+  }
+}
+
+/* Fim */
+/* css.css - Estilos Gerais da Plataforma */
+
+
+
+/* ALAN */
+
 /* pacientes.html */
 
 /* card do paciente */
@@ -94,11 +122,14 @@
   padding: 20px; /* Espaçamento interno do card */
   color: black; /* Cor do texto */
 }
+/* FIM ALAN */
 
+/* Yuri */
 /* foto do perfil */
 .foto-perfil {
   text-align: center; /* Alinha a foto ao centro */
 }
+
 
 /* descriçao */
 .descricao {
@@ -155,25 +186,4 @@
   gap: 1px; /* Espaçamento entre os botões */
 }
 
-/* Media Queries Consolidadas */
-@media (max-width: 1300px) {
-  .descricao {
-    margin-left: 1px; /* Ajuste para telas menores */
-  }
-}
-
-@media (max-width: 767.98px) {
-  .navbar-nav-sidebar {
-    display: flex; /* Show on small screens */
-    flex-direction: column;
-  }
-  #sidebar {
-    display: none;
-  }
-  .navbar-nav-sidebar .nav-link img {
-    max-width: 30px; /* Adjust the pixel value as needed */
-    height: auto;
-  }
-}
-
-/* Fim */
+/* fim yuri */
