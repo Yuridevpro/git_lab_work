@@ -41,7 +41,7 @@ async function deslogarUsuario() {
     alert("Erro ao deslogar usuário: " + error.message);
   }
 }
-// Fim Yuri
+
 
 
 // Função para atualizar o menu de autenticação (login/logout)
@@ -86,6 +86,8 @@ async function atualizarMenuAutenticacao() {
     menu.appendChild(liCadastro);
   }
 }
+
+// Fim Yuri
 // Alan
 
 
