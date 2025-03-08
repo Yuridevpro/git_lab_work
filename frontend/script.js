@@ -43,7 +43,7 @@ async function deslogarUsuario() {
 }
 // Fim Yuri
 
-// Alan
+
 // Função para atualizar o menu de autenticação (login/logout)
 async function atualizarMenuAutenticacao() {
   const menu = document.getElementById("menu-autenticacao");
@@ -86,7 +86,7 @@ async function atualizarMenuAutenticacao() {
     menu.appendChild(liCadastro);
   }
 }
-
+// Alan
 
 
 // *** Funções para Pacientes ***
