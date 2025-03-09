@@ -10,6 +10,8 @@
     <title>Pacientes</title>
     <link rel="stylesheet" href="/static/plataforma/css/css.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/mensagem/mensagem.css" />
+    <!-- O arquivo CSS central para o estilo da mensagem -->
     <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
     <script src="/script.js"></script>
     <style>
@@ -277,8 +279,38 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Modal Excluir Paciente -->
+                <div class="modal fade" id="modalExcluirPaciente" tabindex="-1" role="dialog"
+                    aria-labelledby="modalExcluirPacienteLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalExcluirPacienteLabel">Excluir Paciente</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Tem certeza de que deseja excluir este paciente?
+                            </div>
+
+                            <div class="modal-footer d-flex justify-content-center">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-danger" id="confirmarExclusaoPaciente" data-paciente-id="">Excluir</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </main>
         </div>
+    </div>
+
+    <!-- Container para a mensagem de alerta Bootstrap -->
+    <div id="mensagem-container">
+      <div id="mensagem" class="alert" role="alert">
+        <!-- A mensagem será inserida aqui via JavaScript -->
+      </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
@@ -308,19 +340,21 @@
                 });
 
                 if (result.success) {
-                    alert("Paciente cadastrado com sucesso!");
+                    exibirMensagem("Paciente cadastrado com sucesso!", "sucesso");
 
                     $('#modalNovoPaciente').modal('hide');
                     formNovoPaciente.reset()
                     exibirPacientes()
                 } else {
                     document.getElementById("pacienteError").innerText = "Erro ao criar paciente: " + result.message;
+                    exibirMensagem("Erro ao criar paciente: " + result.message, "erro");
                 }
 
 
             } catch (error) {
                 document.getElementById("pacienteError").innerText = "Erro ao criar paciente: " + error.message;
                 console.error("Erro ao criar paciente:", error);
+                exibirMensagem("Erro ao criar paciente: " + error.message, "erro");
             }
         });
 
@@ -348,7 +382,7 @@
                                 data-id="${id}" data-nome="${nome}" data-idade="${idade}" data-sexo="${sexo}"
                                 data-email="${email}" data-telefone="${telefone}">Editar</button>
                             <button type="button" class="btn btn-sm btn-danger btnExcluirPaciente"
-                                data-id="${id}">Excluir</button>
+                                data-id="${id}" data-toggle="modal" data-target="#modalExcluirPaciente">Excluir</button>
                         </div>
                         <a href="dados_paciente.html?id=${id}" class="link-hover">
                             <div class="foto-perfil">
@@ -393,15 +427,17 @@
                 document.querySelectorAll('.btnExcluirPaciente').forEach(button => {
                     button.addEventListener('click', function (event) {
                         event.stopPropagation(); // Prevent card click
+
                         const id = this.dataset.id;
-                        if (confirm("Tem certeza que deseja excluir este paciente?")) {
-                            excluirPaciente(id);
-                        }
+                        document.getElementById('confirmarExclusaoPaciente').dataset.pacienteId = id;
+
+                        //Mostra o modal de exclusão
+                        $('#modalExcluirPaciente').modal('show');
                     });
                 });
             } catch (error) {
                 console.error("Erro ao buscar pacientes:", error);
-                alert("Erro ao buscar pacientes: " + error.message);
+                exibirMensagem("Erro ao buscar pacientes: " + error.message, "erro");
             }
         }
 
@@ -413,14 +449,14 @@
                 });
 
                 if (result.success) {
-                    alert("Paciente excluído com sucesso!");
+                    exibirMensagem("Paciente excluído com sucesso!", "sucesso");
                     exibirPacientes(); // Recarrega a lista de pacientes
                 } else {
-                    alert("Erro ao excluir paciente: " + result.message);
+                    exibirMensagem("Erro ao excluir paciente: " + result.message, "erro");
                 }
             } catch (error) {
                 console.error("Erro ao excluir paciente:", error);
-                alert("Erro ao excluir paciente: " + error.message);
+                exibirMensagem("Erro ao excluir paciente: " + error.message, "erro");
             }
         }
 
@@ -447,20 +483,30 @@
                 });
 
                 if (result.success) {
-                    alert("Paciente atualizado com sucesso!");
+                    exibirMensagem("Paciente atualizado com sucesso!", "sucesso");
                     $('#modalEditarPaciente').modal('hide');
                     exibirPacientes(); // Recarrega a lista de pacientes
                 } else {
                     document.getElementById("editarPacienteError").innerText = "Erro ao atualizar paciente: " + result.message;
+                    exibirMensagem("Erro ao atualizar paciente: " + result.message, "erro");
                 }
             } catch (error) {
                 console.error("Erro ao atualizar paciente:", error);
                 document.getElementById("editarPacienteError").innerText = "Erro ao atualizar paciente: " + error.message;
+                exibirMensagem("Erro ao atualizar paciente: " + error.message, "erro");
             }
         });
 
         // Carregar os pacientes ao carregar a página
         exibirPacientes();
+
+        // Event listener for the confirm deletion button
+        document.getElementById('confirmarExclusaoPaciente').addEventListener('click', function() {
+            const id = this.dataset.pacienteId;
+            $('#modalExcluirPaciente').modal('hide'); // Hide the modal
+            excluirPaciente(id);
+        });
+
     </script>
 
 

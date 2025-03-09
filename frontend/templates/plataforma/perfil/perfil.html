@@ -10,6 +10,8 @@
     <title>Meu Perfil</title>
     <link rel="stylesheet" href="/static/plataforma/css/css.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/mensagem/mensagem.css" />
+    <!-- O arquivo CSS central para o estilo da mensagem -->
     <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
     <script src="/script.js"></script>
     <!-- Inclui a função de verificação -->
@@ -187,6 +189,14 @@
             </main>
         </div>
     </div>
+
+    <!-- Container para a mensagem de alerta Bootstrap -->
+    <div id="mensagem-container">
+      <div id="mensagem" class="alert" role="alert">
+        <!-- A mensagem será inserida aqui via JavaScript -->
+      </div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -233,11 +243,13 @@
                 // 10. Se a chamada da função na nuvem falhar, exibe uma mensagem de erro no elemento `perfilInfo`.
                 perfilInfo.innerHTML =
                   "<p>Erro ao carregar perfil: " + result.message + "</p>";
+                   exibirMensagem("Erro ao carregar perfil: " + result.message, "erro");
               }
             } catch (error) {
               // 11. Trata erros que possam ocorrer durante o processo de busca do perfil.
               console.error("Erro ao buscar perfil:", error);
               perfilInfo.innerHTML = "<p>Erro ao carregar perfil.</p>";
+              exibirMensagem("Erro ao buscar perfil: " + error.message, "erro");
             }
           }
       
@@ -266,7 +278,7 @@
               // 18. Verifica se a chamada da função na nuvem foi bem-sucedida.
               if (result.success) {
                 // 19. Exibe uma mensagem de sucesso ao usuário.
-                alert("Perfil atualizado com sucesso!");
+                exibirMensagem("Perfil atualizado com sucesso!", "sucesso");
                 // 20. Chama a função `buscarPerfil()` para atualizar a exibição das informações do perfil.
                 await buscarPerfil(); // Atualiza a exibição do perfil
                 // 21. Esconde o modal de edição do perfil (presume que está usando Bootstrap).
@@ -275,12 +287,14 @@
                 // 22. Se a chamada da função na nuvem falhar, exibe uma mensagem de erro no elemento `editarPerfilError`.
                 editarPerfilError.innerText =
                   "Erro ao atualizar perfil: " + result.message;
+                  exibirMensagem("Erro ao atualizar perfil: " + result.message, "erro");
               }
             } catch (error) {
               // 23. Trata erros que possam ocorrer durante o processo de atualização do perfil.
               console.error("Erro ao editar perfil:", error);
               editarPerfilError.innerText =
                 "Erro ao atualizar perfil: " + error.message;
+                 exibirMensagem("Erro ao atualizar perfil: " + error.message, "erro");
             }
           });
       
@@ -327,18 +341,18 @@
                   Parse.User.logOut(); // Garante que não há sessão ativa no Parse SDK.
       
                 // 38. Exibe uma mensagem de sucesso ao usuário.
-                alert("Conta excluída com sucesso!");
+                exibirMensagem("Conta excluída com sucesso!", "sucesso");
                 // 39. Redireciona o usuário para a página de login. `window.location.replace()` substitui a página atual
                 //     no histórico do navegador, impedindo que o usuário volte para a página de perfil ao clicar no botão "Voltar".
                 window.location.replace("/templates/autenticacao/logar.html");
               } else {
                 // 40. Se a chamada da função na nuvem falhar, exibe uma mensagem de erro.
-                alert("Erro ao excluir conta: " + result.message);
+                exibirMensagem("Erro ao excluir conta: " + result.message, "erro");
               }
             } catch (error) {
               // 41. Trata erros que possam ocorrer durante o processo de exclusão da conta.
               console.error("Erro ao excluir conta:", error);
-              alert("Erro ao excluir conta: " + error.message);
+              exibirMensagem("Erro ao excluir conta: " + error.message, "erro");
             } finally {
               // 42. Reabilita o botão, independentemente do resultado da exclusão (sucesso ou falha).
               confirmarExclusaoButton.disabled = false;
@@ -351,7 +365,12 @@
           await buscarPerfil();
         });
       </script>
-           
+      <!-- Container para a mensagem de alerta Bootstrap -->
+      <div id="mensagem-container">
+        <div id="mensagem" class="alert" role="alert">
+          <!-- A mensagem será inserida aqui via JavaScript -->
+        </div>
+      </div>           
  
 </body>
 

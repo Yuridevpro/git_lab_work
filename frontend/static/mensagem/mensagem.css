@@ -1,0 +1,17 @@
+/* fim alves e alisson */
+
+/* Estilos para a mensagem de alerta */
+#mensagem-container {
+    position: fixed; /* Fixo na tela */
+    top: 20px;       /* Espaço do topo */
+    left: 50%;      /* Centralizado horizontalmente */
+    transform: translateX(-50%); /* Ajuste para centralizar perfeitamente */
+    z-index: 1050;    /* Acima de outros elementos (ajuste se necessário) */
+    width: 80%;      /* Largura da mensagem (ajuste conforme necessário) */
+    max-width: 500px; /* Largura máxima para telas maiores */
+  }
+  
+  /* Esconde o alerta por padrão */
+  .alert {
+    display: none;
+  }

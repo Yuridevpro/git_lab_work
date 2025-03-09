@@ -10,6 +10,8 @@
     <title>Dados do Paciente</title>
     <link rel="stylesheet" href="/static/plataforma/css/css.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/static/mensagem/mensagem.css" />
+    <!-- O arquivo CSS central para o estilo da mensagem -->
     <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
     <script src="/script.js"></script>
 
@@ -418,6 +420,13 @@
         </div>
     </div>
 
+    <!-- Container para a mensagem de alerta Bootstrap -->
+    <div id="mensagem-container">
+      <div id="mensagem" class="alert" role="alert">
+        <!-- A mensagem será inserida aqui via JavaScript -->
+      </div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script>
         // Chame requireAuth() AQUI antes de todo o seu código
@@ -458,6 +467,7 @@
                 `;
             } catch (error) {
                 console.error("Erro ao buscar dados do paciente:", error);
+                exibirMensagem("Erro ao buscar dados do paciente: " + error.message, "erro");
 
             }
         }
@@ -518,6 +528,7 @@
 
             } catch (error) {
                 console.error("Erro ao buscar dados do paciente:", error);
+                exibirMensagem("Erro ao buscar dados do paciente: " + error.message, "erro");
 
             }
         }
@@ -577,13 +588,14 @@
                     trigliceridios: trigliceridios,
                 });
                 console.log("Parse.Cloud.run('criarDadosPaciente') executado com sucesso!"); // ADICIONADO LOG
-                alert("Dados do paciente adicionados com sucesso.");
+                exibirMensagem("Dados do paciente adicionados com sucesso.", "sucesso");
                 $('#modalAdicionarDados').modal('hide');
                 popularTabelaDadosPaciente(idPaciente); // Atualiza a tabela após inserção
 
             } catch (error) {
                 console.error("Erro ao chamar Parse.Cloud.run:", error);
                 document.getElementById("adicionarDadosError").innerText = "Erro ao adicionar dados. Veja o console para mais detalhes.";
+                exibirMensagem("Erro ao adicionar dados: " + error.message, "erro");
             }
         });
 
@@ -603,11 +615,11 @@
                     document.getElementById("editarTrigliceridios").value = dados.trigliceridios;
                     $('#modalEditarDados').modal('show'); // Exibe o modal
                 } else {
-                    alert(result.message);
+                    exibirMensagem(result.message, "erro");
                 }
             } catch (error) {
                 console.error("Erro ao buscar dados para editar:", error);
-                alert("Erro ao buscar dados para edição. Veja o console para mais detalhes.");
+                exibirMensagem("Erro ao buscar dados para edição. Veja o console para mais detalhes.", "erro");
             }
         }
 
@@ -640,15 +652,17 @@
                 });
 
                 if (result.success) {
-                    alert("Dados atualizados com sucesso.");
+                    exibirMensagem("Dados atualizados com sucesso.", "sucesso");
                     $('#modalEditarDados').modal('hide');
                     popularTabelaDadosPaciente(idPaciente);
                 } else {
                     document.getElementById("editarDadosError").innerText = result.message;
+                    exibirMensagem("Erro ao atualizar dados: " + result.message, "erro");
                 }
             } catch (error) {
                 console.error("Erro ao atualizar dados:", error);
                 document.getElementById("editarDadosError").innerText = "Erro ao atualizar dados. Veja o console para mais detalhes.";
+                exibirMensagem("Erro ao atualizar dados: " + error.message, "erro");
             }
         });
 
@@ -657,15 +671,15 @@
             try {
                 const result = await Parse.Cloud.run("deletarDadosPaciente", { id: dadosPacienteIdParaExcluir });
                 if (result.success) {
-                    alert("Dados excluídos com sucesso.");
+                    exibirMensagem("Dados excluídos com sucesso.", "sucesso");
                     $('#modalExcluirDados').modal('hide');
                     popularTabelaDadosPaciente(idPaciente); // Atualiza a tabela após a exclusão
                 } else {
-                    alert(result.message);
+                    exibirMensagem(result.message, "erro");
                 }
             } catch (error) {
                 console.error("Erro ao excluir dados:", error);
-                alert("Erro ao excluir dados. Veja o console para mais detalhes.");
+                exibirMensagem("Erro ao excluir dados. Veja o console para mais detalhes.", "erro");
             }
         });
     </script>

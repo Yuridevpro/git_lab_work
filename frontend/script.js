@@ -17,9 +17,9 @@ async function requireAuth() {
     }
   } catch (error) {
     console.error("Erro ao verificar autenticação:", error);
-    alert(
+    exibirMensagem(
       "Erro ao verificar autenticação. Redirecionando para login. Detalhes: " +
-        error.message
+        error.message, "erro"
     );
     window.location.replace("/templates/autenticacao/logar.html");
   }
@@ -34,11 +34,11 @@ async function deslogarUsuario() {
     await Parse.User.logOut();
 
     localStorage.removeItem("sessionToken"); // Limpa o token
-    alert("Usuário deslogado com sucesso!");
+    exibirMensagem("Usuário deslogado com sucesso!", "sucesso");
     window.location.href = "/index.html"; // Redireciona para a página inicial
   } catch (error) {
     console.error("Erro ao deslogar usuário:", error);
-    alert("Erro ao deslogar usuário: " + error.message);
+    exibirMensagem("Erro ao deslogar usuário: " + error.message, "erro");
   }
 }
 
@@ -100,7 +100,7 @@ async function buscarPacientes() {
     return results;
   } catch (error) {
     console.error("Erro ao buscar pacientes:", error);
-    alert("Erro ao buscar pacientes: " + error.message);
+    exibirMensagem("Erro ao buscar pacientes: " + error.message, "erro");
     return []; // Retorna um array vazio em caso de erro
   }
 }
@@ -118,7 +118,7 @@ async function criarPaciente(nome, sexo, idade, email, telefone) {
     return result;
   } catch (error) {
     console.error("Erro ao criar paciente:", error);
-    alert("Erro ao criar paciente: " + error.message);
+    exibirMensagem("Erro ao criar paciente: " + error.message, "erro");
     return null; // Retorna null em caso de erro
   }
 }
@@ -156,7 +156,7 @@ async function criarDadosPaciente(
     return result;
   } catch (error) {
     console.error("Erro ao criar dados do paciente:", error);
-    alert("Erro ao criar dados do paciente: " + error.message);
+    exibirMensagem("Erro ao criar dados do paciente: " + error.message, "erro");
     return null;
   }
 }
@@ -168,7 +168,7 @@ async function buscarDadosPaciente(id) {
     return result;
   } catch (error) {
     console.error("Erro ao buscar dados do paciente:", error);
-    alert("Erro ao buscar dados do paciente: " + error.message);
+    exibirMensagem("Erro ao buscar dados do paciente: " + error.message, "erro");
     return null;
   }
 }
@@ -199,8 +199,54 @@ async function criarRefeicao(
     return result;
   } catch (error) {
     console.error("Erro ao criar refeição:", error);
-    alert("Erro ao criar refeição: " + error.message);
+    exibirMensagem("Erro ao criar refeição: " + error.message, "erro");
     return null;
   }
 }
 // Fim yuri
+
+
+// Função para exibir a mensagem usando o alerta Bootstrap
+function exibirMensagem(texto, tipo) {
+  const mensagemDiv = document.getElementById("mensagem");
+
+  if (!mensagemDiv) {
+    console.error("Elemento #mensagem não encontrado.  Certifique-se de que o HTML correto está presente.");
+    return; // Interrompe a execução se o elemento não existir
+  }
+
+  mensagemDiv.textContent = texto;
+
+  // Remove classes de alerta existentes
+  mensagemDiv.classList.remove("alert-success", "alert-danger", "alert-warning", "alert-info");
+
+  // Adiciona a classe de alerta apropriada com base no tipo
+  switch (tipo) {
+    case "sucesso":
+      mensagemDiv.classList.add("alert-success");
+      break;
+    case "erro":
+      mensagemDiv.classList.add("alert-danger");
+      break;
+    case "aviso":
+      mensagemDiv.classList.add("alert-warning");
+      break;
+    case "info":
+      mensagemDiv.classList.add("alert-info");
+      break;
+    default:
+      console.warn("Tipo de mensagem desconhecido: " + tipo);
+      return;  //Não exibe nada se o tipo for desconhecido
+  }
+
+  // Mostra o alerta
+  mensagemDiv.style.display = "block";
+
+  // Oculta o alerta após 3 segundos (ajuste conforme necessário)
+  setTimeout(() => {
+    mensagemDiv.style.display = "none";
+  }, 3000);
+}
+
+// Exporta a função para que ela possa ser usada em outros arquivos
+window.exibirMensagem = exibirMensagem;

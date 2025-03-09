@@ -1,5 +1,3 @@
-<!-- Alisson -->
-
 <!-- frontend/templates/autenticacao/logar.html -->
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -11,15 +9,19 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
     />
     <link rel="stylesheet" href="/static/autenticacao/css/css.css" />
+    <link rel="stylesheet" href="/static/mensagem/mensagem.css" />
+    <!-- O arquivo CSS central para o estilo da mensagem -->
     <title>Login</title>
     <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
 
   </head>
   <body>
     <main id="content">
-      <div class="container">  <!-- Using a standard Bootstrap container -->
+      <div class="container">
+        <!-- Usando um container Bootstrap padrão -->
         <div class="row">
-          <div class="col-md-4">  <!-- Sidebar on larger screens, occupies 4 columns-->
+          <div class="col-md-4">
+            <!-- Sidebar em telas maiores, ocupa 4 colunas -->
             <div class="sidebar">
               <div class="logo_sidebar">
                 <h2 class="logo">
@@ -33,7 +35,8 @@
             </div>
           </div>
 
-          <div class="col-md-8"> <!-- Main content area takes up 8 columns on larger screens-->
+          <div class="col-md-8">
+            <!-- Área de conteúdo principal ocupa 8 colunas em telas maiores -->
             <div class="area_cadastrar">
               <h2 class="titulo">Seja bem vindo</h2>
               <p class="sub-titulo">Entre com sua conta</p>
@@ -62,11 +65,14 @@
                   />
                 </div>
 
-                <button class="btn btn-success btn-block" type="submit">Logar</button>
-                <!-- Using Bootstrap's button classes -->
+                <button class="btn btn-success btn-block" type="submit">
+                  Logar
+                </button>
+                <!-- Usando as classes de botão do Bootstrap -->
               </form>
 
-              <h3 class="mt-3 text-center"> <!-- Using Bootstrap's margin and text alignment classes -->
+              <h3 class="mt-3 text-center">
+                <!-- Usando as classes de margem e alinhamento de texto do Bootstrap -->
                 Não tem uma conta?
                 <a href="cadastro.html" class="btn btn-outline-success btn-sm">Registre-se</a>
               </h3>
@@ -79,6 +85,14 @@
         </div>
       </div>
     </main>
+
+    <!-- Container para a mensagem de alerta Bootstrap -->
+    <div id="mensagem-container">
+      <div id="mensagem" class="alert" role="alert">
+        <!-- A mensagem será inserida aqui via JavaScript -->
+      </div>
+    </div>
+
     <script
       src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
       integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
@@ -89,58 +103,65 @@
       integrity="sha384-Piv4xVNRyMGpqWDJX0mtvCGYCZEl+6Lg5iIEWIw56rNVMpw=="
       crossorigin="anonymous"
     ></script>
-   
+
     <script>
+      
       // 1. Obtém o formulário de login pelo seu ID no HTML.
       const formLogin = document.getElementById("loginForm");
-    
+
       // 2. Adiciona um "listener" de evento para o evento "submit" do formulário.
       //    Isso significa que a função a seguir será executada quando o formulário for enviado.
       formLogin.addEventListener("submit", async (event) => {
         // 3. Previne o comportamento padrão do envio do formulário,
         //    que seria recarregar a página. Isso permite que o JavaScript controle o envio.
         event.preventDefault();
-    
+
         // 4. Obtém os valores dos campos de e-mail e senha do formulário.
         const email = document.getElementById("email").value;
         const senha = document.getElementById("senha").value;
-    
+
         // 5. Envolve o processo de login em um bloco try...catch para tratar possíveis erros.
         try {
           // 6. Usa a função `Parse.User.logIn(email, senha)` do Parse SDK para autenticar o usuário.
           //    Esta função retorna um objeto `Parse.User` se a autenticação for bem-sucedida.  `await`
           //    garante que o código espere a resposta do servidor Parse antes de continuar.
           const user = await Parse.User.logIn(email, senha);
-    
+
           // 7. Obtém o sessionToken do objeto `Parse.User`. O sessionToken é uma credencial temporária
           //    que permite que o usuário acesse recursos protegidos sem precisar inserir o nome de
           //    usuário e senha novamente a cada vez.
           const sessionToken = user.getSessionToken();
-    
+
           // 8. Armazena o sessionToken no `localStorage` do navegador. Isso permite que o aplicativo
           //    "lembre" que o usuário está autenticado, mesmo depois de fechar e reabrir a página.
           localStorage.setItem("sessionToken", sessionToken);
-    
+
           // 9. Imprime o sessionToken no console para fins de depuração.
-          console.log("sessionToken armazenado no localStorage:", sessionToken); // Debug
-    
+          console.log(
+            "sessionToken armazenado no localStorage:",
+            sessionToken
+          ); // Debug
+
           // 10. Exibe uma mensagem de sucesso ao usuário.
-          alert("Login realizado com sucesso! Redirecionando.");
-    
+          exibirMensagem(
+            "Login realizado com sucesso! Redirecionando...",
+            "sucesso"
+          );
+
           // 11. Redireciona o usuário para a página principal.
           //     A URL inclui o ID do usuário como um parâmetro de consulta (`?id=${user.id}`).
           //     Isso permite que a página principal acesse as informações específicas do usuário.
-          window.location.href = `/templates/plataforma/pacientes.html?id=${user.id}`;
-    
+          setTimeout(() => {
+            window.location.href = `/templates/plataforma/pacientes.html?id=${user.id}`;
+          }, 3000); // Redireciona após a mensagem de sucesso ser exibida
         } catch (error) {
           // 12. Trata erros que possam ocorrer durante o processo de login.
           console.error("Erro ao logar:", error);
           // 13. Exibe uma mensagem de erro ao usuário.
-          alert("Erro ao logar: " + error.message);
+          exibirMensagem("Erro ao logar: " + error.message, "erro");
         }
       });
     </script>
     <script src="/script.js"></script>
   </body>
 </html>
-<!-- Fim Alisson -->
