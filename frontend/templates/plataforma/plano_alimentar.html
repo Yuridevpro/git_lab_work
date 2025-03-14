@@ -175,16 +175,16 @@
                             <div class="modal-body">
                                 <form id="formNovaRefeicao">
                                     <div class="form-group">
-                                        <label for="titulo">Título</label>
+                                        <label for="titulo">Título (Máx. 50 caracteres)</label>
                                         <input type="text" class="form-control" id="titulo"
                                             placeholder="Ex: Café da manhã" required
-                                            title="Insira o nome da refeição (ex: Café da Manhã)" />
+                                            title="Insira o nome da refeição (ex: Café da Manhã)" maxlength="50"/>
                                     </div>
                                     <div class="form-group">
-                                        <label for="descricao">Descrição</label>
+                                        <label for="descricao">Descrição (Máx. 450 caracteres)</label>
                                         <textarea class="form-control" id="descricao" rows="3"
                                             placeholder="Ex: 200g de arroz branco, 100g de feijão, 1 filé de frango grelhado (150g), salada de folhas verdes à vontade."
-                                            title="Insira a descrição detalhada da refeição, incluindo os alimentos e suas quantidades."></textarea>
+                                            title="Insira a descrição detalhada da refeição, incluindo os alimentos e suas quantidades." maxlength="450"></textarea>
                                     </div>
 
                                     <div class="form-group">
@@ -240,17 +240,17 @@
                                 <form id="formEditarRefeicao">
                                     <input type="hidden" id="editarRefeicaoId">
                                     <div class="form-group">
-                                        <label for="editarTitulo">Título</label>
+                                        <label for="editarTitulo">Título (Máx. 50 caracteres)</label>
                                         <input type="text" class="form-control" id="editarTitulo"
                                             placeholder="Ex: Café da manhã" required
-                                            title="Insira o nome da refeição (ex: Café da Manhã)" />
+                                            title="Insira o nome da refeição (ex: Café da Manhã)" maxlength="50"/>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="editarDescricao">Descrição</label>
+                                        <label for="editarDescricao">Descrição (Máx. 450 caracteres)</label>
                                         <textarea class="form-control" id="editarDescricao" rows="3"
                                             placeholder="Ex: 200g de arroz branco, 100g de feijão, 1 filé de frango grelhado (150g), salada de folhas verdes à vontade."
-                                            title="Insira a descrição detalhada da refeição, incluindo os alimentos e suas quantidades."></textarea>
+                                            title="Insira a descrição detalhada da refeição, incluindo os alimentos e suas quantidades." maxlength="450"></textarea>
                                     </div>
 
                                     <div class="form-group">

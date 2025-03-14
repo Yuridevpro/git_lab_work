@@ -15,6 +15,17 @@ Parse.Cloud.define("criarRefeicao", async (request) => {
   const proteinas = request.params.proteinas;
   const gorduras = request.params.gorduras;
 
+  // Validação do tamanho do título
+  if (titulo && titulo.length > 50) {
+    return { success: false, message: "O título deve ter no máximo 50 caracteres." };
+  }
+
+  // Validação do tamanho da descrição
+  if (descricao && descricao.length > 450) {
+    return { success: false, message: "A descrição deve ter no máximo 450 caracteres." };
+  }
+
+
   // Cria objeto Refeicao
   const Refeicao = Parse.Object.extend("Refeicao");
   const refeicao = new Refeicao();
@@ -87,6 +98,7 @@ Parse.Cloud.define("buscarRefeicao", async (request) => {
 
 // Função para atualizar refeição
 Parse.Cloud.define("atualizarRefeicao", async (request) => {
+
   const idRefeicao = request.params.id;
   const titulo = request.params.titulo;
   const descricao = request.params.descricao; // Nova Descrição
@@ -94,6 +106,16 @@ Parse.Cloud.define("atualizarRefeicao", async (request) => {
   const carboidratos = request.params.carboidratos;
   const proteinas = request.params.proteinas;
   const gorduras = request.params.gorduras;
+
+    // Validação do tamanho do título
+    if (titulo && titulo.length > 50) {
+      return { success: false, message: "O título deve ter no máximo 50 caracteres." };
+    }
+
+    // Validação do tamanho da descrição
+    if (descricao && descricao.length > 450) {
+      return { success: false, message: "A descrição deve ter no máximo 450 caracteres." };
+    }
 
   const Refeicao = Parse.Object.extend("Refeicao");
   const query = new Parse.Query(Refeicao);
