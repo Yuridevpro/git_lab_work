@@ -18,6 +18,14 @@ Parse.Cloud.define("salvarPaciente", async (request) => {
     throw new Error("O nome do paciente é obrigatório.");
   }
 
+  if (nome.length > 20) {
+      throw new Error("O nome do paciente não pode ter mais de 20 caracteres.");
+  }
+
+  if (idade < 2 || idade > 80) {
+    throw new Error("A idade do paciente deve ser um valor entre 2 e 80.");
+  }
+
   const Pacientes = Parse.Object.extend("Pacientes");
   const paciente = new Pacientes();
 
@@ -107,11 +115,20 @@ Parse.Cloud.define("buscarPaciente", async (request) => {
 
 // Função para atualizar um paciente
 Parse.Cloud.define("atualizarPaciente", async (request) => {
+
   const { id, nome, sexo, idade, email, telefone } = request.params;
   const user = request.user;
 
   if (!user) {
     throw new Error("Usuário não autenticado.");
+  }
+
+  if (nome.length > 20) {
+      throw new Error("O nome do paciente não pode ter mais de 20 caracteres.");
+  }
+
+  if (idade < 2 || idade > 80) {
+    throw new Error("A idade do paciente deve ser um valor entre 2 e 80.");
   }
 
   const Pacientes = Parse.Object.extend("Pacientes");
