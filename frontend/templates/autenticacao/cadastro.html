@@ -75,9 +75,14 @@
                         class="form-control"
                         type="password"
                         id="senha"
-                        placeholder="Digite sua senha..."
+                        placeholder="Digite sua senha"
                         required
+                        minlength="8"
                       />
+                      <small class="form-text text-muted">
+                        A senha deve ter no mínimo 8 caracteres e incluir letras
+                        e números.
+                      </small>
                     </div>
                   </div>
 
@@ -92,6 +97,7 @@
                         id="confirmar_senha"
                         placeholder="Confirme sua senha..."
                         required
+                        minlength="8"
                       />
                     </div>
                   </div>
@@ -144,6 +150,20 @@
 
         if (senha !== confirmarSenha) {
           exibirMensagem("As senhas não coincidem.", "erro");
+          return;
+        }
+
+        if (senha.length < 8) {
+          exibirMensagem("A senha deve ter no mínimo 8 caracteres.", "erro");
+          return;
+        }
+
+        const regex = /^(?=.*[a-zA-Z])(?=.*[0-9]).+$/; // Pelo menos uma letra e um número
+        if (!regex.test(senha)) {
+          exibirMensagem(
+            "A senha deve conter pelo menos uma letra e um número.",
+            "erro"
+          );
           return;
         }
 

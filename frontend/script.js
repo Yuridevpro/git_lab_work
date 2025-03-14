@@ -1,10 +1,9 @@
-// frontend/script.js
-// Yuri
+//yuri
 // *** Inicialização do Parse ***
 Parse.serverURL = "https://parseapi.back4app.com/";
 Parse.initialize(
-  "EDnEyoB0xK3F1wEe8RiEkEXwYNEit4NVMrqqXoux",
-  "FZaVc79lLOddCTeMVwr5aCHDO7Lof0VNgBWeh7gh"
+  "GAcpwTn8vWR3IH6vopjoWxeMi9r0HNQpujteULei",
+  "eohDaTIobNJcVdrnRoJHmU9Sgm1i8TtsJ7HdWg1O",
 );
 
 // *** Funções de Autenticação - Verificação de Sessão ***
@@ -186,7 +185,7 @@ async function criarRefeicao(
   proteinas,
   gorduras
 ) {
-  
+
   try {
     const result = await Parse.Cloud.run("criarRefeicao", {
       pacienteId: pacienteId,
